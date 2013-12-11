@@ -1,0 +1,19 @@
+<p>
+  <strong>Name:</strong>
+  <%= app.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= app.description %>
+</p>
+
+<p>
+  <strong>Owner</strong>
+  <%= app.user.email %>
+</p>
+
+<p>
+  <%= link_to 'Edit', edit_app_path(app) %>
+  <%= link_to 'Delete', app_path(app), :method => 'delete', :confirm => 'Are you sure?' %>
+</p>
