@@ -2,6 +2,10 @@
 
 <p><strong>Email:</strong> <%= @user.email %></p>
 
+<h2>Apps</h2>
+<%= render @user.apps %>
+
+<p></p>
 <%= link_to 'All Users', users_path %> |
 <%= link_to 'Edit User', edit_user_path(@user) %> |
 <%= link_to 'Delete User', user_path(@user), :method => 'delete', :confirm => 'Are you sure?' %>
