@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 gem 'devise'
 gem 'cancan'
-gem 'net-ssh'
+gem 'rye'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
