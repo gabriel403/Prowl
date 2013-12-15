@@ -3,9 +3,20 @@
 <p><strong>Email:</strong> <%= @user.email %></p>
 
 <h2>Apps</h2>
-<%= render @user.apps %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'apps/app', collection: @user.apps, locals: {show_owner: false} %>
+  </tbody>
+</table>
 
 <p></p>
 <%= link_to 'All Users', users_path %> |
 <%= link_to 'Edit User', edit_user_path(@user) %> |
-<%= link_to 'Delete User', user_path(@user), :method => 'delete', :confirm => 'Are you sure?' %>
+<%= link_to 'Delete User', user_path(@user), :method => 'delete', data: { confirm: 'Are you sure?' } %>

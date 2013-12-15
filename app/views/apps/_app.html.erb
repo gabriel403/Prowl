@@ -1,19 +1,11 @@
-<p>
-  <strong>Name:</strong>
-  <%= app.name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= app.description %>
-</p>
-
-<p>
-  <strong>Owner</strong>
-  <%= app.user.email %>
-</p>
-
-<p>
-  <%= link_to 'Edit', edit_app_path(app) %>
-  <%= link_to 'Delete', app_path(app), :method => 'delete', :confirm => 'Are you sure?' %>
-</p>
+<tr>
+  <td><%= link_to app.name, app_path(app) %></td>
+  <td><%= app.description %></td>
+  <% if show_owner %>
+  <td><%= link_to app.user.email, app.user %></td>
+  <% end %>
+  <td>
+    <%= link_to 'Edit', edit_app_path(app) %>
+    <%= link_to 'Delete', app_path(app), :method => 'delete', data: { confirm: 'Are you sure?'} %>
+  </td>
+</tr>

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :authenticate_user!
   def index
     @users = User.all
   end
@@ -29,9 +30,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update_attributes(user_params)
-      set_flash_message :notice, :updated
       sign_in @user, :bypass => true
-      redirect_to @user
+      redirect_to @user, :flash => { :success => 'User was successfully updated.' }
     else
       render :action => 'edit'
     end

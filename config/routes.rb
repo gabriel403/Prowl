@@ -11,6 +11,7 @@ Prowl::Application.routes.draw do
 
   resources :users
   resources :apps
+  resources :servers
 
   root :to => "home#index"
 end
