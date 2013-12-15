@@ -1,2 +1,21 @@
-<h1>Apps#show</h1>
-<p>Find me in app/views/apps/show.html.erb</p>
+<h1><%= @app.name.titleize %></h1>
+<div class="row">
+  <div class="col-md-4"><strong>Name:</strong></div>
+  <div class="col-md-8"><%= @app.name.titleize %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Description:</strong></div>
+  <div class="col-md-8"><%= @app.description %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Servers:</strong></div>
+  <div class="col-md-8">Server 1<br />Server 2</div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Environments:</strong></div>
+  <div class="col-md-8">Staging</div>
+</div>
+
+<%= link_to 'All Apps', apps_path %> |
+<%= link_to 'Edit App', edit_app_path(@app) %> |
+<%= link_to 'Delete App', app_path(@app), :method => 'delete', data: { confirm: 'Are you sure?' } %>

@@ -1,3 +1,15 @@
 <h2>Apps</h2>
 
-<%= render @apps %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Owner</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'app', collection: @apps, locals: {show_owner: true} %>
+  </tbody>
+</table>

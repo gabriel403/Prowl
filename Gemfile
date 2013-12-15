@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 gem 'devise'
 gem 'cancan'
+gem 'net-ssh'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
@@ -39,12 +40,3 @@ end
 
 # Use unicorn as the app server
 # gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-# group :development, :test do
-#   gem 'mailcatcher'
-# end
