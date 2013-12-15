@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  success: false
+  output: MyText
+  app_id: 
+
+two:
+  success: false
+  output: MyText
+  app_id: 

@@ -1,0 +1,16 @@
+<h1>Deployments For <%= @app.name.titleize %></h1>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @app.deploys %>
+    <tr><td colspan="2"><%= link_to 'New Deploy', new_deploy_path(@app) %></td></tr>
+  </tbody>
+</table>

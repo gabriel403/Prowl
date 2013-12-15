@@ -1,4 +1,7 @@
 Prowl::Application.routes.draw do
+  get "deploys/:id", to: 'deploys#index', as: 'deploys'
+  get "deploys/show/:id", to: 'deploys#show', as: 'deploy'
+  get "deploys/new/:id", to: 'deploys#new', as: 'new_deploy'
   get "home/index"
 
   as :user do

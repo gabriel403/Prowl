@@ -16,6 +16,7 @@
   <div class="col-md-8">Staging</div>
 </div>
 
+<%= link_to 'Deployments', deploys_path(@app) %> |
 <%= link_to 'All Apps', apps_path %> |
 <%= link_to 'Edit App', edit_app_path(@app) %> |
 <%= link_to 'Delete App', app_path(@app), :method => 'delete', data: { confirm: 'Are you sure?' } %>
