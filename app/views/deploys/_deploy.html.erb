@@ -1,9 +1,5 @@
-<pre>
-  <%= deploy.success %>
-</pre>
-<pre>
-  <%= deploy.output %>
-</pre>
-<pre>
-  <%= deploy.created_at %>
-</pre>
+<tr>
+  <td><%= (deploy.success ? 'True' : 'false') %></td>
+  <td><%= truncate(deploy.output, :length => 50, :separator => ' ') %></td>
+  <td><%= deploy.created_at %></td>
+</tr>

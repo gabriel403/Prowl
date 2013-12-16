@@ -15,7 +15,7 @@ module Remoteserver
 
       begin
         if force
-          rbox.git_fetch
+          # rbox.git_fetch
           rbox.git_reset
         end
 
