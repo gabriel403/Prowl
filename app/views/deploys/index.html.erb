@@ -4,13 +4,13 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Actions</th>
+      <th>Deploy Succeeded</th>
+      <th>Output</th>
+      <th>Deploy Date</th>
     </tr>
   </thead>
   <tbody>
     <%= render @app.deploys %>
-    <tr><td colspan="2"><%= link_to 'New Deploy', new_deploy_path(@app) %></td></tr>
+    <tr><td colspan="3"><%= link_to 'New Deploy', new_deploy_path(@app) %></td></tr>
   </tbody>
 </table>
