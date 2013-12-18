@@ -1,0 +1,47 @@
+<%= form_for @server, :class => "form-control" do |f| %>
+  <% if @server.errors.any? %>
+    <div class="error_explanation">
+      <h2><%= pluralize(@server.errors.count, "error") %> prohibited this app from being saved:</h2>
+
+      <ul>
+      <% @server.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <%= f.label :name %>
+    <div class="controls">
+      <%= f.text_field :name, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :host %>
+    <div class="controls">
+      <%= f.text_field :host, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :authentication_type %>
+    <div class="controls">
+    <%= f.select :authentication_type, options_from_collection_for_select(@authentication_types, "id", "name", @server.authentication_type), :include_blank => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label "Authentication" %>
+    <p>note if you selected 'Key Pair [file]' paste the location of the file,<br />
+    if you selected 'Key Pair [stored]' paste the private key and we will store it.</p>
+    <div class="controls">
+      <%= f.text_area :authentication, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :submit, :class => "btn btn-default" %>
+  </div>
+<% end %>

@@ -1,0 +1,21 @@
+<% title "Show Server" %>
+<div class="page-header">
+  <h1>Server <small><%= @server.name.titleize %></small></h1>
+</div>
+
+<div class="row">
+  <div class="col-md-4"><strong>Name:</strong></div>
+  <div class="col-md-8"><%= @server.name.titleize %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Host:</strong></div>
+  <div class="col-md-8"><%= @server.host %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Authentication Type:</strong></div>
+  <div class="col-md-8"><%= @server.authentication_type %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Authentication:</strong></div>
+  <div class="col-md-8"><%= @server.authentication %></div>
+</div>

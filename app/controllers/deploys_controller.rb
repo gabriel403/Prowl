@@ -1,8 +1,9 @@
 class DeploysController < ApplicationController
   require_dependency "remoteserver/git"
+  before_filter :authenticate_user!
 
   def index
-    @app = App.find(params[:id])
+    app = App.find(params[:id])
   end
 
   def show
@@ -11,25 +12,25 @@ class DeploysController < ApplicationController
 
 
   def new
-    @app = App.find(params[:id])
-    git = Remoteserver::Git.new
-    @success, @returnval = git.deploy(true)
+    app = App.find(params[:id])
 
-    @deploy = Deploy.new(success: @success, output: @returnval.to_s, app: @app)
-
-    if @deploy.save
-      if @success
-        redirect_to deploy_path(@deploy), :flash => { :success => 'Deployment succeded.' }
-      else
-        redirect_to deploy_path(@deploy), :flash => { :alert => 'Deployment failed, see below for details.' }
-      end
-    else
-      if @success
-        redirect_to deploys_path(@app), :flash => { :success => 'Deployment succeded, failed to save.' }
-      else
-        redirect_to deploys_path(@app), :flash => { :alert => 'Deployment failed, see below for details, failed to save.' }
-      end
+    deploy = Deploy.new(app: app)
+    if !deploy.save
+      raise "Unable to save deploy"
     end
 
+    git = Remoteserver::Git.new
+
+    app.servers.each do |server|
+      @success, @returnval = git.deploy(app, server, true)
+    end
+
+    deploy.update_attributes(:status => (@success ? 'Finished' : 'Failed'), :output => @returnval.to_s)
+
+    if @success
+      redirect_to deploy_path(deploy), :flash => { :success => 'Deployment succeded.' }
+    else
+      redirect_to deploy_path(deploy), :flash => { :alert => 'Deployment failed, see below for details.' }
+    end
   end
 end

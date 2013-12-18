@@ -3,9 +3,15 @@
 one:
   name: MyString
   host: MyString
+  authentication_type: MyString
+  authentication: MyText
+  user_id: 
   enabled: false
 
 two:
   name: MyString
   host: MyString
+  authentication_type: MyString
+  authentication: MyText
+  user_id: 
   enabled: false
