@@ -1,6 +1,16 @@
 <% title "Show Server" %>
 <div class="page-header">
-  <h1>Server <small><%= @server.name.titleize %></small></h1>
+  <h1>Server <small><%= @server.name.titleize %></small>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+        Action <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><%= link_to 'Edit', edit_server_path(@server) %></li>
+        <li><%= link_to 'Delete', server_path(@server), :method => 'delete', data: { confirm: 'Are you sure?'} %></li>
+      </ul>
+    </div>
+  </h1>
 </div>
 
 <div class="row">
@@ -13,7 +23,7 @@
 </div>
 <div class="row">
   <div class="col-md-4"><strong>Authentication Type:</strong></div>
-  <div class="col-md-8"><%= @server.authentication_type %></div>
+  <div class="col-md-8"><%= @server.authentication_type.name %></div>
 </div>
 <div class="row">
   <div class="col-md-4"><strong>Authentication:</strong></div>

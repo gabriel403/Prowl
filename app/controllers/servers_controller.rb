@@ -1,5 +1,4 @@
 class ServersController < ApplicationController
-  before_filter :authenticate_user!
   def index
     @user = current_user
     @servers = Server.all
@@ -21,6 +20,7 @@ class ServersController < ApplicationController
 
   def create
     @server = Server.new(server_params)
+    @server.user = current_user
 
     if @server.save
       redirect_to @server, :flash => { :success => 'Server was successfully created.' }
@@ -48,6 +48,6 @@ class ServersController < ApplicationController
 
   private
   def server_params
-    params.require(:server).permit(:name, :host, :authentication_type, :authentication)
+    params.require(:server).permit(:name, :host, :authentication_type_id, :authentication)
   end
 end

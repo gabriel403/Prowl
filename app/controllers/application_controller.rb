@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_locale
   before_filter :adjust_format_for_iphone
+  before_filter :allow_registrations
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
@@ -21,6 +22,13 @@ class ApplicationController < ActionController::Base
   private
   def adjust_format_for_iphone
     request.format = :ios if request.env["HTTP_USER_AGENT"] =~ %r{Mobile/.+Safari}
+  end
+
+  def allow_registrations
+    app_setup = AppSetup.find_by name: 'registrations_open'
+    if 'false' == app_setup.value
+      authenticate_user!
+    end
   end
 
 end
