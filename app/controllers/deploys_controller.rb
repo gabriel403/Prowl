@@ -1,9 +1,7 @@
 class DeploysController < ApplicationController
   require_dependency "remoteserver/git"
-  before_filter :authenticate_user!
-
   def index
-    app = App.find(params[:id])
+    @app = App.find(params[:id])
   end
 
   def show

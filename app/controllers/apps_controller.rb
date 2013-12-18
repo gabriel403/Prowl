@@ -1,5 +1,4 @@
 class AppsController < ApplicationController
-  before_filter :authenticate_user!
   def index
     @apps = App.all
   end
@@ -18,6 +17,7 @@ class AppsController < ApplicationController
 
   def create
     @app = App.new(app_params)
+    @app.user = current_user
 
     if @app.save
       redirect_to @app, :flash => { :success => 'App was successfully created.' }

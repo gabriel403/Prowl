@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
   def index
     @users = User.all
   end
@@ -20,6 +19,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      app_setup = AppSetup.find_by name: 'registrations_open'
+      app_setup.value = 'false'
+      app_setup.save
+
       redirect_to @user, :flash => { :success => 'User was successfully created.' }
     else
       render :action => 'new'

@@ -10,7 +10,7 @@ module Remoteserver
     def deploy(app, server, force = false)
       auth_type = AuthenticationType.find(server.authentication_type)
 
-      if auth_type.short_name == 'storedkey'
+      if auth_type.short_name == 'keystored'
         keys = [server.authentication]
         rbox = Rye::Box.new(server.host, :user => server.username, :key_data => keys, :keys_only => true)
       end
