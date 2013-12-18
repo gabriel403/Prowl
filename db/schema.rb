@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131215211810) do
+ActiveRecord::Schema.define(version: 20131218100000) do
+
+  create_table "_deploys_old_20131216", force: true do |t|
+    t.boolean  "success"
+    t.text     "output"
+    t.integer  "app_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "_deploys_old_20131216_1", force: true do |t|
+    t.text     "success",    default: "Pending"
+    t.text     "output"
+    t.integer  "app_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "apps", force: true do |t|
     t.string   "name"
@@ -23,8 +39,24 @@ ActiveRecord::Schema.define(version: 20131215211810) do
 
   add_index "apps", ["user_id"], name: "index_apps_on_user_id"
 
+  create_table "apps_servers", force: true do |t|
+    t.integer  "app_id"
+    t.integer  "server_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "apps_servers", ["app_id", "server_id"], name: "index_apps_servers_on_app_id_and_server_id"
+
+  create_table "authentication_types", force: true do |t|
+    t.string   "name"
+    t.string   "short_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "deploys", force: true do |t|
-    t.boolean  "success"
+    t.text     "status",     default: "Pending"
     t.text     "output"
     t.integer  "app_id"
     t.datetime "created_at"
@@ -36,10 +68,16 @@ ActiveRecord::Schema.define(version: 20131215211810) do
   create_table "servers", force: true do |t|
     t.string   "name"
     t.string   "host"
+    t.string   "username"
+    t.string   "authentication_type"
+    t.text     "authentication"
+    t.integer  "user_id"
     t.boolean  "enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "servers", ["user_id"], name: "index_servers_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

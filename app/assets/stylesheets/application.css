@@ -22,3 +22,11 @@
        url('../assets/glyphicons-halflings-regular.ttf') format('truetype'), 
        url('../assets/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
+
+ul.nav li.dropdown:hover ul.dropdown-menu, div.btn-group:hover ul.dropdown-menu{
+    display: block;
+}
+
+div.btn-group:hover ul.dropdown-menu {
+	margin-top: 0px;
+}

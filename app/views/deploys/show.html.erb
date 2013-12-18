@@ -1,3 +1,26 @@
-<h1>Deployment For <%= @deploy.app.name.titleize %></h1>
+<% title "Deploy Show" %>
+<div class="page-header">
+  <h1>Deployment For <small><%= @deploy.app.name.titleize %></small>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+        Deployment <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><%= link_to 'Deploy', new_deploy_path(@deploy.app), data: { confirm: 'Are you sure?' } %></li>
+        <li><%= link_to 'List', deploys_path(@deploy.app) %></li>
+      </ul>
+    </div>
+  </h1>
+</div>
 
-<%= render @deploy %>
+<div class="row">
+  <div class="col-md-4"><strong>Deploy Status:</strong></div>
+  <div class="col-md-8"><%= @deploy.status %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Deployed At:</strong></div>
+  <div class="col-md-8"><%= @deploy.created_at %></div>
+</div>
+<pre>
+  <%= @deploy.output %>
+</pre>

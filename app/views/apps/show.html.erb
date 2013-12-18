@@ -1,4 +1,38 @@
-<h1><%= @app.name.titleize %></h1>
+<% title "Show App" %>
+<div class="page-header">
+  <h1>App <small><%= @app.name.titleize %></small>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+        Action <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><%= link_to 'Edit App', edit_app_path(@app) %></li>
+        <li><%= link_to 'Delete App', app_path(@app), :method => 'delete', data: { confirm: 'Are you sure?' } %></li>
+      </ul>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+        Deploys <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><%= link_to 'List', deploys_path(@app) %></li>
+        <li><%= link_to 'Deploy', new_deploy_path(@app), data: { confirm: 'Are you sure?' } %></li>
+      </ul>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+        Servers <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><%= link_to 'List', servers_path %></li>
+        <li><%= link_to 'New', new_server_path %></li>
+        <li><%= link_to 'Add A Deploy Target', app_servers_path(@app,'app') %></li>
+      </ul>
+    </div>
+  </h1>
+</div>
 <div class="row">
   <div class="col-md-4"><strong>Name:</strong></div>
   <div class="col-md-8"><%= @app.name.titleize %></div>
@@ -9,14 +43,13 @@
 </div>
 <div class="row">
   <div class="col-md-4"><strong>Servers:</strong></div>
-  <div class="col-md-8">Server 1<br />Server 2</div>
+  <div class="col-md-8">
+    <% @app.servers.each do |server| %>
+      <%= server.name %><br />
+    <% end %>
+  </div>
 </div>
 <div class="row">
   <div class="col-md-4"><strong>Environments:</strong></div>
   <div class="col-md-8">Staging</div>
 </div>
-
-<%= link_to 'Deployments', deploys_path(@app) %> |
-<%= link_to 'All Apps', apps_path %> |
-<%= link_to 'Edit App', edit_app_path(@app) %> |
-<%= link_to 'Delete App', app_path(@app), :method => 'delete', data: { confirm: 'Are you sure?' } %>

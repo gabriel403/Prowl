@@ -7,8 +7,14 @@ module Remoteserver
       Rye::Cmd.add_command :git_reset, '/usr/bin/git reset --hard origin/master'
     end
 
-    def deploy(force = false)
-      rbox = Rye::Box.new("127.0.0.1", :user => "wheeljack", :keys_only => true, :keys => ['/code/Wheeljack/puppet/modules/users/files/wheeljack/id_rsa'])
+    def deploy(app, server, force = false)
+      auth_type = AuthenticationType.find(server.authentication_type)
+
+      if auth_type.short_name == 'storedkey'
+        keys = [server.authentication]
+        rbox = Rye::Box.new(server.host, :user => server.username, :key_data => keys, :keys_only => true)
+      end
+
       rbox['/usr/local/apps/prowl']
 
       success = false
