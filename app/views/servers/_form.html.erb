@@ -13,14 +13,21 @@
   <div class="field form-group">
     <%= f.label :name %>
     <div class="controls">
-      <%= f.text_field :name, :class => "form-control" %>
+      <%= f.text_field :name, :required => true, :class => "form-control" %>
     </div>
   </div>
 
   <div class="field form-group">
     <%= f.label :host %>
     <div class="controls">
-      <%= f.text_field :host, :class => "form-control" %>
+      <%= f.text_field :host, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :username %>
+    <div class="controls">
+      <%= f.text_field :username, :required => true, :class => "form-control" %>
     </div>
   </div>
 
@@ -36,7 +43,7 @@
     <p>note if you selected 'Key Pair [file]' paste the location of the file,<br />
     if you selected 'Key Pair [stored]' paste the private key and we will store it.</p>
     <div class="controls">
-      <%= f.text_area :authentication, :class => "form-control" %>
+      <%= f.text_area :authentication, :required => true, :class => "form-control" %>
     </div>
   </div>
 

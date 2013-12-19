@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20131218164231) do
     t.integer  "authentication_type_id"
     t.text     "authentication"
     t.integer  "user_id"
-    t.boolean  "enabled"
+    t.boolean  "enabled",                default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

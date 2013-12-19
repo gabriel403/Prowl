@@ -7,7 +7,7 @@ class CreateServers < ActiveRecord::Migration
       t.references :authentication_type
       t.text :authentication
       t.references :user, index: true
-      t.boolean :enabled
+      t.boolean :enabled, default: true
 
       t.timestamps
     end

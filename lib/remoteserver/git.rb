@@ -8,11 +8,13 @@ module Remoteserver
     end
 
     def deploy(app, server, force = false)
-      auth_type = AuthenticationType.find(server.authentication_type)
+      auth_type = server.authentication_type
 
       if auth_type.short_name == 'keystored'
         keys = [server.authentication]
         rbox = Rye::Box.new(server.host, :user => server.username, :key_data => keys, :keys_only => true)
+      else
+        raise "Invalid Authentication Type"
       end
 
       rbox['/usr/local/apps/prowl']
