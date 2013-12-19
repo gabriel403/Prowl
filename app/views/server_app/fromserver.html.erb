@@ -3,13 +3,13 @@
   <h1>Add Server To App</h1>
 </div>
 
-<%= form_tag(app_servers_path) do %>  
+<%= form_tag(app_servers_path) do %>
 
   <div class="field form-group">
     <%= label_tag :apps %>
     <div class="controls">
-    <%= select_tag :apps, options_from_collection_for_select(@apps, "id", "name"), :include_blank => true, :class => "form-control" %>
+    <%= select_tag :appid, options_from_collection_for_select(@apps, "id", "name"), :include_blank => true, :class => "form-control" %>
     </div>
   </div>
-  <%= submit_tag("Update") %>  
+  <%= submit_tag("Update") %>
 <% end %>

@@ -33,7 +33,6 @@ class ServersController < ApplicationController
     @server = Server.find(params[:id])
 
     if @server.update_attributes(server_params)
-      sign_in @server, :bypass => true
       redirect_to @server, :flash => { :success => 'Server was successfully updated.' }
     else
       render :action => 'edit'
@@ -48,6 +47,6 @@ class ServersController < ApplicationController
 
   private
   def server_params
-    params.require(:server).permit(:name, :host, :authentication_type_id, :authentication)
+    params.require(:server).permit(:name, :host, :authentication_type_id, :authentication, :username)
   end
 end
