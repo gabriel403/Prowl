@@ -1,7 +1,6 @@
 class AppsController < ApplicationController
-  include Logging
   def index
-    logger.warn "About to combobulate the whizbang"
+    # logger.warn "About to combobulate the whizbang"
     @apps = App.all
   end
 
