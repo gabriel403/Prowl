@@ -2,7 +2,12 @@ Prowl::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.action_mailer.default_url_options = { :host => 'prowl.autonomicpilot.co.uk:3000' }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
+  config.action_mailer.smtp_settings = {
+    :address => "smtp.postmarkapp.com",
+    :port => 25,
+    :user_name => '5887a2ff-50a7-4484-9d3c-0da7192a4f75',
+    :password => '5887a2ff-50a7-4484-9d3c-0da7192a4f75'
+  }
 
   # Code is not reloaded between requests.
   config.cache_classes = true
