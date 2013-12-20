@@ -56,6 +56,14 @@
                 <li><%= link_to 'New App', new_app_path %></li>
               </ul>
             </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Server Management <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Servers', servers_path %></li>
+                <li><%= link_to 'New Server', new_server_path %></li>
+              </ul>
+            </li>
           <% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
