@@ -1,5 +1,5 @@
 module Tasks
-  class Deploy
+  class Deployment
     require 'resque'
     require_dependency "remoteserver/git"
 
@@ -7,7 +7,6 @@ module Tasks
 
     def self.perform(app_id, server_id, deploy_id, force = false)
       Resque.logger = Logglier.new("https://logs-01.loggly.com/inputs/bd5fce10-4fba-4433-8b89-ebe68a5c270e/tag/ruby/")
-      deploy.update_attributes(:status => :Processing)
 
       git = Remoteserver::Git.new
 
@@ -15,9 +14,11 @@ module Tasks
       server = Server.find(server_id)
       deploy = Deploy.find(deploy_id)
 
-      @success, @returnval = git.deploy(app, server, deploy, force)
+      deploy.update_attributes(:status => 'Processing')
 
-      deploy.update_attributes(:status => (@success ? :Finished : :Failed), :output => @returnval.to_s)
+      @success, @returnval = git.deploy(app, server, force)
+
+      deploy.update_attributes(:status => (@success ? 'Finished' : 'Failed'), :output => @returnval.to_s)
     end
   end
 end

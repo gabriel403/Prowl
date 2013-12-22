@@ -4,6 +4,7 @@ gem 'cancan'
 gem 'rye'
 gem 'logglier'
 gem 'resque'
+gem 'resque-web', require: 'resque_web'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'

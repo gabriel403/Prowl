@@ -1,5 +1,5 @@
 class DeploysController < ApplicationController
-  require_dependency "tasks/deploy"
+  require_dependency "tasks/deployment"
   require "resque"
 
   def index
@@ -19,7 +19,7 @@ class DeploysController < ApplicationController
     end
 
     app.servers.each do |server|
-      Resque.enqueue(Tasks::Deploy, app.id, server.id, true)
+      Resque.enqueue(Tasks::Deployment, app.id, server.id, deploy.id, true)
     end
 
     redirect_to deploy_path(deploy), :flash => { :alert => 'Deployment has been queued.' }
