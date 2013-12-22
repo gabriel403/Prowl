@@ -1,5 +1,7 @@
 class DeploysController < ApplicationController
-  require_dependency "remoteserver/git"
+  require_dependency "tasks/deploy"
+  require "resque"
+
   def index
     @app = App.find(params[:id])
   end
@@ -7,7 +9,6 @@ class DeploysController < ApplicationController
   def show
     @deploy = Deploy.find(params[:id])
   end
-
 
   def new
     app = App.find(params[:id])
@@ -17,18 +18,10 @@ class DeploysController < ApplicationController
       raise "Unable to save deploy"
     end
 
-    git = Remoteserver::Git.new
-
     app.servers.each do |server|
-      @success, @returnval = git.deploy(app, server, true)
+      Resque.enqueue(Tasks::Deploy, app.id, server.id, true)
     end
 
-    deploy.update_attributes(:status => (@success ? 'Finished' : 'Failed'), :output => @returnval.to_s)
-
-    if @success
-      redirect_to deploy_path(deploy), :flash => { :success => 'Deployment succeded.' }
-    else
-      redirect_to deploy_path(deploy), :flash => { :alert => 'Deployment failed, see below for details.' }
-    end
+    redirect_to deploy_path(deploy), :flash => { :alert => 'Deployment has been queued.' }
   end
 end

@@ -3,6 +3,7 @@ gem 'devise'
 gem 'cancan'
 gem 'rye'
 gem 'logglier'
+gem 'resque'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
