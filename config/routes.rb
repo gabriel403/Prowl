@@ -21,7 +21,14 @@ Prowl::Application.routes.draw do
   get "server_app/link/:id/:fromlocation", to: 'server_app#link', as: 'app_servers'
   post "server_app/link/:appid/:server", to: 'server_app#linkcreate'
 
-  mount ResqueWeb::Engine => "/resque_web"
+  resque_web_constraint = lambda do |request|
+    current_user = request.env['warden'].user
+    current_user.present?
+  end
+
+  constraints resque_web_constraint do
+    mount ResqueWeb::Engine => "/resque_web"
+  end
 
   root :to => "home#index"
 end
