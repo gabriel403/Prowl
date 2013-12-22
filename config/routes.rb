@@ -1,3 +1,4 @@
+require "resque_web"
 Prowl::Application.routes.draw do
   get "server_app/link"
   get "deploys/:id", to: 'deploys#index', as: 'deploys'
@@ -19,6 +20,8 @@ Prowl::Application.routes.draw do
   resources :servers
   get "server_app/link/:id/:fromlocation", to: 'server_app#link', as: 'app_servers'
   post "server_app/link/:appid/:server", to: 'server_app#linkcreate'
+
+  mount ResqueWeb::Engine => "/resque_web"
 
   root :to => "home#index"
 end
