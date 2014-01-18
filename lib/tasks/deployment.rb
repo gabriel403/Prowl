@@ -6,9 +6,7 @@ module Tasks
     @queue = :file_serve
 
     def self.perform(app_id, server_id, deploy_id, force = false)
-      Resque.logger = Logglier.new("https://logs-01.loggly.com/inputs/bd5fce10-4fba-4433-8b89-ebe68a5c270e/tag/ruby/")
-
-      git = Remoteserver::Git.new
+      Resque.logger = Le.new('5c703294-66e8-45db-aeba-1e8915b4c20c')
 
       app    = App.find(app_id)
       server = Server.find(server_id)
@@ -16,7 +14,14 @@ module Tasks
 
       deploy.update_attributes(:status => 'Processing')
 
-      @success, @returnval = git.deploy(app, server, force)
+      case app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
+      when 'svn'
+        rs = Remoteserver::Svn.new
+      when 'git'
+        rs = Remoteserver::Git.new
+      end
+
+      @success, @returnval = rs.deploy(app, server, force)
 
       deploy.update_attributes(:status => (@success ? 'Finished' : 'Failed'), :output => @returnval.to_s)
     end

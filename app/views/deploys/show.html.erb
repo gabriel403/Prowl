@@ -2,11 +2,11 @@
 <div class="page-header">
   <h1>Deployment For <small><%= @deploy.app.name.titleize %></small>
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
         Deployment <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><%= link_to 'Deploy', new_deploy_path(@deploy.app), data: { confirm: 'Are you sure?' } %></li>
+        <li><%= link_to 'Deploy', new_deploy_path(@deploy.app) %></li>
         <li><%= link_to 'List', deploys_path(@deploy.app) %></li>
       </ul>
     </div>

@@ -5,6 +5,21 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   before_filter :adjust_format_for_iphone
   before_filter :allow_registrations
+  after_filter :flash_to_headers
+
+  def flash_to_headers
+      return unless request.xhr?
+
+      response.headers['X-Message'] = flash[:notice]  unless flash[:notice].blank?
+      response.headers['X-Message'] = flash[:alert]   unless flash[:alert].blank?
+      response.headers['X-Message'] = flash[:error]   unless flash[:error].blank?
+
+      response.headers['X-Message-type'] = :info.to_s      unless flash[:notice].blank?
+      response.headers['X-Message-type'] = :warning.to_s   unless flash[:alert].blank?
+      response.headers['X-Message-type'] = :error.to_s     unless flash[:error].blank?
+
+      flash.discard # don't want the flash to appear when you reload page
+  end
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
@@ -19,7 +34,13 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :alert => exception.message
   end
 
+  def flash_message(type, text)
+      flash[type] ||= []
+      flash[type] << text
+  end
+
   private
+
   def adjust_format_for_iphone
     request.format = :ios if request.env["HTTP_USER_AGENT"] =~ %r{Mobile/.+Safari}
   end

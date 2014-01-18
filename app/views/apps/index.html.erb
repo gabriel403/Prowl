@@ -2,7 +2,7 @@
 <div class="page-header">
   <h1>App List
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
         Action <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
@@ -12,16 +12,13 @@
   </h1>
 </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Owner</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: 'app', collection: @apps, locals: {show_owner: true} %>
-  </tbody>
-</table>
+<div class="row panel-heading">
+  <div class="col-md-2">Name</div>
+  <div class="col-md-3">Description</div>
+  <% if defined? show_owner && show_owner %>
+  <div class="col-md-5">Owner Email</div>
+  <% end %>
+  <div class="col-md-2">Actions</div>
+</div>
+<%= render partial: 'apps', collection: @apps, as: :app, locals: {show_owner: true} %>
+

@@ -2,7 +2,7 @@
 <div class="page-header">
   <h1>Server <small><%= @server.name.titleize %></small>
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
         Action <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
         Apps <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
@@ -31,10 +31,10 @@
   <div class="col-md-8"><%= @server.host %></div>
 </div>
 <div class="row">
-  <div class="col-md-4"><strong>Authentication Type:</strong></div>
-  <div class="col-md-8"><%= @server.authentication_type.name %></div>
+  <div class="col-md-4"><strong>Username:</strong></div>
+  <div class="col-md-8"><%= @server.username %></div>
 </div>
 <div class="row">
-  <div class="col-md-4"><strong>Authentication:</strong></div>
-  <div class="col-md-8"><%= @server.authentication %></div>
+  <div class="col-md-4"><strong>Authentication Type:</strong></div>
+  <div class="col-md-8"><%= @server.authentication_type.name %></div>
 </div>
