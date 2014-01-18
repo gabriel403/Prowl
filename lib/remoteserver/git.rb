@@ -17,7 +17,8 @@ module Remoteserver
         raise "Invalid Authentication Type"
       end
 
-      rbox['/usr/local/apps/prowl']
+      dest_deploy_step = app.deploy_steps.first {|ds| ds.deploy_step_type_option.deploy_step_type.name == :destination}
+      rbox[dest_deploy_step.value]
 
       success = false
 

@@ -1,0 +1,15 @@
+<% title "Server App Linking" %>
+<div class="page-header">
+  <h1>Add <%= session[:from_type].titleize %> To <%= session[:to_type].titleize %></h1>
+</div>
+
+<%= form_tag(app_servers_path) do %>
+
+  <div class="field form-group">
+    <%= label_tag session[:to_type] %>
+    <div class="controls">
+    <%= select_tag :to_id, options_from_collection_for_select(@toents, "id", "name"), :include_blank => true, :class => "form-control" %>
+    </div>
+  </div>
+  <%= submit_tag("Update") %>
+<% end %>

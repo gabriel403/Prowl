@@ -25,7 +25,7 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -78,11 +78,19 @@
 
       </div><!-- /.container -->
     </nav>
-    <%= flash_message %>
+
+    <div class="row">
+      <div class="col-md-2">&nbsp;</div>
+      <div class="col-md-8">
+          <%= render_flash %>
+      </div>
+      <div class="col-md-2">&nbsp;</div>
+    </div>
+
     <div class="container">
       <div class="row">
         <div class="col-md-2">&nbsp;</div>
-        <div class="col-md-6">
+        <div class="col-md-8">
             <%= yield %>
         </div>
         <div class="col-md-2">&nbsp;</div>

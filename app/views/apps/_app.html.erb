@@ -1,28 +1,41 @@
-<tr>
-  <td><%= link_to app.name, app_path(app) %></td>
-  <td><%= app.description %></td>
-  <% if show_owner %>
-  <td><%= link_to app.user.email, app.user %></td>
-  <% end %>
-  <td>
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
-        Action <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><%= link_to 'Edit', edit_app_path(app) %></li>
-        <li><%= link_to 'Delete', app_path(app), :method => 'delete', data: { confirm: 'Are you sure?'} %></li>
-      </ul>
-    </div>
+<div class="row">
+  <div class="col-md-4"><strong>Name:</strong></div>
+  <div class="col-md-8"><%= @app.name.titleize %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Description:</strong></div>
+  <div class="col-md-8"><%= @app.description %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Servers:</strong></div>
+  <div class="col-md-8">
+    <% @app.servers.each do |server| %>
+      <%= server.name %><br />
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Environments:</strong></div>
+  <div class="col-md-8">Staging</div>
+</div>
 
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
-        Deploys <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><%= link_to 'List', deploys_path(app) %></li>
-        <li><%= link_to 'Deploy', new_deploy_path(app), data: { confirm: 'Are you sure?' } %></li>
-      </ul>
-    </div>
-  </td>
-</tr>
+<h3>Deploy Steps</h3>
+
+<div id="deployStepsList">
+  <% order_num = -1
+  @app.deploy_steps.each do |deploy_step|
+    if order_num != deploy_step.order
+      strcontent = (0 != deploy_step.order) ? "Step ##{deploy_step.order}" : "Generic Attribute" %>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="panel" style="background-color: #d9edf7">
+              <div class="panel-heading"><%= strcontent %></div>
+            </div>
+          </div>
+          <div class="col-md-8">&nbsp;</div>
+        </div>
+      <% order_num = deploy_step.order
+    end %>
+    <%= render 'deploy_steps/show', :deploy_step => deploy_step %>
+  <% end %>
+</div>

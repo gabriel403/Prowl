@@ -1,0 +1,44 @@
+<%= form_for @deploy_step, :class => "form-control", :remote => (@allowremote?true:false) do |f| %>
+  <% if @deploy_step.errors.any? %>
+    <div class="error_explanation">
+      <h2><%= pluralize(@deploy_step.errors.count, "error") %> prohibited this deploy step from being saved:</h2>
+      <ul>
+      <% @deploy_step.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <%= f.label :order %>
+    <div class="controls">
+      <%= f.text_field :order, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :deploy_step_type %>
+    <div class="controls">
+    <%= f.grouped_collection_select :deploy_step_type_option_id, DeployStepType.all, :deploy_step_type_options, :name, :id, :name, { :include_blank => false }, { :class => "form-control" } %>
+    </div>
+  </div>
+
+  <div class="field form-group hide">
+    <%= f.label :value %>
+    <div class="controls">
+      <%= f.text_field :value, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :additional %>
+    <div class="controls">
+      <%= f.text_field :additional, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :submit, :class => "btn btn-default" %>
+  </div>
+<% end %>

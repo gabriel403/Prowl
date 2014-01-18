@@ -5,6 +5,7 @@ class AppsController < ApplicationController
   end
 
   def show
+    @allowremote = true
     @app = App.find(params[:id])
   end
 

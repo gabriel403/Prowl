@@ -1,8 +1,44 @@
 <% title "New Deploy" %>
-<h1>Deployments</h1>
+<div class="page-header">
+  <h1>New Deploy <small>for <%= @app.name.titleize %></small>
+  </h1>
+</div>
 
-<% if ! @success %>
-  <pre>
-    <%= @returnofgit %>
-  </pre>
+<%= form_for @deploy_option_form, :url => deploys_path, :class => "form-control" do |f| %>
+  <% if @deploy_option_form.errors.any? %>
+    <div class="error_explanation">
+      <h2><%= pluralize(@deploy_option_form.errors.count, "error") %> prohibited this deploy step from being saved:</h2>
+      <ul>
+      <% @deploy_option_form.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+  <% if @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name == 'svn' %>
+  <% rev_nums = [] %>
+  <% @revnums.split("\n").each {|ele| 
+    rev_num = /r(?<rev_num>\d+)/.match(ele) 
+    if rev_num
+      rev_nums << rev_num[:rev_num]
+    end
+  } %>
+  </p>
+
+  <div class="field form-group">
+    <%= f.label :revision_number %>
+    <div class="controls">
+    <%= f.select :revision_number, rev_nums, { }, { :class => "form-control" } %>
+    </div>
+  </div>
+
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit :build, :class => "btn btn-default" %>
+  </div>
 <% end %>
+<p class='page-header'></p>
+<%= render  @app %>

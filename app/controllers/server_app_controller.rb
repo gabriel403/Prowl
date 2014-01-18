@@ -1,20 +1,28 @@
 class ServerAppController < ApplicationController
   def link
-    case params[:fromlocation]
+    case params[:from_type]
     when 'app'
       @app = App.find(params[:id])
-      @servers = Server.all
-      render :action => 'fromapp'
+      @toents = Server.all
+      session[:from_type] = 'app'
+      session[:to_type]   = 'server'
     when 'server'
       @server = Server.find(params[:id])
-      @apps = App.all
-      render :action => 'fromserver'
+      @toents = App.all
+      session[:from_type] = 'server'
+      session[:to_type]   = 'app'
     end
   end
 
   def linkcreate
-    @app = App.find(params[:appid])
-    @server = Server.find(params[:serverid])
+    if session[:from_type] == 'server'
+      @app = App.find(params[:to_id])
+      @server = Server.find(params[:from_id])
+    else
+      @app = App.find(params[:from_id])
+      @server = Server.find(params[:to_id])
+    end
+
 
     begin
 

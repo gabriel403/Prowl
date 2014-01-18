@@ -4,6 +4,7 @@ class CreateDeploys < ActiveRecord::Migration
       t.string :status, default: 'pending'
       t.text :output, default: ''
       t.references :app, index: true
+      t.references :server
 
       t.timestamps
     end

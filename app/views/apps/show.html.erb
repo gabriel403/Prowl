@@ -2,7 +2,7 @@
 <div class="page-header">
   <h1>App <small><%= @app.name.titleize %></small>
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
         Action <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
@@ -12,17 +12,17 @@
     </div>
 
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
         Deploys <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <li><%= link_to 'List', deploys_path(@app) %></li>
-        <li><%= link_to 'Deploy', new_deploy_path(@app), data: { confirm: 'Are you sure?' } %></li>
+        <li><%= link_to 'Deploy', new_deploy_path(@app) %></li>
       </ul>
     </div>
 
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
         Servers <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
@@ -33,23 +33,23 @@
     </div>
   </h1>
 </div>
-<div class="row">
-  <div class="col-md-4"><strong>Name:</strong></div>
-  <div class="col-md-8"><%= @app.name.titleize %></div>
-</div>
-<div class="row">
-  <div class="col-md-4"><strong>Description:</strong></div>
-  <div class="col-md-8"><%= @app.description %></div>
-</div>
-<div class="row">
-  <div class="col-md-4"><strong>Servers:</strong></div>
-  <div class="col-md-8">
-    <% @app.servers.each do |server| %>
-      <%= server.name %><br />
-    <% end %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4"><strong>Environments:</strong></div>
-  <div class="col-md-8">Staging</div>
-</div>
+
+<%= render @app %>
+
+
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#newDeployStepModal" data-keyboard="true">New Deploy Step</button>
+<p></p>
+<div class="modal fade" id="newDeployStepModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div id="flash_message"></div>
+        <%= render @deploy_step = DeployStep.new %>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

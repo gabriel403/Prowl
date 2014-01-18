@@ -34,7 +34,7 @@
   <div class="field form-group">
     <%= f.label :authentication_type_id %>
     <div class="controls">
-    <%= f.select :authentication_type_id, options_from_collection_for_select(@authentication_types, "id", "name", @server.authentication_type_id), :include_blank => true, :class => "form-control" %>
+    <%= f.select :authentication_type_id, options_from_collection_for_select(@authentication_types, "id", "name", @server.authentication_type_id), { :include_blank => true }, { :class => "form-control" } %>
     </div>
   </div>
 

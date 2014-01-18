@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131218164231) do
+ActiveRecord::Schema.define(version: 20140112005102) do
 
   create_table "app_setups", force: true do |t|
     t.string   "name"
@@ -31,10 +31,8 @@ ActiveRecord::Schema.define(version: 20131218164231) do
   add_index "apps", ["user_id"], name: "index_apps_on_user_id"
 
   create_table "apps_servers", force: true do |t|
-    t.integer  "app_id"
-    t.integer  "server_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "app_id"
+    t.integer "server_id"
   end
 
   add_index "apps_servers", ["app_id", "server_id"], name: "index_apps_servers_on_app_id_and_server_id", unique: true
@@ -46,10 +44,50 @@ ActiveRecord::Schema.define(version: 20131218164231) do
     t.datetime "updated_at"
   end
 
+  create_table "deploy_option_types", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "deploy_options", force: true do |t|
+    t.string   "value"
+    t.integer  "deploy_option_type_id"
+    t.integer  "deploy_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deploy_options", ["deploy_id"], name: "index_deploy_options_on_deploy_id"
+  add_index "deploy_options", ["deploy_option_type_id"], name: "index_deploy_options_on_deploy_option_type_id"
+
+  create_table "deploy_step_type_options", force: true do |t|
+    t.string  "name"
+    t.integer "deploy_step_type_id"
+  end
+
+  add_index "deploy_step_type_options", ["deploy_step_type_id"], name: "index_deploy_step_type_options_on_deploy_step_type_id"
+
+  create_table "deploy_step_types", force: true do |t|
+    t.string "name"
+    t.string "subtype", default: "generic"
+  end
+
+  create_table "deploy_steps", force: true do |t|
+    t.integer  "order",                      default: 0
+    t.integer  "deploy_step_type_option_id"
+    t.string   "value"
+    t.string   "additional",                 default: "[]"
+    t.integer  "app_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deploy_steps", ["deploy_step_type_option_id"], name: "index_deploy_steps_on_deploy_step_type_option_id"
+
   create_table "deploys", force: true do |t|
     t.string   "status",     default: "pending"
     t.text     "output",     default: ""
     t.integer  "app_id"
+    t.integer  "server_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
