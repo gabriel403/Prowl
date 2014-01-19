@@ -29,7 +29,7 @@ module Remoteserver
 
       fs_chs                  = app.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "ch_dir"}
 
-      has_sudo                = app.deploy_steps.find_all {|ds| ds.deploy_step_type_option.name == "has_sudo"}
+      has_sudo                = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "has_sudo"}
 
       rev_num                 = app.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "revision_number"}.value
 
@@ -81,11 +81,28 @@ module Remoteserver
 
             if fs_chs
               fs_chs.each do |fs_ch|
-                if "chown_dir" == fs_ch.deploy_step_type_option.name && has_sudo
+                if "chown_dir" == fs_ch.deploy_step_type_option.name && !has_sudo
                   # error
-                end
+                elsif "chown_dir" == fs_ch.deploy_step_type_option.name
+                  rbox.mkdir :p, "/home/wheeljack/bin"
+                  # sudostr = '#!/bin/sh\r\necho #{has_sudo.value}\r\n'
+                  # rbox.file_append "~/bin/supass", StringIO.new(sudostr)
+                  # rbox.string_upload sudostr, "/home/wheeljack/bin/supass"
 
-                if "chmod_dir" == fs_ch.deploy_step_type_option.name
+                  rbox.disable_safe_mode
+                  rbox.execute 'printf "#!/bin/bash\n" > /home/wheeljack/bin/supass'
+                  rbox.execute "printf 'echo #{has_sudo.value}\n' >> /home/wheeljack/bin/supass"
+                  rbox.setenv "SUDO_ASKPASS", "/home/wheeljack/bin/supass"
+                  output = rbox.chmod '0700', "/home/wheeljack/bin/supass"
+                  output = rbox.sudo :A, :chown, :R, fs_ch.additional['owner'], fs_ch.value
+                  rbox.rm "/home/wheeljack/bin/supass"
+                  rbox.enable_safe_mode
+
+                  # output = rbox.chown :R, fs_ch.additional['owner'], fs_ch.value
+                  Resque.logger.debug output
+                elsif "chmod_dir" == fs_ch.deploy_step_type_option.name
+                  output = rbox.chmod :R, fs_ch.additional['perms'], fs_ch.value
+                  Resque.logger.debug output
                 end
               end
             end

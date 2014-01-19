@@ -37,7 +37,7 @@ class DeploysController < ApplicationController
     vcs_location = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_location"}.value
     vcs_username = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
     vcs_password = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
-    @vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 4 --no-auth-cache #{vcs_location}"
+    @vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
     @revnums = `#{@vcs_conn_str}`
   end
 
