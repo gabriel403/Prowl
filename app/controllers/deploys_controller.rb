@@ -34,11 +34,15 @@ class DeploysController < ApplicationController
       redirect_to request.referer
     end
 
-    vcs_location = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_location"}.value
-    vcs_username = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
-    vcs_password = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
-    @vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
-    @revnums = `#{@vcs_conn_str}`
+    vcs_type     = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
+
+    if 'svn' == vcs_type
+      vcs_location = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_location"}.value
+      vcs_username = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
+      vcs_password = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
+      @vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
+      @revnums = `#{@vcs_conn_str}`
+    end
   end
 
   def create
