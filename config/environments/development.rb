@@ -1,6 +1,6 @@
 Prowl::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.action_mailer.default_url_options = { :host => 'prowl.dev:3000' }
+  config.action_mailer.default_url_options = { :host => 'prowl.dev' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
 
