@@ -79,23 +79,27 @@ module Remoteserver
               outputs << output
             end
 
+            rbox.disable_safe_mode
+            rbox.execute "find #{destination}/#{rev_num} -type d -exec chmod 775 {} \\;"
+            rbox.execute "find #{destination}/#{rev_num} -type f -exec chmod 664 {} \\;"
+            rbox.enable_safe_mode
+
             if fs_chs
               fs_chs.each do |fs_ch|
                 if "chown_dir" == fs_ch.deploy_step_type_option.name && !has_sudo
                   # error
                 elsif "chown_dir" == fs_ch.deploy_step_type_option.name
-                  rbox.mkdir :p, "/home/wheeljack/bin"
-                  # sudostr = '#!/bin/sh\r\necho #{has_sudo.value}\r\n'
-                  # rbox.file_append "~/bin/supass", StringIO.new(sudostr)
-                  # rbox.string_upload sudostr, "/home/wheeljack/bin/supass"
+                  rbox.mkdir :p, "/home/#{server.username}/bin"
+                  owner_group = fs_ch.additional.has_key?("owner") ? fs_ch.additional['owner'] : ":#{fs_ch.additional['group']}"
 
                   rbox.disable_safe_mode
-                  rbox.execute 'printf "#!/bin/bash\n" > /home/wheeljack/bin/supass'
-                  rbox.execute "printf 'echo #{has_sudo.value}\n' >> /home/wheeljack/bin/supass"
-                  rbox.setenv "SUDO_ASKPASS", "/home/wheeljack/bin/supass"
-                  output = rbox.chmod '0700', "/home/wheeljack/bin/supass"
-                  output = rbox.sudo :A, :chown, :R, fs_ch.additional['owner'], fs_ch.value
-                  rbox.rm "/home/wheeljack/bin/supass"
+                  setAskPass = 'printf "#!/bin/bash\necho ' << has_sudo.value << '\n" > /home/' << server.username << '/bin/supass'
+                  rbox.execute setAskPass
+                  rbox.setenv "SUDO_ASKPASS", "/home/#{server.username}/bin/supass"
+                  output = rbox.chmod '0700', "/home/#{server.username}/bin/supass"
+
+                  output = rbox.sudo :A, :chown, :R, owner_group, fs_ch.value
+                  rbox.rm "/home/#{server.username}/bin/supass"
                   rbox.enable_safe_mode
 
                   # output = rbox.chown :R, fs_ch.additional['owner'], fs_ch.value
