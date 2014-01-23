@@ -47,11 +47,6 @@ class DeploysController < ApplicationController
 
   def create
     dof = DeployOptionForm.new(params[:deploy_option_form])
-    if dof.revision_number
-      doe = DeployOption.new
-      doe.value = dof.revision_number
-      doe.deploy_option_type = DeployOptionType.find_by name: :revision_number
-    end
 
     app = App.find(params[:id])
 
@@ -60,8 +55,14 @@ class DeploysController < ApplicationController
       if !@deploy.save
         raise "Unable to save deploy"
       end
-      doe.deploy = @deploy
-      doe.save
+
+      if dof.revision_number
+        doe = DeployOption.new
+        doe.value = dof.revision_number
+        doe.deploy_option_type = DeployOptionType.find_by name: :revision_number
+        doe.deploy = @deploy
+        doe.save
+      end
 
       Resque.enqueue(Tasks::Deployment, app.id, server.id, @deploy.id, true)
     end
