@@ -24,15 +24,7 @@
   </div>
 </h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: 'apps/app', collection: @user.apps, locals: {show_owner: false} %>
-  </tbody>
-</table>
+<% @user.apps.each do |app| %>
+  <% @app = app %>
+  <%= render partial: 'apps/app', locals: {show_owner: false} %>
+<% end %>
