@@ -1,0 +1,5 @@
+<tr>
+  <td><%= link_to deploy.status, deploy %></td>
+  <td><%= truncate(deploy.output, :length => 40, :separator => ' ') %></td>
+  <td><%= deploy.created_at %></td>
+</tr>

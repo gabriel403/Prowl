@@ -1,4 +1,23 @@
 class DeployStepsController < ApplicationController
+
+  def show
+    @deploy_step = DeployStep.find(params[:id])
+  end
+
+  def new
+    @deploy_step = DeployStep.new
+    respond_to do |format|
+      format.html
+      format.json
+    end
+  end
+
+  def edit
+    @deploy_step = DeployStep.find(params[:id])
+    @deploy_step.additional = @deploy_step.additional.to_json
+    session[:return_to] = request.referer
+  end
+
   def create
     @deploy_step = DeployStep.new(save_params)
     @deploy_step.additional = JSON.parse(@deploy_step.additional)
@@ -13,13 +32,6 @@ class DeployStepsController < ApplicationController
         format.json { render json: @deploy_step.errors, status: :unprocessable_entity }
       end
     end
-
-  end
-
-  def edit
-    @deploy_step = DeployStep.find(params[:id])
-    @deploy_step.additional = @deploy_step.additional.to_json
-    session[:return_to] = request.referer
   end
 
   def update

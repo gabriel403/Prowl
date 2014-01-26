@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-6"><strong>Name:</strong></div>
+  <div class="col-md-6"><%= @app.name.titleize %></div>
+</div>
+<div class="row">
+  <div class="col-md-6"><strong>Description:</strong></div>
+  <div class="col-md-6"><%= @app.description %></div>
+</div>
+<div class="row">
+  <div class="col-md-6"><strong>Servers:</strong></div>
+  <div class="col-md-6">
+    <% @app.servers.each do |server| %>
+      <%= server.name %><br />
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6"><strong>Environments:</strong></div>
+  <div class="col-md-6">Staging</div>
+</div>
+<br>
+<button type="button" id="newDeploy" class="btn btn-default">Deploy</button>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Deploy Status</th>
+      <th>Output</th>
+      <th>Deploy Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @app.deploys.limit(5).order("created_at DESC") %>
+  </tbody>
+</table>
+
+<h3>Deploy Steps</h3>
+
+<button type="button" id="newDeployStep" class="btn btn-default">New Deploy Step</button>
+
+<div id="deployStepsList">
+  <% order_num = -1
+  @app.deploy_steps.each do |deploy_step|
+    if order_num != deploy_step.order
+      strcontent = (0 != deploy_step.order) ? "Step ##{deploy_step.order}" : "Generic Attribute" %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="panel">
+              <h4><%= strcontent %></h4>
+            </div>
+          </div>
+          <div class="col-md-6">&nbsp;</div>
+        </div>
+      <% order_num = deploy_step.order
+    end %>
+    <%= render deploy_step %>
+  <% end %>
+</div>
