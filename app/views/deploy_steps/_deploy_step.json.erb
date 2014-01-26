@@ -1,0 +1,20 @@
+<div class="well well-sm overflowAuto">
+  <div class="col-md-5"><%= deploy_step.deploy_step_type_option.deploy_step_type.name.titleize %></div>
+  <div class="col-md-7"><%= deploy_step.value.length == 0 ? deploy_step.deploy_step_type_option.name : deploy_step.value %></div>
+  <br>
+  <% if deploy_step.additional.is_a?(Hash) %>
+    <% deploy_step.additional.each do |key, value| %>
+      <div class="col-md-4"></div>
+      <div class="col-md-4"><%= key %></div>
+      <div class="col-md-4"><%= value %></div>
+      <br>
+    <% end %>
+  <% elsif deploy_step.additional.is_a?(Array) %>
+    <% deploy_step.additional.each do |value| %>
+      <div class="col-md-4"></div>
+      <div class="col-md-4"><%= value %></div>
+      <div class="col-md-4"></div>
+      <br>
+    <% end %>
+  <% end %>
+</div>

@@ -1,7 +1,6 @@
 module Tasks
   class Deployment
     require 'resque'
-    require_dependency "remoteserver/git"
 
     @queue = :file_serve
 

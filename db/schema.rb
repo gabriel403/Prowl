@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140112005102) do
+ActiveRecord::Schema.define(version: 20140124231948) do
 
   create_table "app_setups", force: true do |t|
     t.string   "name"
@@ -90,9 +90,11 @@ ActiveRecord::Schema.define(version: 20140112005102) do
     t.integer  "server_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   add_index "deploys", ["app_id"], name: "index_deploys_on_app_id"
+  add_index "deploys", ["user_id"], name: "index_deploys_on_user_id"
 
   create_table "servers", force: true do |t|
     t.string   "name"

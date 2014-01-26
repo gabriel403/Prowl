@@ -1,3 +1,85 @@
 <% title "Home" %>
-<h1>Welcome to Prowl</h1>
-<h3>For all your automated deployment needs.</h3>
+<div class="row jizz">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">Apps</div>
+      <div class="panel-body">
+        <% App.all.each do |app|
+          limitedRecs = app.deploys.limit(5).order("created_at DESC").to_a
+          finishCount = 0
+          failedCount = 0
+          pendingCount = app.deploys.where(:status => "pending").count
+          limitedRecs.each {|dep| if dep.status == 'Finished' then finishCount = finishCount+1 end }
+          limitedRecs.each {|dep| if dep.status == 'Failed' then failedCount = failedCount+1 end } %>
+          <div class="alert alert-info pointer clickToExpandThingy" id="app<%= app.id %>">
+            <div class="clearfix">
+              <h4 class='pull-left'>
+                <%= app.name %> 
+                <small>last deployed by <%= app.deploys.last.user.email.split("@").first.titleize %><br> at <%= app.deploys.last.updated_at %> </small>
+              </h4>
+              <h4 class='pull-right'>
+                <small><%= pluralize(pendingCount, "pending deploy") %></small>
+              </h4>
+            </div>
+            <div>
+              <%= finishCount %> of the last <%= limitedRecs.count %> builds succeeded.<br>
+
+              <%= number_to_percentage((app.deploys.where(:status => 'Finished').count.to_f/app.deploys.count.to_f)*100.0, strip_insignificant_zeros: true, precision: 1) %> success overall
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default hidden">
+      <div class="panel-heading">Application</div>
+      <div class="panel-body">
+        <div class='subs subData hidden'>
+        </div>
+        <div class='subs holdingImage'>
+          We're lazy loading, so hold yer horses<br>
+          <%= image_tag("holdyerhorses.png") %>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Servers</div>
+      <div class="panel-body">
+        <% Server.all.each do |server| %>
+          <div class="alert alert-info pointer clickToExpandThingy">
+            <div class="clearfix">
+              <h4 class='pull-left'>
+                <%= server.name %> <small><%= server.host %></small>
+              </h4>
+              <h4 class='pull-right'>
+                <small><%= pluralize(server.apps.count, "app") %></small>
+              </h4>
+            </div>
+            User <%= server.username %> accesses by
+            <%= server.authentication_type.name %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default hidden">
+      <div class="panel-heading">3rd</div>
+      <div class="panel-body">
+        <div class='subs subData hidden'>
+        </div>
+        <div class='subs holdingImage'>
+          We're lazy loading, so hold yer horses<br>
+          <%= image_tag("holdyerhorses.png") %>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">3rd</div>
+      <div class="panel-body">
+      stuff
+      </div>
+    </div>
+  </div>
+</div>
