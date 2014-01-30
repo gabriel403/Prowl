@@ -7,6 +7,11 @@ class AppsController < ApplicationController
   def show
     @allowremote = true
     @app = App.find(params[:id])
+    @appid = @app.id
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def new

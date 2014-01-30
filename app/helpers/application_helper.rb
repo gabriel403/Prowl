@@ -12,10 +12,10 @@ module ApplicationHelper
       if messages.kind_of?(Array)
         messages.each do |m|
           # m.m_safe
-          html << (content_tag :div, m, :class => "flash #{type} alert alert-#{skey}") unless m.blank?
+          html << (content_tag :div, m, :class => "flash #{type} alert alert-#{skey} alert-dismissable pointer", :data => {:dismiss => "alert"}) unless m.blank?
         end
       else
-        html << (content_tag :div, messages, :class => "flash #{type} alert alert-#{skey}") unless messages.blank?
+        html << (content_tag :div, messages, :class => "flash #{type} alert alert-#{skey} alert-dismissable pointer", :data => {:dismiss => "alert"}) unless messages.blank?
       end
     end
     html.join('').html_safe

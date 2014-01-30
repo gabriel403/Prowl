@@ -67,10 +67,7 @@
           </ul>
 
           <div class='center-block'>
-            <!-- <h5> -->
-              <%= link_to "Welcome to Prowl", root_path, :class => "navbar-brand" -%>
-            <!-- </h5> -->
-            <!-- <h5>For all your automated deployment needs.</h5> -->
+            <%= link_to "Welcome to Prowl", root_path, :class => "navbar-brand" -%>
           </div>
 
           <ul class="nav navbar-nav navbar-right">
@@ -94,14 +91,8 @@
       <div class="col-md-2">&nbsp;</div>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-2">&nbsp;</div>
-        <div class="col-md-8">
-            <%= yield %>
-        </div>
-        <div class="col-md-2">&nbsp;</div>
-      </div>
+    <div class="container-full">
+      <%= yield %>
     </div>
 
   </body>

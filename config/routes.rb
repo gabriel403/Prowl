@@ -28,9 +28,15 @@ Prowl::Application.routes.draw do
   get "server_app/link/:id/:from_type", to: 'server_app#link', as: 'app_servers'
   post "server_app/link/:from_id/:from_type", to: 'server_app#linkcreate'
 
-  get "deploy_steps/:id", to: 'deploy_steps#show', as: 'deploy_steps'
-  post "deploy_steps/:appid", to: 'deploy_steps#create'
-  resources :deploy_steps, except: [:create, :new, :show]
+  resources :deploy_steps
+  # get    "deploy_steps",           to: 'deploy_steps#index', as: 'deploy_steps'
+  # post   "deploy_steps/:appid",    to: 'deploy_steps#create'
+  # get    "deploy_steps/:appid/new",to: 'deploy_steps#new',   as: 'new_deploy_step'
+  # get    "deploy_steps/:id/edit",  to: 'deploy_steps#edit',  as: 'edit_deploy_step'
+  # get    "deploy_steps/:id",       to: 'deploy_steps#show',  as: 'deploy_step'
+  # patch  "deploy_steps/:id",       to: 'deploy_steps#update'
+  # put    "deploy_steps/:id",       to: 'deploy_steps#update'
+  # delete "deploy_steps/:id",       to: 'deploy_steps#destroy'
 
   get "xhr/dst/:id", to: 'xhr#deploy_step_type', as: 'xhr_dst'
 
