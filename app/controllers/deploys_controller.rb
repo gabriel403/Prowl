@@ -8,6 +8,10 @@ class DeploysController < ApplicationController
 
   def show
     @deploy = Deploy.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def new
@@ -43,6 +47,12 @@ class DeploysController < ApplicationController
       @vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
       @revnums = `#{@vcs_conn_str}`
     end
+
+    respond_to do |format|
+      format.html
+      format.json
+    end
+
   end
 
   def create
@@ -52,6 +62,7 @@ class DeploysController < ApplicationController
 
     app.servers.each do |server|
       @deploy = Deploy.new(app: app, server: server)
+      @deploy.user = current_user
       if !@deploy.save
         raise "Unable to save deploy"
       end

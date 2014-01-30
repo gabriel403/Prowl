@@ -1,0 +1,19 @@
+<h1>Deployment For <small><%= @deploy.app.name.titleize %></small></h1>
+
+<div class="row">
+  <div class="col-md-4"><strong>Deploy Status:</strong></div>
+  <div class="col-md-8"><%= @deploy.status %></div>
+</div>
+<div class="row">
+  <div class="col-md-4"><strong>Deployed At:</strong></div>
+  <div class="col-md-8"><%= @deploy.created_at %></div>
+</div>
+<% @deploy.deploy_options.each do |deploy_option| %>
+  <div class="row">
+    <div class="col-md-4"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
+    <div class="col-md-8"><%= deploy_option.value %></div>
+  </div>
+<% end %>
+<pre>
+  <%= @deploy.output %>
+</pre>

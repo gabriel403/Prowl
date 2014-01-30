@@ -3,9 +3,9 @@
 # specific  = order   & value
 generic_hide = () ->
 	dst = $("#deploy_step_deploy_step_type_option_id").val()
-	console.log(dst);
 	if !dst
 		return
+	console.log(dst);
 	callback = (response) ->
 		console.log(response)
 		if typeof response != 'object' || !('subtype' of response)
