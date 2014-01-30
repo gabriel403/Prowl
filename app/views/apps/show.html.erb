@@ -48,7 +48,8 @@
       </div>
       <div class="modal-body">
         <div id="flash_message"></div>
-        <%= render @deploy_step = DeployStep.new %>
+        <% @deploy_step = DeployStep.new %>
+        <%= render 'deploy_steps/form' %>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

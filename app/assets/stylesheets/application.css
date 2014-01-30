@@ -79,7 +79,7 @@ h1 .btn-group {
 
 .container-full {
   margin: 0 auto;
-  width: 97%;
+  width: 99%;
 }
 
 .overflowAuto {
@@ -100,6 +100,11 @@ h1 .btn-group {
 
 .clickToExpandThingy {
   padding: 10px!important;
+  cursor: pointer;
+}
+
+.alert {
+  padding: 10px!important;
 }
 
 .jizz .col-md-4 {
@@ -111,3 +116,24 @@ h1 .btn-group {
   margin-left: 20px;
 }
 
+.navbar-brand {
+  color: #3a87ad!important;
+}
+
+.label {
+  letter-spacing: 1px;
+  font-weight: normal!important;
+}
+
+.panel-info>.panel-heading {
+  color: azure!important;
+}
+
+.row {
+  margin-left: 0px!important;
+  margin-right: 0px!important;
+}
+
+.no-padding {
+  padding: 0px!important;
+}

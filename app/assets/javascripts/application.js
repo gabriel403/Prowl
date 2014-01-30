@@ -65,16 +65,35 @@ postAnimation = function(){
 
 
 nds = function(){
-	$('#newDeployStep').click(function(event){
+	$('a.deploy_step_details, a#newDeployStep').click(function(event){
+		event.preventDefault();
+		var url = $(this).attr('href')
 		var successFunc = function(data, textStatus, jqXHR){
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
 			generic_hide()
+			// hook into the form submit
+			// reload the app panel when form submitted
 		}
 		if (!hideShow(this)) {
 			hideShow(this)
 		}
-		populateNextCol(this, '/deploy_steps/new', successFunc)
+		populateNextCol(this, url, successFunc)
+	})
+}
+
+dd = function(){
+	$('a.deploy_details').click(function(event){
+		event.preventDefault();
+		var url = $(event.target).attr('href');
+		var successFunc = function(data, textStatus, jqXHR){
+			$(this).find(".subData").empty().html(data).toggleClass('hidden')
+			$(this).find(".holdingImage").toggleClass('hidden')
+		}
+		if (!hideShow(this)) {
+			hideShow(this)
+		}
+		populateNextCol(this, url, successFunc)
 	})
 }
 
@@ -131,6 +150,7 @@ overylayWork = function(event){
 		$(this).find(".holdingImage").toggleClass('hidden')
 		nds()
 		nd()
+		dd()
 	};
 
 	if (!hs) {
