@@ -15,7 +15,7 @@ module Tasks
       server = Server.find(server_id)
       deploy = Deploy.find(deploy_id)
 
-      deploy.update_attributes(:status => 'Processing')
+      deploy.update_attributes(:status => 'processing')
 
       case app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
       when 'svn'
@@ -26,7 +26,7 @@ module Tasks
 
       @success, @returnval = rs.deploy(app, server, force)
 
-      deploy.update_attributes(:status => (@success ? 'Finished' : 'Failed'), :output => @returnval.to_s)
+      deploy.update_attributes(:status => (@success ? 'finished' : 'finished'), :output => @returnval.to_s)
     end
   end
 end

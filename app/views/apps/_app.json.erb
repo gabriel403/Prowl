@@ -14,19 +14,17 @@
     <% end %>
   </div>
 </div>
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-6"><strong>Environments:</strong></div>
   <div class="col-md-6">Staging</div>
-</div>
+</div> -->
 <br>
-<button type="button" id="newDeploy" class="btn btn-default">Deploy</button>
-
-
-<table class="table">
+<button type="button" id="newDeploy" class="btn btn-info">Deploy</button>
+<p></p>
+<table class="table table-bordered table-hover">
   <thead>
     <tr>
       <th>Deploy Status</th>
-      <th>Output</th>
       <th>Deploy Date</th>
     </tr>
   </thead>
@@ -37,7 +35,7 @@
 
 <h3>Deploy Steps</h3>
 
-<button type="button" id="newDeployStep" class="btn btn-default">New Deploy Step</button>
+<%= link_to 'New Deploy Step', new_deploy_step_path(:appid => @app.id), :class => "btn btn-info", :id => 'newDeployStep' %>
 
 <div id="deployStepsList">
   <% order_num = -1

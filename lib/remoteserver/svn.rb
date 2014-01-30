@@ -93,12 +93,15 @@ module Remoteserver
                   owner_group = fs_ch.additional.has_key?("owner") ? fs_ch.additional['owner'] : ":#{fs_ch.additional['group']}"
 
                   rbox.disable_safe_mode
-                  setAskPass = 'printf "#!/bin/bash\necho ' << has_sudo.value << '\n" > /home/' << server.username << '/bin/supass'
+                  setAskPass = 'printf "#!/bin/bash\necho ' << Shellwords.escape(has_sudo.value).gsub("%","%%") << '\n" > /home/' << server.username << '/bin/supass'
                   rbox.execute setAskPass
                   rbox.setenv "SUDO_ASKPASS", "/home/#{server.username}/bin/supass"
                   output = rbox.chmod '0700', "/home/#{server.username}/bin/supass"
+                  outputs << output
 
                   output = rbox.sudo :A, :chown, :R, owner_group, fs_ch.value
+                  outputs << output
+                  Resque.logger.debug output
                   rbox.rm "/home/#{server.username}/bin/supass"
                   rbox.enable_safe_mode
 
