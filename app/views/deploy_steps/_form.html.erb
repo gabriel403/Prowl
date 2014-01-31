@@ -1,9 +1,4 @@
-<% if @app 
-  url = deploy_step_path(@deploy_step, :appid => @app.id)
-else
-  url = deploy_step_path(@deploy_step)
-end%>
-<%= form_for @deploy_step, :url => url, :class => "form-control", :remote => (@allowremote?true:false) do |f| %>
+<%= form_for @deploy_step, :class => "form-control", :remote => (@allowremote?true:false) do |f| %>
   <% if @deploy_step.errors.any? %>
     <div class="error_explanation">
       <h2><%= pluralize(@deploy_step.errors.count, "error") %> prohibited this deploy step from being saved:</h2>

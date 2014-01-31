@@ -1,7 +1,7 @@
-<% if @app 
-  url = deploy_step_path(@deploy_step, :appid => @app.id)
+<% if @app
+  url = deploy_steps_path(@deploy_step, :appid => @app.id)
 else
-  url = deploy_step_path(@deploy_step)
+  url = deploy_steps_path(@deploy_step)
 end%>
 <%= form_for @deploy_step, :url => url, :class => "form-control", :remote => true do |f| %>
   <% if @deploy_step.errors.any? %>
