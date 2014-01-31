@@ -1,12 +1,12 @@
 Prowl::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.action_mailer.default_url_options = { :host => 'prowl.autonomicpilot.co.uk' }
+  config.action_mailer.default_url_options = { :host => ENV['PROWL_HOST'] }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address => "smtp.postmarkapp.com",
-    :port => 25,
-    :user_name => '5887a2ff-50a7-4484-9d3c-0da7192a4f75',
-    :password => '5887a2ff-50a7-4484-9d3c-0da7192a4f75'
+    :address   => ENV['PROWL_SMTP_ADDRESS'],
+    :port      => 25,
+    :user_name => ENV['PROWL_SMTP_AUTH_NAME'],
+    :password  => ENV['PROWL_SMTP_AUTH_VALUE']
   }
 
   # Code is not reloaded between requests.
@@ -41,7 +41,7 @@ Prowl::Application.configure do
   config.assets.digest = true
 
   # Version of your assets, change this if you want to expire all your assets.
-  config.assets.version = '1.0'
+  config.assets.version = '1.1'
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
