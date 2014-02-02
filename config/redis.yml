@@ -1,3 +1,0 @@
-development: localhost:6379
-test: localhost:6379
-production: redis://74A5VQ8QQG8V787k@pub-redis-14227.us-east-1-3.1.ec2.garantiadata.com:14227:redis-app21784407

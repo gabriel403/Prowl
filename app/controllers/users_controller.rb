@@ -19,6 +19,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      @user.password = @user.confirmation_token
+      @user.save
       app_setup = AppSetup.find_by name: 'registrations_open'
       app_setup.value = 'false'
       app_setup.save
