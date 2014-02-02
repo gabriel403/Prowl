@@ -19,16 +19,9 @@
   </div>
 
   <div class="field form-group">
-    <%= f.label :password, "Password" %>
+    <%= f.label :role %>
     <div class="controls">
-      <%= f.password_field :password, :class => "form-control" %>
-    </div>
-  </div>
-
-  <div class="field form-group">
-    <%= f.label :password_confirmation %>
-    <div class="controls">
-      <%= f.password_field :password_confirmation, :class => "form-control" %>
+      <%= f.collection_select :role, User::ROLES, :to_s, :humanize, { }, { :class => "form-control" } %>
     </div>
   </div>
 
