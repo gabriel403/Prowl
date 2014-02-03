@@ -28,6 +28,5 @@ class CreateDeployStepTypeOptions < ActiveRecord::Migration
     DeployStepTypeOption.create :name => "chown_dir",        :deploy_step_type => DeployStepType.find_by(:name => :ch_dir)
     DeployStepTypeOption.create :name => "chmod_dir",        :deploy_step_type => DeployStepType.find_by(:name => :ch_dir)
 
-    DeployStepTypeOption.create :name => "has_sudo",         :deploy_step_type => DeployStepType.find_by(:name => :super_powers)
   end
 end

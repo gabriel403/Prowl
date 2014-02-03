@@ -14,6 +14,5 @@ class CreateDeployStepTypes < ActiveRecord::Migration
     DeployStepType.create :name => "vcs_location",     :subtype => "unordered"
     DeployStepType.create :name => "deployed_symlink", :subtype => "unordered"
     DeployStepType.create :name => "ch_dir",           :subtype => "unordered"
-    DeployStepType.create :name => "super_powers",     :subtype => "unordered"
   end
 end

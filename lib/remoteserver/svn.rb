@@ -2,70 +2,59 @@ module Remoteserver
   class Svn
     require 'rye'
 
-    def add_commands(username, password, repo_address, rev_num)
-      Rye::Cmd.add_command :svn_up, "/usr/bin/svn update --username #{username} --no-auth-cache --password #{password}"
-      Rye::Cmd.add_command :svn_co, "/usr/bin/svn co --username #{username} --password #{password} --no-auth-cache #{repo_address}@#{rev_num} #{rev_num}"
-      Rye::Cmd.add_command :svn_export, "/usr/bin/svn export --username #{username} --password #{password} --no-auth-cache #{repo_address}@#{rev_num} #{rev_num}"
+    def add_commands(username, password, repo_address, rev_num, dest_dir)
+      @svn_up     = "update --username #{username} --no-auth-cache --password #{password}"
+      @svn_co     = "co --username #{username} --password #{password} --no-auth-cache #{repo_address}@#{rev_num} #{rev_num}"
+      @svn_export = "export --username #{username} --password #{password} --no-auth-cache #{repo_address}@#{rev_num} #{dest_dir}/#{rev_num}"
+      Rye::Cmd.add_command :svn_up, "/usr/bin/svn #{@svn_up}"
+      Rye::Cmd.add_command :svn_co, "/usr/bin/svn #{@svn_co}"
+      Rye::Cmd.add_command :svn_export, "/usr/bin/svn #{@svn_export}"
     end
 
     def deploy(app, server, force = false)
-      auth_type = server.authentication_type
-
-      if auth_type.short_name == 'keystored'
-        keys = [server.authentication]
-      else
-        raise "Invalid Authentication Type"
-      end
-
-      destination             = app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "destination"}.value
-      local_remote            = app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_location"}
-      checkout_export_update  = app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_method"}
-
-      deployed_symlink        = app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deployed_symlink"}
-
-      svn_username            = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
-      svn_password            = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
-      svn_location            = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "vcs_location"}.value
-
-      fs_chs                  = app.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "ch_dir"}
-
-      has_sudo                = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "has_sudo"}
-
-      rev_num                 = app.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "revision_number"}.value
-
-      add_commands(svn_username, svn_password, svn_location, rev_num)
-
-
-      success = false
-
       begin
+        if server.authentication_type.short_name == 'keystored'
+          keys = [server.authentication]
+        else
+          raise "Invalid Authentication Type"
+        end
+
+        file_operations = FileOperations.new
+        deploy_options  = DeployOptions.new app
+
+        success = false
+
         outputs = []
         rbox = Rye::Box.new(server.host, :user => server.username, :key_data => keys, :keys_only => true)
 
-        output = rbox.mkdir :p, "#{destination}/#{rev_num}"
+        output = rbox.mkdir :p, "#{deploy_options.destination}/#{deploy_options.rev_num}"
         Resque.logger.debug output
         outputs << output
 
-        rbox[destination]
+        rbox[deploy_options.destination]
 
-        if local_remote.deploy_step_type_option.name == "local"
+        if deploy_options.local_remote.deploy_step_type_option.name == "local"
           Resque.logger.debug "going for a local deploy and transfer"
-          if checkout_export_update.deploy_step_type_option.name == "update_pull"
+          if deploy_options.checkout_export_update.deploy_step_type_option.name == "update_pull"
             # svn up
-          elsif checkout_export_update.deploy_step_type_option.name == "checkout_clone"
+          elsif deploy_options.checkout_export_update.deploy_step_type_option.name == "checkout_clone"
             # svn co
           else
             # svn export
             Resque.logger.debug "going for a local export"
 
             export_dir = "/tmp/prowl/#{app.id}_#{app.deploys.last.id}"
-            output = Rye.shell :mkdir, :p, export_dir
+            add_commands(deploy_options.svn_username, deploy_options.svn_password, deploy_options.svn_location, deploy_options.rev_num, export_dir)
 
-            output = Rye.shell :svn, "export --username #{svn_username} --password #{svn_password} --no-auth-cache #{svn_location}@#{rev_num} #{export_dir}/#{rev_num}"
+            output = Rye.shell :mkdir, :p, export_dir
             Resque.logger.debug output
             outputs << output
 
-            output = rbox.dir_upload "#{export_dir}/#{rev_num}", "#{destination}"
+            output = Rye.shell :svn, @svn_export
+            Resque.logger.debug output
+            outputs << output
+
+            output = rbox.dir_upload "#{export_dir}/#{deploy_options.rev_num}", "#{deploy_options.destination}"
             Resque.logger.debug output
             outputs << output
 
@@ -73,46 +62,19 @@ module Remoteserver
             Resque.logger.debug output
             outputs << output
 
-            if deployed_symlink
-              output = rbox.ln :s, :f, :n, "#{destination}/#{rev_num}", "#{deployed_symlink.value}"
+            if deploy_options.deployed_symlink
+              output = rbox.ln :s, :f, :n, "#{deploy_options.destination}/#{deploy_options.rev_num}", "#{deploy_options.deployed_symlink.value}"
               Resque.logger.debug output
               outputs << output
             end
 
-            rbox.disable_safe_mode
-            rbox.execute "find #{destination}/#{rev_num} -type d -exec chmod 775 {} \\;"
-            rbox.execute "find #{destination}/#{rev_num} -type f -exec chmod 664 {} \\;"
-            rbox.enable_safe_mode
+            output = file_operations.pre_do_chmod rbox, deploy_options.destination, deploy_options.rev_num
+            Resque.logger.debug output
+            outputs << output
 
-            if fs_chs
-              fs_chs.each do |fs_ch|
-                if "chown_dir" == fs_ch.deploy_step_type_option.name && !has_sudo
-                  # error
-                elsif "chown_dir" == fs_ch.deploy_step_type_option.name
-                  rbox.mkdir :p, "/home/#{server.username}/bin"
-                  owner_group = fs_ch.additional.has_key?("owner") ? fs_ch.additional['owner'] : ":#{fs_ch.additional['group']}"
-
-                  rbox.disable_safe_mode
-                  setAskPass = 'printf "#!/bin/bash\necho ' << Shellwords.escape(has_sudo.value).gsub("%","%%") << '\n" > /home/' << server.username << '/bin/supass'
-                  rbox.execute setAskPass
-                  rbox.setenv "SUDO_ASKPASS", "/home/#{server.username}/bin/supass"
-                  output = rbox.chmod '0700', "/home/#{server.username}/bin/supass"
-                  outputs << output
-
-                  output = rbox.sudo :A, :chown, :R, owner_group, fs_ch.value
-                  outputs << output
-                  Resque.logger.debug output
-                  rbox.rm "/home/#{server.username}/bin/supass"
-                  rbox.enable_safe_mode
-
-                  # output = rbox.chown :R, fs_ch.additional['owner'], fs_ch.value
-                  Resque.logger.debug output
-                elsif "chmod_dir" == fs_ch.deploy_step_type_option.name
-                  output = rbox.chmod :R, fs_ch.additional['perms'], fs_ch.value
-                  Resque.logger.debug output
-                end
-              end
-            end
+            output = file_operations.process_deploy_options rbox, deploy_options.fs_chs, server
+            Resque.logger.debug output
+            outputs << output
 
             result = outputs.join("\r\n")
           end
