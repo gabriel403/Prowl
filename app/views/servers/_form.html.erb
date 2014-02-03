@@ -32,6 +32,20 @@
   </div>
 
   <div class="field form-group">
+    <%= f.label :can_sudo %>
+    <div class="checkbox">
+      <%= f.check_box :can_sudo, :class => "checkbox" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :sudo_password %>
+    <div class="controls">
+      <%= f.text_field :sudo_password, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
     <%= f.label :authentication_type_id %>
     <div class="controls">
     <%= f.select :authentication_type_id, options_from_collection_for_select(@authentication_types, "id", "name", @server.authentication_type_id), { :include_blank => true }, { :class => "form-control" } %>

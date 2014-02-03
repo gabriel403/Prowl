@@ -36,6 +36,7 @@ Prowl::Application.routes.draw do
 
   constraints resque_web_constraint do
     mount ResqueWeb::Engine => "/resque_web"
+    ResqueWeb::Engine.eager_load!
   end
 
   root :to => "home#index"

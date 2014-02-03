@@ -47,6 +47,6 @@ class ServersController < ApplicationController
 
   private
   def server_params
-    params.require(:server).permit(:name, :host, :authentication_type_id, :authentication, :username)
+    params.require(:server).permit(:name, :host, :authentication_type_id, :authentication, :username, :can_sudo, :sudo_password)
   end
 end
