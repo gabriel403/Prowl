@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140203075119) do
+ActiveRecord::Schema.define(version: 20140203190218) do
 
   create_table "app_setups", force: true do |t|
     t.string   "name"
@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 20140203075119) do
     t.boolean  "enabled",                default: true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "can_sudo"
+    t.boolean  "can_sudo",               default: false
     t.string   "sudo_password"
   end
 

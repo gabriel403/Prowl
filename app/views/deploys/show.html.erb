@@ -21,6 +21,17 @@
   <div class="col-md-4"><strong>Deployed At:</strong></div>
   <div class="col-md-8"><%= @deploy.created_at %></div>
 </div>
+
+<% if @deploy.status == 'processing' %>
+  <%= form_for @deploy, :url => edit_deploy_path(@deploy), :class => "form-control", :method => "patch" do |f| %>
+  <div class="row">
+    <div class="actions">
+      <%= f.submit "Forced Fail", :class => "btn btn-default pull-right" %>
+    </div>
+  </div>
+  <% end %>
+<% end %>
+<p></p>
 <pre>
   <%= @deploy.output %>
 </pre>
