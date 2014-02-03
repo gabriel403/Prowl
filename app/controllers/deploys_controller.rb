@@ -80,4 +80,14 @@ class DeploysController < ApplicationController
 
     redirect_to @deploy, :flash => { :alert => 'Deployment has been queued.' }
   end
+
+  def update
+    @deploy = Deploy.find(params[:id])
+
+    if @deploy.update_attributes(status: :failed)
+      redirect_to :back, :flash => { :success => 'Deploy was failed.' }
+    else
+      redirect_to :back, :flash => { :success => 'Failed to fail the deploy.' }
+    end
+  end
 end
