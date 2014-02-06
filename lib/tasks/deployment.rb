@@ -11,9 +11,12 @@ module Tasks
         Rails.logger = Le.new('b9259c12-1a1b-4453-a821-3c5eee10807e')
       end
 
-      app    = App.find(app_id)
-      server = Server.find(server_id)
-      deploy = Deploy.find(deploy_id)
+      app             = App.find(app_id)
+      server          = Server.find(server_id)
+      deploy          = Deploy.find(deploy_id)
+
+      file_operations = Remoteserver::FileOperations.new
+      deploy_options  = Remoteserver::DeployOptions.new(app)
 
       deploy.update_attributes(:status => 'processing')
 
@@ -24,7 +27,7 @@ module Tasks
         rs = Remoteserver::Git.new
       end
 
-      @success, @returnval = rs.deploy(app, server, force)
+      @success, @returnval = rs.deploy(app, server, deploy_options, file_operations)
 
       deploy.update_attributes(:status => (@success ? 'finished' : 'failed'), :output => @returnval.to_s)
     end

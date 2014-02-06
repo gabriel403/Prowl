@@ -11,11 +11,9 @@ module Remoteserver
       Rye::Cmd.add_command :svn_export, "/usr/bin/svn #{@svn_export}"
     end
 
-    def deploy(app, server, force = false)
+    def deploy(app, server, deploy_options, file_operations)
       begin
 
-        file_operations = FileOperations.new
-        deploy_options  = DeployOptions.new(app)
         rbox            = file_operations.setup(server)
         success         = false
         outputs         = []
