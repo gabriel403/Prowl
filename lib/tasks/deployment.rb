@@ -26,7 +26,7 @@ module Tasks
 
       @success, @returnval = rs.deploy(app, server, force)
 
-      deploy.update_attributes(:status => (@success ? 'finished' : 'finished'), :output => @returnval.to_s)
+      deploy.update_attributes(:status => (@success ? 'finished' : 'failed'), :output => @returnval.to_s)
     end
   end
 end
