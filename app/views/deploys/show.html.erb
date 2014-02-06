@@ -22,7 +22,7 @@
   <div class="col-md-8"><%= @deploy.created_at %></div>
 </div>
 
-<% if @deploy.status == 'processing' %>
+<% if @deploy.status == 'processing' || @deploy.status == 'pending' %>
   <%= form_for @deploy, :url => edit_deploy_path(@deploy), :class => "form-control", :method => "patch" do |f| %>
   <div class="row">
     <div class="actions">

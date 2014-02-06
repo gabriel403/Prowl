@@ -45,7 +45,14 @@ class DeploysController < ApplicationController
       vcs_username = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
       vcs_password = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
       @vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
-      @revnums = `#{@vcs_conn_str}`
+      @rev_nums = []
+      revnums = `#{@vcs_conn_str}`
+      revnums.split("\n").each {|ele| 
+        rev_num = /r(?<rev_num>\d+)/.match(ele) 
+        if rev_num
+          @rev_nums << rev_num[:rev_num]
+        end
+      }
     end
 
     respond_to do |format|

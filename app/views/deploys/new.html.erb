@@ -17,15 +17,15 @@
   <% end %>
 
   <p>
-  <% if @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name == 'svn' %>
-  <% rev_nums = [] %>
-  <% @revnums.split("\n").each {|ele| 
-    rev_num = /r(?<rev_num>\d+)/.match(ele) 
-    if rev_num
-      rev_nums << rev_num[:rev_num]
-    end
-  } %>
   </p>
+  <% if @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name == 'svn' %>
+    <div class="field form-group">
+      <%= f.label :revision_number %>
+      <div class="controls">
+      <%= f.select :revision_number, @rev_nums, { }, { :class => "form-control" } %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="field form-group">
     <%= f.label :revision_number %>
