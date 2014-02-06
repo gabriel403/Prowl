@@ -14,16 +14,19 @@
           lastFinishedDeploy = app.deploys.where(:status => "finished").last
           lastDeploy = app.deploys.last
 
-          case lastDeploy.status
-          when 'finished'
-            lastDeployClass = 'success'
-          when 'failed'
-            lastDeployClass = 'danger'
-          when 'pending'
-            lastDeployClass = 'info'
-          when 'processing'
-            lastDeployClass = 'info'
+          if lastDeploy
+            case lastDeploy.status
+            when 'finished'
+              lastDeployClass = 'success'
+            when 'failed'
+              lastDeployClass = 'danger'
+            when 'pending'
+              lastDeployClass = 'info'
+            when 'processing'
+              lastDeployClass = 'info'
+            end
           end
+
           %>
           <div class="alert alert-<%= lastDeployClass %> pointer clickToExpandThingy" id="app<%= app.id %>">
             <div class="clearfix">
@@ -71,7 +74,14 @@
                 <%= finishCount %> of the last <%= limitedRecs.count %> builds succeeded.<br>
               </div>
               <div class='pull-right'>
-                <%= number_to_percentage((app.deploys.where(:status => 'finished').count.to_f/app.deploys.count.to_f)*100.0, strip_insignificant_zeros: true, precision: 1) %> success overall
+                <% 
+                successRate = 0
+                if app.deploys.count > 0
+                  successRate = (app.deploys.where(:status => 'finished').count.to_f/app.deploys.count.to_f)*100.0
+                end
+                %>
+
+                <%= number_to_percentage(successRate, strip_insignificant_zeros: true, precision: 1) %> success overall
               </div>
             </div>
             <div>
