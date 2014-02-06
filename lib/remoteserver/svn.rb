@@ -37,7 +37,7 @@ module Remoteserver
             Resque.logger.debug "going for a local export"
 
             export_dir = "/tmp/prowl/#{app.id}_#{app.deploys.last.id}"
-            add_commands(deploy_options.svn_username, deploy_options.svn_password, deploy_options.svn_location, deploy_options.rev_num, export_dir)
+            add_commands(deploy_options.vcs_username, deploy_options.vcs_password, deploy_options.vcs_location, deploy_options.rev_num, export_dir)
 
             output = Rye.shell :mkdir, :p, export_dir
             Resque.logger.debug output
