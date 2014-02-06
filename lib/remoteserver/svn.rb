@@ -65,7 +65,7 @@ module Remoteserver
             Resque.logger.debug output
             outputs << output
 
-            output = file_operations.process_deploy_options rbox, deploy_options.fs_chs, server
+            output = file_operations.process_deploy_options rbox, deploy_options, server
             Resque.logger.debug output
             outputs << output
 
