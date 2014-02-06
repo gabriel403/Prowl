@@ -7,7 +7,7 @@ module Remoteserver
       Rye::Cmd.add_command :git_reset, '/usr/bin/git reset --hard origin/master'
     end
 
-    def deploy(app, server, force = false)
+    def deploy(app, server, deploy_options, file_operations, force = false)
       auth_type = server.authentication_type
 
       if auth_type.short_name == 'keystored'
