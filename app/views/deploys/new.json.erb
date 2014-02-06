@@ -1,6 +1,6 @@
 <h1>New Deploy <small>for <%= @app.name.titleize %></small></h1>
 
-<%= form_for @deploy_option_form, :url => deploys_path, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'} do |f| %>
+<%= form_for @deploy_option_form, :url => deploys_path, :class => "form-control", :html => {:'data-type' => 'json'} do |f| %>
   <% if @deploy_option_form.errors.any? %>
     <div class="error_explanation">
       <h2><%= pluralize(@deploy_option_form.errors.count, "error") %> prohibited this deploy step from being saved:</h2>
@@ -33,6 +33,6 @@
   <% end %>
 
   <div class="actions">
-    <%= f.submit :build, :class => "btn btn-default" %>
+    <%= f.submit :build, :class => "btn btn-default", data: { confirm: 'Are you sure?' } %>
   </div>
 <% end %>

@@ -78,7 +78,7 @@ nds = function(){
 		if (!hideShow(this)) {
 			hideShow(this)
 		}
-		populateNextCol(this, url, successFunc)
+		populateNextCol(nextCol.children(".panel:not(.hidden)"), url, successFunc)
 	})
 }
 
@@ -93,7 +93,7 @@ dd = function(){
 		if (!hideShow(this)) {
 			hideShow(this)
 		}
-		populateNextCol(this, url, successFunc)
+		populateNextCol(nextCol.children(".panel:not(.hidden)"), url, successFunc)
 	})
 }
 
@@ -102,13 +102,57 @@ nd = function(){
 		var successFunc = function(data, textStatus, jqXHR){
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
+			ndb()
 		}
 		var id = getAppId();
 		if (!hideShow(this)) {
 			hideShow(this)
 		}
-		populateNextCol(this, '/deploys/new/'+id, successFunc)
+		populateNextCol(nextCol.children(".panel:not(.hidden)"), '/deploys/new/'+id, successFunc)
 	})
+}
+
+ndb = function(){
+	$('#new_deploy_option_form').on('submit',function(event){
+		event.preventDefault();
+		var data = $(event.target).serialize();
+		var successFunc = function(data, textStatus, jqXHR){
+			context = this
+			// console.log(data);
+			// console.log(textStatus);
+			if (jqXHR.getResponseHeader('Location')) {
+				reloadURL = jqXHR.getResponseHeader('Location');
+				var successFunc = function(data, textStatus, jqXHR){
+
+					setTimeout(function() {
+						$(context).find(".subData").empty().html(data)
+						if (-1 == data.indexOf('<div class="col-md-8">finished</div>') &&
+							-1 == data.indexOf('<div class="col-md-8">failed</div>')) {
+							populateNextCol(context, reloadURL, successFunc)
+						}
+					}, 2000);
+
+
+				}
+				populateNextCol(this, jqXHR.getResponseHeader('Location'), successFunc)
+				console.log(this)
+				// populate rhs pane
+			}
+		}
+		$.ajax({
+			type: "POST",
+			url: $(event.target).attr('action'),
+			data: data,
+			success: successFunc,
+			converters: {"text json":true},
+			dataType: 'json',
+			context: $(this).closest(".col-md-4")
+		});
+	});
+}
+
+reloadDeployment = function(url, context) {
+
 }
 
 getAppId = function() {
@@ -157,7 +201,7 @@ overylayWork = function(event){
 		return
 	}
 
-	populateNextCol(this, '/apps/'+id, successFunc)
+	populateNextCol(nextCol.children(".panel:not(.hidden)"), '/apps/'+id, successFunc)
 
 
 	// if ($(".expandMe").width() == "0") {
@@ -199,11 +243,11 @@ hideShow = function(context) {
 
 populateNextCol = function(context, url, callback) {
 	$.ajax({
-		url: url,
-		success: callback,
-		dataType: 'json',
+		url:        url,
+		success:    callback,
+		dataType:   'json',
 		converters: {"text json":true},
-		context: nextCol.children(".panel:not(.hidden)")
+		context:    context
 	});
 }
 $( document ).on('page:load', function(){
