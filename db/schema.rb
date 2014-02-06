@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140203200457) do
+ActiveRecord::Schema.define(version: 20140206195204) do
 
   create_table "app_setups", force: true do |t|
     t.string   "name"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20140203200457) do
     t.integer  "order",                      default: 0
     t.integer  "deploy_step_type_option_id"
     t.string   "value"
-    t.string   "additional",                 default: "[]"
+    t.string   "additional",                 default: "{}"
     t.integer  "app_id"
     t.datetime "created_at"
     t.datetime "updated_at"
