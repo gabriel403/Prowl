@@ -78,7 +78,10 @@ class DeploysController < ApplicationController
       Resque.enqueue(Tasks::Deployment, app.id, server.id, @deploy.id, true)
     end
 
-    redirect_to @deploy, :flash => { :alert => 'Deployment has been queued.' }
+    respond_to do |format|
+      format.html { redirect_to @deploy, :flash => { :alert => 'Deployment has been queued.' } }
+      format.json { render @deploy, :location => @deploy}
+    end
   end
 
   def update
