@@ -28,13 +28,25 @@
   <% end %>
 
   <div class="field form-group">
-    <%= f.label :revision_number %>
-    <div class="controls">
-    <%= f.select :revision_number, rev_nums, { }, { :class => "form-control" } %>
+    <div class="checkbox">
+      <%= f.label "Run rake db:migrate" %>
+      <%= f.check_box :db_migrate, :class => "checkbox" %>
     </div>
   </div>
 
-  <% end %>
+  <div class="field form-group">
+    <div class="checkbox">
+      <%= f.label "Run bundle install in vendor" %>
+      <%= f.check_box :bundle_install, :class => "checkbox" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <div class="checkbox">
+      <%= f.label :restart_web_server %>
+      <%= f.check_box :restart_web_server, :class => "checkbox" %>
+    </div>
+  </div>
 
   <div class="actions">
     <%= f.submit :Build, :class => "btn btn-default", data: { confirm: 'Are you sure?' } %>
