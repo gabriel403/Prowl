@@ -13,19 +13,12 @@ module Remoteserver
 
     def deploy(app, server, force = false)
       begin
-        if server.authentication_type.short_name == 'keystored'
-          keys = [server.authentication]
-        else
-          raise "Invalid Authentication Type"
-        end
 
         file_operations = FileOperations.new
-        deploy_options  = DeployOptions.new app
-
-        success = false
-
-        outputs = []
-        rbox = Rye::Box.new(server.host, :user => server.username, :key_data => keys, :keys_only => true)
+        deploy_options  = DeployOptions.new(app)
+        rbox            = file_operations.setup(server)
+        success         = false
+        outputs         = []
 
         output = rbox.mkdir :p, "#{deploy_options.destination}/#{deploy_options.rev_num}"
         Resque.logger.debug output
@@ -91,10 +84,6 @@ module Remoteserver
           end
         end
 
-        # is remote or local?
-        # if local do we start execing or ssh into ourself?
-        # checkout or export
-        # if local transfer files
         success = true
       rescue Exception => e
         Resque.logger.error e.message

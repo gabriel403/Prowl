@@ -1,8 +1,37 @@
 module Remoteserver
   class FileOperations
+
+    def setup(server)
+      if server.authentication_type.short_name == 'keystored'
+        keys = [server.authentication]
+      else
+        raise "Invalid Authentication Type"
+      end
+      rbox = Rye::Box.new(server.host, :user => server.username, :key_data => keys, :keys_only => true)
+      return rbox
+    end
+
+    def bundle_install(rbox, deploy_options)
+      output = ''
+      # bundle install --deployment
+      return output
+    end
+
+    def db_migrate(rbox, deploy_options)
+      output = ''
+      # rake db:migrate RAILS_ENV=development
+      return output
+    end
+
+    def restart_web_server(rbox, deploy_options)
+      output = ''
+      return output
+    end
+
     def set_sudo(rbox, server)
       output = ''
       if server.can_sudo
+        rbox.mkdir :p, "/home/#{server.username}/bin"
         setAskPass = 'printf "#!/bin/bash\necho ' << Shellwords.escape(server.sudo_password).gsub("%","%%") << '\n" > /home/' << server.username << '/bin/supass'
         rbox.execute setAskPass
         rbox.setenv "SUDO_ASKPASS", "/home/#{server.username}/bin/supass"
@@ -24,15 +53,13 @@ module Remoteserver
       rbox.enable_safe_mode
     end
 
-    def process_deploy_options(rbox, fs_chs, server)
+    def process_deploy_options(rbox, deploy_options, server)
       outputs = []
-      if fs_chs
-        fs_chs.each do |fs_ch|
+      if deploy_options.fs_chs
+        deploy_options.fs_chs.each do |fs_ch|
           if "chown_dir" == fs_ch.deploy_step_type_option.name && !server.can_sudo
             # error
           elsif "chown_dir" == fs_ch.deploy_step_type_option.name
-            rbox.mkdir :p, "/home/#{server.username}/bin"
-
             rbox.disable_safe_mode
 
             output = set_sudo rbox, server
@@ -49,9 +76,6 @@ module Remoteserver
             outputs << output
 
             rbox.enable_safe_mode
-
-            # output = rbox.chown :R, fs_ch.additional['owner'], fs_ch.value
-            Resque.logger.debug output
           elsif "chmod_dir" == fs_ch.deploy_step_type_option.name
             output = rbox.chmod :R, fs_ch.additional['perms'], fs_ch.value
             Resque.logger.debug output
