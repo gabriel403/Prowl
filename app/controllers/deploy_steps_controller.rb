@@ -25,6 +25,10 @@ class DeployStepsController < ApplicationController
 
   def create
     @deploy_step = DeployStep.new(save_params)
+    if @deploy_step.deploy_step_type_option.deploy_step_type.subtype === "generic"
+      @deploy_step.value = ''
+    end
+
     @deploy_step.additional = JSON.parse(@deploy_step.additional)
     @deploy_step.app = App.find(params[:appid])
 
