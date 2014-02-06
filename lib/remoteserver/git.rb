@@ -17,8 +17,7 @@ module Remoteserver
         raise "Invalid Authentication Type"
       end
 
-      dest_deploy_step = app.deploy_steps.first {|ds| ds.deploy_step_type_option.deploy_step_type.name == :destination}
-      rbox[dest_deploy_step.value]
+      rbox[deploy_options.destination]
 
       success = false
 
