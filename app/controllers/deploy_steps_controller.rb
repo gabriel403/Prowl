@@ -7,6 +7,7 @@ class DeployStepsController < ApplicationController
   def new
     @app = App.find(params[:appid])
     @deploy_step = DeployStep.new
+    @url = deploy_steps_path(@deploy_step, :appid => @app.id)
     respond_to do |format|
       format.html
       format.json
@@ -16,6 +17,7 @@ class DeployStepsController < ApplicationController
   def edit
     @deploy_step = DeployStep.find(params[:id])
     @deploy_step.additional = @deploy_step.additional.to_json
+    @url = deploy_step_path(@deploy_step)
     session[:return_to] = request.referer
     respond_to do |format|
       format.html
