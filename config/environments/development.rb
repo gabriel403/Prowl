@@ -1,8 +1,9 @@
 Prowl::Application.configure do
+  Rails.application.routes.default_url_options[:host] = ENV['PROWL_HOST']
   # Settings specified here will take precedence over those in config/application.rb.
-  config.action_mailer.default_url_options = { :host => 'prowl.dev' }
+  config.action_mailer.default_url_options = { :host => ENV['PROWL_HOST'] }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
+  config.action_mailer.smtp_settings = {:address => ENV['PROWL_SMTP_ADDRESS'], :port => 1025}
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -28,5 +29,5 @@ Prowl::Application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = true
+  config.assets.debug = false
 end
