@@ -20,6 +20,10 @@ module Tasks
 
       deploy.update_attributes(:status => 'processing')
 
+      if deploy_options.hooks
+        Remoteserver::DeployHooks.send_update deploy_options.hooks, deploy, :processing
+      end
+
       case app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
       when 'svn'
         rs = Remoteserver::Svn.new
@@ -28,6 +32,15 @@ module Tasks
       end
 
       @success, @returnval = rs.deploy(app, server, deploy_options, file_operations)
+
+      if @success
+        if deploy_options.hooks
+          Remoteserver::DeployHooks.send_update deploy_options.hooks, deploy, :finished
+        end
+        if deploy_options.hooks
+          Remoteserver::DeployHooks.send_update deploy_options.hooks, deploy, :failed
+        end
+      end
 
       deploy.update_attributes(:status => (@success ? 'finished' : 'failed'), :output => @returnval.to_s)
     end
