@@ -1,6 +1,7 @@
 class DeploysController < ApplicationController
   require_dependency "tasks/deployment"
   require "resque"
+  require "remoteserver/deploy_hooks"
 
   def index
     @app = App.find(params[:id])
@@ -17,25 +18,27 @@ class DeploysController < ApplicationController
   def new
     @deploy_option_form = DeployOptionForm.new
     @app = App.find(params[:id])
+    success = true
 
     if @app.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "destination"}
       flash_message :alert, "No destination deploy_step has been set"
-      redirect_to request.referer
+      success = false
+      # redirect_to request.referer
     end
 
     if @app.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}
       flash_message :alert, "No vcs (git,svn) deploy_step has been set"
-      redirect_to request.referer
+      success = false
     end
 
     if @app.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_method"}
       flash_message :alert, "No deploy method (pull,clone,export) deploy_step has been set"
-      redirect_to request.referer
+      success = false
     end
 
     if @app.servers.count == 0
       flash_message :alert, "No servers have been added"
-      redirect_to request.referer
+      success = false
     end
 
     vcs_type     = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
@@ -55,9 +58,16 @@ class DeploysController < ApplicationController
       }
     end
 
-    respond_to do |format|
-      format.html
-      format.json
+    if success
+      respond_to do |format|
+        format.html
+        format.json
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to request.referer }
+        format.json { render json: @app }
+      end
     end
 
   end
@@ -84,6 +94,12 @@ class DeploysController < ApplicationController
 
       Resque.enqueue(Tasks::Deployment, app.id, server.id, @deploy.id, true)
     end
+
+    deploy_hooks_ray = app.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_hook"}
+    if deploy_hooks_ray
+      Remoteserver::DeployHooks.send_update deploy_hooks_ray, @deploy, :pending
+    end
+
 
     respond_to do |format|
       format.html { redirect_to @deploy, :flash => { :alert => 'Deployment has been queued.' } }

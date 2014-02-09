@@ -1,1 +1,1 @@
-var content = $('<%= escape_javascript(render "deploy_steps/show.html", :deploy_step => @deploy_step) %>');
+var content = $('<%= escape_javascript(render @deploy_step) %>');

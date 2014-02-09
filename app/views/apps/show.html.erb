@@ -48,7 +48,9 @@
       </div>
       <div class="modal-body">
         <div id="flash_message"></div>
-        <% @deploy_step = DeployStep.new %>
+        <% @deploy_step = DeployStep.new 
+          @url = deploy_steps_path(@deploy_step, :appid => @app.id)
+        %>
         <%= render 'deploy_steps/form' %>
       </div>
     </div><!-- /.modal-content -->
