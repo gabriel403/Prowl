@@ -16,6 +16,23 @@
 //= require turbolinks
 //= require_tree .
 
+flash_checker = function(request) {
+	// first show message
+	type = request.getResponseHeader("X-Message-Type")
+	message = request.getResponseHeader("X-Message")
+	if (type && message) {
+		$('#flash_message').flashMessanger({type:type,message:message})
+
+		if ('success' == type || 'info' == type) {
+			return true;
+		}
+
+		return false;
+	}
+
+	return true;
+}
+
 generic_hide = function(){
 	dst = $("#deploy_step_deploy_step_type_option_id").val()
 
@@ -24,6 +41,10 @@ generic_hide = function(){
 	}
 
 	callback = function(response){
+		if (!flash_checker(response)) {
+			return;
+		}
+
 		if( typeof response != 'object' || !('subtype' in response)) {
 			return
 		}
@@ -69,6 +90,10 @@ nds = function(){
 		event.preventDefault();
 		var url = $(this).attr('href')
 		var successFunc = function(data, textStatus, jqXHR){
+			if (!flash_checker(jqXHR)) {
+				return;
+			}
+
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
 			generic_hide()
@@ -87,6 +112,10 @@ dd = function(){
 		event.preventDefault();
 		var url = $(event.target).attr('href');
 		var successFunc = function(data, textStatus, jqXHR){
+			if (!flash_checker(jqXHR)) {
+				return;
+			}
+
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
 		}
@@ -100,6 +129,10 @@ dd = function(){
 nd = function(){
 	$('#newDeploy').click(function(event){
 		var successFunc = function(data, textStatus, jqXHR){
+			if (!flash_checker(jqXHR)) {
+				return;
+			}
+
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
 			ndb()
@@ -117,6 +150,10 @@ ndb = function(){
 		event.preventDefault();
 		var data = $(event.target).serialize();
 		var successFunc = function(data, textStatus, jqXHR){
+			if (!flash_checker(jqXHR)) {
+				return;
+			}
+
 			context = this
 			// console.log(data);
 			// console.log(textStatus);
@@ -190,6 +227,10 @@ overylayWork = function(event){
 	var id = getAppId();
 
 	var successFunc = function(data, textStatus, jqXHR){
+		if (!flash_checker(jqXHR)) {
+			return;
+		}
+
 		$(this).find(".subData").empty().html(data).toggleClass('hidden')
 		$(this).find(".holdingImage").toggleClass('hidden')
 		nds()
