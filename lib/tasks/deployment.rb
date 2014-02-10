@@ -25,7 +25,7 @@ module Tasks
         rs = Remoteserver::Git.new
       end
 
-      @success, @returnval = rs.deploy(app, server, deploy_options, file_operations)
+      @success, @returnval = rs.deploy(app, server, deploy_options, file_operations, true)
 
       if @success
         if deploy_options.hooks
