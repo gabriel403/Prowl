@@ -1,0 +1,27 @@
+<h1>Listing environments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @environments.each do |environment| %>
+      <tr>
+        <td><%= environment.name %></td>
+        <td><%= link_to 'Show', environment %></td>
+        <td><%= link_to 'Edit', edit_environment_path(environment) %></td>
+        <td><%= link_to 'Destroy', environment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Environment', new_environment_path %>
