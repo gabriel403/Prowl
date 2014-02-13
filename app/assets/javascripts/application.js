@@ -85,7 +85,7 @@ postAnimation = function(){
 };
 
 
-nds = function(){
+newDeployStep = function(){
 	$('a.deploy_step_details, a#newDeployStep').click(function(event){
 		event.preventDefault();
 		var url = $(this).attr('href')
@@ -107,7 +107,7 @@ nds = function(){
 	})
 }
 
-dd = function(){
+deployDisplay = function(){
 	$('a.deploy_details').click(function(event){
 		event.preventDefault();
 		var url = $(event.target).attr('href');
@@ -126,7 +126,7 @@ dd = function(){
 	})
 }
 
-nd = function(){
+newDeploy = function(){
 	$('#newDeploy').click(function(event){
 		var successFunc = function(data, textStatus, jqXHR){
 			if (!flash_checker(jqXHR)) {
@@ -135,7 +135,7 @@ nd = function(){
 
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
-			ndb()
+			newDeployDisplay()
 		}
 		var id = getAppId();
 		if (!hideShow(this)) {
@@ -145,7 +145,7 @@ nd = function(){
 	})
 }
 
-ndb = function(){
+newDeployDisplay = function(){
 	$('#new_deploy_option_form').on('submit',function(event){
 		event.preventDefault();
 		var data = $(event.target).serialize();
@@ -233,9 +233,9 @@ overylayWork = function(event){
 
 		$(this).find(".subData").empty().html(data).toggleClass('hidden')
 		$(this).find(".holdingImage").toggleClass('hidden')
-		nds()
-		nd()
-		dd()
+		newDeployStep()
+		newDeploy()
+		deployDisplay()
 	};
 
 	if (!hs) {
