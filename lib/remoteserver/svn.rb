@@ -49,15 +49,6 @@ module Remoteserver
             Rails.logger.debug output
             outputs << output
 
-            Rails.logger.debug output
-
-            output = Rye.shell :rm, :r, :f, "#{export_dir}"
-
-              outputs << output
-
-            Rails.logger.debug output
-
-            output = file_operations.process_deploy_options rbox, deploy_options, server
             output = file_operations.upload_operations(rbox, deploy_options, server, app)
             outputs << output
 
