@@ -14,7 +14,7 @@
 
   <p></p>
 
-  <% if @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name == 'svn' %>
+  <% if @rev_nums %>
     <div class="field form-group">
       <%= f.label :revision_number %>
       <div class="controls">
@@ -23,17 +23,27 @@
     </div>
   <% end %>
 
-  <div class="field form-group">
-    <div class="checkbox">
-      <%= f.label "Run rake db:migrate" %>
-      <%= f.check_box :db_migrate, :class => "checkbox" %>
+  <div class="well well-sm">
+    <span class="pointer" data-clickable="true">PHP Options<span class="caret"></span></span>
+    <div style="display: none;" data-showable="true">
     </div>
   </div>
+  <div class="well well-sm">
+    <span class="pointer" data-clickable="true">Rails Options<span class="caret"></span></span>
+    <div style="display: none;" data-showable="true">
+      <div class="field form-group">
+        <div class="checkbox">
+          <%= f.label "Run rake db:migrate" %>
+          <%= f.check_box :db_migrate, :class => "checkbox" %>
+        </div>
+      </div>
 
-  <div class="field form-group">
-    <div class="checkbox">
-      <%= f.label "Run bundle install in vendor" %>
-      <%= f.check_box :bundle_install, :class => "checkbox" %>
+      <div class="field form-group">
+        <div class="checkbox">
+          <%= f.label "Run bundle install in vendor" %>
+          <%= f.check_box :bundle_install, :class => "checkbox" %>
+        </div>
+      </div>
     </div>
   </div>
 
