@@ -4,7 +4,7 @@ module Remoteserver
     require 'git-ssh-wrapper'
 
     def add_commands(repo_address, rev_num, dest_dir)
-      @git_clone     = "clone #{repo_address} #{dest_dir}/#{rev_num}"
+      @git_clone     = "clone --recursive #{repo_address} #{dest_dir}/#{rev_num}"
       @git_checkout  = "checkout master~#{rev_num}"
 
       Rye::Cmd.add_command :git_fetch, '/usr/bin/git fetch --all'
