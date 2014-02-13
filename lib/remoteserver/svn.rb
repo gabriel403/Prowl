@@ -4,7 +4,7 @@ module Remoteserver
 
     def add_commands(username, password, repo_address, rev_num, dest_dir)
       @svn_up     = "update --username #{username} --no-auth-cache --password #{password}"
-      @svn_co     = "co --username #{username} --password #{password} --no-auth-cache #{repo_address}@#{rev_num} #{rev_num}"
+      @svn_co     = "co --username #{username} --password #{password} --no-auth-cache #{repo_address}@#{rev_num} #{dest_dir}/#{rev_num}"
       @svn_export = "export --username #{username} --password #{password} --no-auth-cache #{repo_address}@#{rev_num} #{dest_dir}/#{rev_num}"
       Rye::Cmd.add_command :svn_up, "/usr/bin/svn #{@svn_up}"
       Rye::Cmd.add_command :svn_co, "/usr/bin/svn #{@svn_co}"
@@ -30,6 +30,10 @@ module Remoteserver
             # svn up
           elsif deploy_options.checkout_export_update.deploy_step_type_option.name == "checkout_clone"
             # svn co
+            # probably the same steps as else except we co
+            Rails.logger.debug "going for a local co"
+
+            file_operations.upload_operations(rbox, deploy_options, server, app)
           else
             # svn export
             Rails.logger.debug "going for a local export"
@@ -45,26 +49,16 @@ module Remoteserver
             Rails.logger.debug output
             outputs << output
 
-            output = rbox.dir_upload "#{export_dir}/#{deploy_options.rev_num}", "#{deploy_options.destination}"
             Rails.logger.debug output
-            outputs << output
 
             output = Rye.shell :rm, :r, :f, "#{export_dir}"
-            Rails.logger.debug output
-            outputs << output
 
-            if deploy_options.deployed_symlink
-              output = rbox.ln :s, :f, :n, "#{deploy_options.destination}/#{deploy_options.rev_num}", "#{deploy_options.deployed_symlink.value}"
-              Rails.logger.debug output
               outputs << output
-            end
 
-            output = file_operations.pre_do_chmod rbox, deploy_options.destination, deploy_options.rev_num
             Rails.logger.debug output
-            outputs << output
 
             output = file_operations.process_deploy_options rbox, deploy_options, server
-            Rails.logger.debug output
+            output = file_operations.upload_operations(rbox, deploy_options, server, app)
             outputs << output
 
             result = outputs.join("\r\n")
@@ -98,8 +92,10 @@ module Remoteserver
       vcs_password = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
       vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
       rev_nums = []
+      revnums = `#{vcs_conn_str}`
       revnums.split("\n").each {|ele| 
         rev_num = /r(?<rev_num>\d+)/.match(ele) 
+        if rev_num
           rev_nums << rev_num[:rev_num]
         end
       }
