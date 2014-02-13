@@ -92,5 +92,19 @@ module Remoteserver
       return success, result
     end
 
+    def self.get_rev_nums(app)
+      vcs_location = app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_location"}.value
+      vcs_username = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
+      vcs_password = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
+      vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
+      rev_nums = []
+      revnums.split("\n").each {|ele| 
+        rev_num = /r(?<rev_num>\d+)/.match(ele) 
+          rev_nums << rev_num[:rev_num]
+        end
+      }
+      return rev_nums
+    end
+
   end
 end

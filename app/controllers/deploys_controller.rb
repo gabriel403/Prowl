@@ -44,18 +44,9 @@ class DeploysController < ApplicationController
     vcs_type     = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
 
     if 'svn' == vcs_type
-      vcs_location = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_location"}.value
-      vcs_username = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
-      vcs_password = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
-      @vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
-      @rev_nums = []
-      revnums = `#{@vcs_conn_str}`
-      revnums.split("\n").each {|ele| 
-        rev_num = /r(?<rev_num>\d+)/.match(ele) 
-        if rev_num
-          @rev_nums << rev_num[:rev_num]
-        end
-      }
+      @rev_nums = Remoteserver::Svn.get_rev_nums(@app)
+    elsif 'git' == vcs_type
+      @rev_nums = Remoteserver::Git.get_rev_nums(@app)
     end
 
     if success
