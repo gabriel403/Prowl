@@ -8,9 +8,12 @@ gem 'le'
 gem 'resque'
 gem 'resque-web', require: 'resque_web'
 # gem 'newrelic_rpm'
-# gem 'git'
 # gem 'rb-libsvm'
 # gem 'svn_wc'
+
+# gem 'git'
+# gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development', submodules: true
+gem 'git-ssh-wrapper'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
