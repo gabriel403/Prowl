@@ -46,7 +46,7 @@
               <% lastDeploy.deploy_options.each do |deploy_option| %>
                 <div class="row">
                   <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-                  <div class="col-md-6 text-right no-padding"><%= deploy_option.value %></div>
+                  <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
                 </div>
               <% end %>
               <% if 'finished' == lastDeploy.status %>
@@ -64,7 +64,7 @@
               <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
                 <div class="row">
                   <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-                  <div class="col-md-6 text-right no-padding"><%= deploy_option.value %></div>
+                  <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
                 </div>
               <% end %>
             <% end %>
