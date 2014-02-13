@@ -4,7 +4,7 @@
   <% else %>
   <div class="col-md-5"><%= link_to deploy_step.deploy_step_type_option.name.titleize, [:edit, deploy_step], :class => 'deploy_step_details' %></div>
   <% end %>
-  <div class="col-md-6"><%= deploy_step.value.length == 0 ? deploy_step.deploy_step_type_option.name : deploy_step.value %></div>
+  <div class="col-md-6"><%= deploy_step.value.length == 0 ? deploy_step.deploy_step_type_option.name : 'auth_value' == deploy_step.deploy_step_type_option.name ? "***********" : deploy_step.value %></div>
   <div class="col-md-1">
     <div class="btn-group">
       <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">

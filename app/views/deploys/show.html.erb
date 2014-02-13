@@ -22,6 +22,13 @@
   <div class="col-md-8"><%= @deploy.created_at %></div>
 </div>
 
+<% @deploy.deploy_options.each do |deploy_option| %>
+  <div class="row">
+    <div class="col-md-4"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
+    <div class="col-md-8"><%= truncate(deploy_option.value, :length => 10) %></div>
+  </div>
+<% end %>
+
 <% if @deploy.status == 'processing' || @deploy.status == 'pending' %>
   <%= form_for @deploy, :url => edit_deploy_path(@deploy), :class => "form-control", :method => "patch" do |f| %>
   <div class="row">
