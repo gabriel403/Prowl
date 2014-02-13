@@ -135,6 +135,10 @@ newDeploy = function(){
 
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
+
+			$("[data-clickable]").on('click', function(event){
+				$(this).parent().children('[data-showable]').slideToggle("fast");
+			});
 			newDeployDisplay()
 		}
 		var id = getAppId();
@@ -298,3 +302,18 @@ $( document ).on('page:load', function(){
 $( document ).ready(function(){
 	$(".clickToExpandThingy").click(overylayWork)
 })
+
+$( document ).on('page:load', function(){
+	$("[data-clickable]").on('click', function(event){
+		$(this).parent().children('[data-showable]').slideToggle("fast");
+	});
+})
+
+$( document ).ready(function(){
+	$("[data-clickable]").on('click', function(event){
+		$(this).parent().children('[data-showable]').slideToggle("fast");
+	});
+})
+
+
+
