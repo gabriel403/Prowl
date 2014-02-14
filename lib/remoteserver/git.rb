@@ -45,6 +45,7 @@ module Remoteserver
           @outputs << output
         else
           Rails.logger.debug "going for a remote deploy"
+          add_commands(deploy_options.vcs_location, deploy_options.rev_num, '/tmp/prowl')
           if force
             # rbox.git_fetch
             rbox.git_reset
@@ -53,8 +54,6 @@ module Remoteserver
           result = rbox.git('pull')
           success = true
         end
-
-
 
         success = true
       rescue Exception => e
@@ -76,6 +75,10 @@ module Remoteserver
         vcs_password = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}
         vcs_password = vcs_password ? vcs_password.value : vcs_password
 
+        if !vcs_location || !vcs_password
+          rev_nums << 'HEAD'
+          return rev_nums
+        end
         # cred = Rugged::Credentials::SshKey.new username: 'jarvis', publickey: publickey, privatekey: privatekey
         # Rails.logger.debug cred
 
