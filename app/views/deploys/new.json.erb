@@ -1,4 +1,4 @@
-<h1>New Deploy <small>for <%= @app.name.titleize %></small></h1>
+<h1>New Deploy <small>for <%= @env.name.titleize %></small></h1>
 
 <%= form_for @deploy_option_form, :url => deploys_path, :class => "form-control", :html => {:'data-type' => 'json'} do |f| %>
   <% if @deploy_option_form.errors.any? %>

@@ -21,6 +21,7 @@ Prowl::Application.routes.draw do
 
   resources :users
   resources :apps
+  resources :environments
   resources :servers
 
   get  "server_app/link/:id/:from_type",      to: 'server_app#link', as: 'app_servers'

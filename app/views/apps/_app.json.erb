@@ -6,52 +6,95 @@
   <div class="col-md-6"><strong>Description:</strong></div>
   <div class="col-md-6"><%= @app.description %></div>
 </div>
+
 <div class="row">
-  <div class="col-md-6"><strong>Servers:</strong></div>
+  <div class="col-md-6"><strong>Environments:</strong></div>
   <div class="col-md-6">
-    <% @app.servers.each do |server| %>
-      <%= server.name %><br />
-    <% end %>
   </div>
 </div>
-<!-- <div class="row">
-  <div class="col-md-6"><strong>Environments:</strong></div>
-  <div class="col-md-6">Staging</div>
-</div> -->
-<br>
-<button type="button" id="newDeploy" class="btn btn-info">Deploy</button>
-<p></p>
-<table class="table table-bordered table-hover">
-  <thead>
-    <tr>
-      <th>Deploy Status</th>
-      <th>Deploy Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render @app.deploys.limit(5).order("created_at DESC") %>
-  </tbody>
-</table>
+<div>
+<%
+  app.environments.each do |env|
+    limitedRecs = env.deploys.limit(5).order("created_at DESC").to_a
+    finishCount = 0
+    failedCount = 0
+    pendingCount = env.deploys.where(:status => "pending").count
+    limitedRecs.each {|dep| if dep.status == 'finished' then finishCount = finishCount+1 end }
+    limitedRecs.each {|dep| if dep.status == 'finished' then failedCount = failedCount+1 end } 
+    lastFinishedDeploy = env.deploys.where(:status => "finished").last
+    lastDeploy = env.deploys.last
 
-<h3>Deploy Steps</h3>
-
-<%= link_to 'New Deploy Step', new_deploy_step_path(:appid => @app.id), :class => "btn btn-info", :id => 'newDeployStep' %>
-
-<div id="deployStepsList">
-  <% order_num = -1
-  @app.deploy_steps.each do |deploy_step|
-    if order_num != deploy_step.order
-      strcontent = (0 != deploy_step.order) ? "Step ##{deploy_step.order}" : "Generic Attribute" %>
+    if lastDeploy
+      case lastDeploy.status
+      when 'finished'
+        lastDeployClass = 'success'
+      when 'failed'
+        lastDeployClass = 'danger'
+      when 'pending'
+        lastDeployClass = 'info'
+      when 'processing'
+        lastDeployClass = 'info'
+      end
+    end
+%>
+    <div class="alert alert-<%= lastDeployClass %> pointer envClickable" id='env_<%= env.id %>'>
+      <div class="clearfix">
+        <h4 class='pull-left'>
+          <%= env.name %>
+        </h4>
+        <h4 class='pull-right'>
+          <small><span class="label label-info"><%= pluralize(pendingCount, "pending deploy") %></span></small>
+        </h4>
+      </div>
+      <div>
+      <% if lastDeploy %>
         <div class="row">
-          <div class="col-md-6">
-            <div class="panel">
-              <h4><%= strcontent %></h4>
-            </div>
-          </div>
-          <div class="col-md-6">&nbsp;</div>
+          <div class="col-md-6 no-padding"><strong>Last deploy status:</strong></div>
+          <div class="col-md-6 text-right no-padding"><%= lastDeploy.status.titleize %></div>
         </div>
-      <% order_num = deploy_step.order
-    end %>
-    <%= render deploy_step %>
+        <% lastDeploy.deploy_options.each do |deploy_option| %>
+          <div class="row">
+            <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
+            <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
+          </div>
+        <% end %>
+        <% if 'finished' == lastDeploy.status %>
+          <div class="row">
+            <div class="col-md-6 no-padding"><strong>At:</strong></div>
+            <div class="col-md-6 text-right no-padding"><%= lastDeploy.updated_at %></div>
+          </div>
+        <% end %>
+      <% end %>
+      <% if lastFinishedDeploy && 'finished' != lastDeploy.status %>
+        <div class="row">
+          <div class="col-md-6 no-padding"><strong>Last successful deploy at:</strong></div>
+          <div class="col-md-6 text-right no-padding"><%= lastFinishedDeploy.updated_at %></div>
+        </div>
+        <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
+          <div class="row">
+            <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
+            <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
+          </div>
+        <% end %>
+      <% end %>
+      </div>
+      <div class="clearfix">
+        <div class='pull-left'>
+          <%= finishCount %> of the last <%= limitedRecs.count %> builds succeeded.<br>
+        </div>
+        <div class='pull-right'>
+          <%
+          successRate = 0
+          if env.deploys.count > 0
+            successRate = (env.deploys.where(:status => 'finished').count.to_f/env.deploys.count.to_f)*100.0
+          end
+          %>
+
+          <%= number_to_percentage(successRate, strip_insignificant_zeros: true, precision: 1) %> success overall
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
   <% end %>
 </div>
