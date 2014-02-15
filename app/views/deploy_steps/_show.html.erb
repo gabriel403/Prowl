@@ -17,7 +17,7 @@
     <% deploy_step.additional.each do |key, value| %>
       <div class="col-md-8"></div>
       <div class="col-md-1"><%= key %></div>
-      <div class="col-md-1"><%= value %></div>
+      <div class="col-md-1"><%= truncate(value, :length => 40) %></div>
       <div class="col-md-2"></div>
       <br>
     <% end %>

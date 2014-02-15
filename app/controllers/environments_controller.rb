@@ -10,6 +10,7 @@ class EnvironmentsController < ApplicationController
   # GET /environments/1
   # GET /environments/1.json
   def show
+    @app = @environment.app
   end
 
   # GET /environments/new
@@ -19,20 +20,34 @@ class EnvironmentsController < ApplicationController
 
   # GET /environments/1/edit
   def edit
+    @app = @environment.app
   end
 
   # POST /environments
   # POST /environments.json
   def create
+    @app = App.find(params[:appid])
     @environment = Environment.new(environment_params)
+    @environment.apps << @app
+
+    @server = Server.find(params[:environment][:servers])
+    if @server
+      @environment.servers << @server
+    end
+
+    # @app.environments << @environment
 
     respond_to do |format|
       if @environment.save
-        format.html { redirect_to @environment, notice: 'Environment was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @environment }
+        # @app.environments << @environment
+        @app.save
+        flash[:notice] = 'Environment was successfully created.'
+        format.html { redirect_to @environment }
+        format.js { render action: 'show', status: :created, location: @environment }
       else
+        flash[:error] = 'Failed to save environment.'
         format.html { render action: 'new' }
-        format.json { render json: @environment.errors, status: :unprocessable_entity }
+        format.js { render json: @environment.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -42,9 +57,11 @@ class EnvironmentsController < ApplicationController
   def update
     respond_to do |format|
       if @environment.update(environment_params)
-        format.html { redirect_to @environment, notice: 'Environment was successfully updated.' }
+        flash[:notice] = 'Environment was successfully updated.'
+        format.html { redirect_to @environment }
         format.json { head :no_content }
       else
+        flash[:error] = 'Failed to save environment.'
         format.html { render action: 'edit' }
         format.json { render json: @environment.errors, status: :unprocessable_entity }
       end

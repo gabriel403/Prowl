@@ -23,12 +23,11 @@
 
     <div class="btn-group">
       <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-        Servers <span class="caret"></span>
+        Environments <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><%= link_to 'List', servers_path %></li>
-        <li><%= link_to 'New', new_server_path %></li>
-        <li><%= link_to 'Add A Deploy Target', app_servers_path(@app,'app') %></li>
+        <li><%= link_to 'List', environments_path %></li>
+        <li><a href='#' data-toggle="modal" data-target="#newEnvironmentModal" data-keyboard="true">New</a></li>
       </ul>
     </div>
   </h1>
@@ -52,6 +51,23 @@
           @url = deploy_steps_path(@deploy_step, :appid => @app.id)
         %>
         <%= render 'deploy_steps/form' %>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="newEnvironmentModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div id="flash_message"></div>
+        <% @environment = Environment.new %>
+        <%= render 'environments/form' %>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

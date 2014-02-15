@@ -7,35 +7,10 @@
   <div class="col-md-8"><%= @app.description %></div>
 </div>
 <div class="row">
-  <div class="col-md-4"><strong>Servers:</strong></div>
+  <div class="col-md-4"><strong>Environments:</strong></div>
   <div class="col-md-8">
-    <% @app.servers.each do |server| %>
-      <%= server.name %><br />
+    <% @app.environments.each do |environment| %>
+      <%= link_to environment.name, environment %><br />
     <% end %>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-4"><strong>Environments:</strong></div>
-  <div class="col-md-8">Staging</div>
-</div>
-
-<h3>Deploy Steps</h3>
-
-<div id="deployStepsList">
-  <% order_num = -1
-  @app.deploy_steps.each do |deploy_step|
-    if order_num != deploy_step.order
-      strcontent = (0 != deploy_step.order) ? "Step ##{deploy_step.order}" : "Generic Attribute" %>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="panel" style="background-color: #d9edf7">
-              <div class="panel-heading"><%= strcontent %></div>
-            </div>
-          </div>
-          <div class="col-md-8">&nbsp;</div>
-        </div>
-      <% order_num = deploy_step.order
-    end %>
-    <%= render deploy_step %>
-  <% end %>
 </div>

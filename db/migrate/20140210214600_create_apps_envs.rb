@@ -1,4 +1,4 @@
-class CreateAppsEnvsServers < ActiveRecord::Migration
+class CreateAppsEnvs < ActiveRecord::Migration
   def change
     create_table :apps_environments do |t|
       t.integer :app_id

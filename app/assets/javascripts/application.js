@@ -141,7 +141,7 @@ newDeploy = function(){
 			});
 			newDeployDisplay()
 		}
-		var id = getAppId();
+		var id = getEnvId();
 		if (!hideShow(this)) {
 			hideShow(this)
 		}
@@ -201,7 +201,16 @@ getAppId = function() {
 	if (!$('.overOverlay').attr('id')) {
 		return id
 	}
-	var res = $('.overOverlay').attr('id').match(/\d/gi);
+	var res = $('.overOverlay').attr('id').match(/\d+/gi);
+	if (res && res.length > 0) {
+		id = res[0];
+	}
+	return id
+}
+
+getEnvId = function() {
+	var id = false
+	var res = $(".envClickable").attr('id').match(/\d+/gi);
 	if (res && res.length > 0) {
 		id = res[0];
 	}
@@ -237,9 +246,20 @@ overylayWork = function(event){
 
 		$(this).find(".subData").empty().html(data).toggleClass('hidden')
 		$(this).find(".holdingImage").toggleClass('hidden')
-		newDeployStep()
-		newDeploy()
-		deployDisplay()
+		$(this).find(".envClickable").on('click', function(event){
+			$(this).parent().find(".envClickable").not(this).remove();
+			var id = getEnvId();
+			var successFunc = function(data, textStatus, jqXHR) {
+				if ($(this).find('.expandedEnv').length == 0) {
+					$(this).children('.panel-body').append("<div class='expandedEnv'></div>");
+				}
+				$(this).find('.expandedEnv').empty().append(data);
+				newDeployStep()
+				newDeploy()
+				deployDisplay()
+			}
+			populateNextCol(nextCol.children(".panel:not(.hidden)"), '/environments/'+id, successFunc)
+		});
 	};
 
 	if (!hs) {
@@ -315,5 +335,8 @@ $( document ).ready(function(){
 	});
 })
 
+$(document).bind("ajaxComplete", function(event, response){
+	flash_checker(response);
+ });
 
 

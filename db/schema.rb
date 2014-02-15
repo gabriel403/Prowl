@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140206195204) do
+ActiveRecord::Schema.define(version: 20140215003546) do
+
+  create_table "_environments_old_20140214", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "app_setups", force: true do |t|
     t.string   "name"
@@ -29,13 +35,6 @@ ActiveRecord::Schema.define(version: 20140206195204) do
   end
 
   add_index "apps", ["user_id"], name: "index_apps_on_user_id"
-
-  create_table "apps_servers", force: true do |t|
-    t.integer "app_id"
-    t.integer "server_id"
-  end
-
-  add_index "apps_servers", ["app_id", "server_id"], name: "index_apps_servers_on_app_id_and_server_id", unique: true
 
   create_table "authentication_types", force: true do |t|
     t.string   "name"
@@ -76,25 +75,40 @@ ActiveRecord::Schema.define(version: 20140206195204) do
     t.integer  "deploy_step_type_option_id"
     t.string   "value"
     t.string   "additional",                 default: "{}"
-    t.integer  "app_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "environment_id"
   end
 
   add_index "deploy_steps", ["deploy_step_type_option_id"], name: "index_deploy_steps_on_deploy_step_type_option_id"
+  add_index "deploy_steps", ["environment_id"], name: "index_deploy_steps_on_environment_id"
 
   create_table "deploys", force: true do |t|
-    t.string   "status",     default: "pending"
-    t.text     "output",     default: ""
-    t.integer  "app_id"
+    t.string   "status",         default: "pending"
+    t.text     "output",         default: ""
     t.integer  "server_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.integer  "environment_id"
   end
 
-  add_index "deploys", ["app_id"], name: "index_deploys_on_app_id"
+  add_index "deploys", ["environment_id"], name: "index_deploys_on_environment_id"
   add_index "deploys", ["user_id"], name: "index_deploys_on_user_id"
+
+  create_table "environments", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "app_id"
+  end
+
+  create_table "environments_servers", force: true do |t|
+    t.integer "environment_id"
+    t.integer "server_id"
+  end
+
+  add_index "environments_servers", ["environment_id", "server_id"], name: "index_environments_servers_on_environment_id_and_server_id", unique: true
 
   create_table "servers", force: true do |t|
     t.string   "name"

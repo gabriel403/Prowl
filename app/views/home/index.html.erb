@@ -4,91 +4,75 @@
     <div class="panel panel-default">
       <div class="panel-heading">Apps</div>
       <div class="panel-body">
-        <% App.all.each do |app|
-          limitedRecs = app.deploys.limit(5).order("created_at DESC").to_a
-          finishCount = 0
-          failedCount = 0
-          pendingCount = app.deploys.where(:status => "pending").count
-          limitedRecs.each {|dep| if dep.status == 'finished' then finishCount = finishCount+1 end }
-          limitedRecs.each {|dep| if dep.status == 'finished' then failedCount = failedCount+1 end } 
-          lastFinishedDeploy = app.deploys.where(:status => "finished").last
-          lastDeploy = app.deploys.last
+        <% App.all.each do |app| %>
+          <div class="alert alert-general pointer clickToExpandThingy" id="app<%= app.id %>">
+            <div class="clearfix"><h4><%= app.name %></h4></div>
+<%
+            app.environments.each do |env|
+              limitedRecs = env.deploys.limit(5).order("created_at DESC").to_a
+              finishCount = 0
+              failedCount = 0
+              pendingCount = env.deploys.where(:status => "pending").count
+              limitedRecs.each {|dep| if dep.status == 'finished' then finishCount = finishCount+1 end }
+              limitedRecs.each {|dep| if dep.status == 'finished' then failedCount = failedCount+1 end } 
+              lastFinishedDeploy = env.deploys.where(:status => "finished").last
+              lastDeploy = env.deploys.last
 
-          if lastDeploy
-            case lastDeploy.status
-            when 'finished'
-              lastDeployClass = 'success'
-            when 'failed'
-              lastDeployClass = 'danger'
-            when 'pending'
-              lastDeployClass = 'info'
-            when 'processing'
-              lastDeployClass = 'info'
-            end
-          end
-
-          %>
-          <div class="alert alert-<%= lastDeployClass %> pointer clickToExpandThingy" id="app<%= app.id %>">
-            <div class="clearfix">
-              <h4 class='pull-left'>
-                <%= app.name %>
-              </h4>
-              <h4 class='pull-right'>
-                <small><span class="label label-info"><%= pluralize(pendingCount, "pending deploy") %></span></small>
-              </h4>
-            </div>
-            <div>
-            <% if lastDeploy %>
-              <div class="row">
-                <div class="col-md-6 no-padding"><strong>Last deploy status:</strong></div>
-                <div class="col-md-6 text-right no-padding"><%= lastDeploy.status.titleize %></div>
-              </div>
-              <% lastDeploy.deploy_options.each do |deploy_option| %>
-                <div class="row">
-                  <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-                  <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
-                </div>
-              <% end %>
-              <% if 'finished' == lastDeploy.status %>
-                <div class="row">
-                  <div class="col-md-6 no-padding"><strong>At:</strong></div>
-                  <div class="col-md-6 text-right no-padding"><%= lastDeploy.updated_at %></div>
-                </div>
-              <% end %>
-            <% end %>
-            <% if lastFinishedDeploy && 'finished' != lastDeploy.status %>
-              <div class="row">
-                <div class="col-md-6 no-padding"><strong>Last successful deploy at:</strong></div>
-                <div class="col-md-6 text-right no-padding"><%= lastFinishedDeploy.updated_at %></div>
-              </div>
-              <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
-                <div class="row">
-                  <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-                  <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
-                </div>
-              <% end %>
-            <% end %>
-            </div>
-            <div class="clearfix">
-              <div class='pull-left'>
-                <%= finishCount %> of the last <%= limitedRecs.count %> builds succeeded.<br>
-              </div>
-              <div class='pull-right'>
-                <% 
-                successRate = 0
-                if app.deploys.count > 0
-                  successRate = (app.deploys.where(:status => 'finished').count.to_f/app.deploys.count.to_f)*100.0
+              if lastDeploy
+                case lastDeploy.status
+                when 'finished'
+                  lastDeployClass = 'success'
+                when 'failed'
+                  lastDeployClass = 'danger'
+                when 'pending'
+                  lastDeployClass = 'info'
+                when 'processing'
+                  lastDeployClass = 'info'
                 end
-                %>
-
-                <%= number_to_percentage(successRate, strip_insignificant_zeros: true, precision: 1) %> success overall
+              end
+%>
+              <div class="alert alert-<%= lastDeployClass %>">
+                <div class="clearfix">
+                  <h4 class='pull-left'>
+                    <%= env.name %>
+                  </h4>
+                  <h4 class='pull-right'>
+                    <small><span class="label label-info"><%= pluralize(pendingCount, "pending deploy") %></span></small>
+                  </h4>
+                </div>
+                <div>
+                <% if lastDeploy %>
+                  <div class="row">
+                    <div class="col-md-6 no-padding"><strong>Last deploy status:</strong></div>
+                    <div class="col-md-6 text-right no-padding"><%= lastDeploy.status.titleize %></div>
+                  </div>
+                  <% if 'finished' == lastDeploy.status %>
+                    <div class="row">
+                      <div class="col-md-6 no-padding"><strong>At:</strong></div>
+                      <div class="col-md-6 text-right no-padding"><%= lastDeploy.updated_at %></div>
+                    </div>
+                  <% end %>
+                <% end %>
+                <% if lastFinishedDeploy && 'finished' != lastDeploy.status %>
+                  <div class="row">
+                    <div class="col-md-6 no-padding"><strong>Last successful deploy at:</strong></div>
+                    <div class="col-md-6 text-right no-padding"><%= lastFinishedDeploy.updated_at %></div>
+                  </div>
+                  <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
+                    <div class="row">
+                      <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
+                      <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
+                    </div>
+                  <% end %>
+                <% end %>
+                </div>
+                <div>
+                </div>
               </div>
             </div>
-            <div>
-            </div>
-          </div>
-        <% end %>
-      </div>
+          <% end %>
+      <% end %>
+        </div>
     </div>
   </div>
   <div class="col-md-4">
@@ -113,7 +97,7 @@
                 <%= server.name %> <small><%= server.host %></small>
               </h4>
               <h4 class='pull-right'>
-                <small><span class="label label-info"><%= pluralize(server.apps.count, "app") %></span></small>
+                <small><span class="label label-info"><%= pluralize(server.environments.count, "app") %></span></small>
               </h4>
             </div>
             User <%= server.username %> accesses by
