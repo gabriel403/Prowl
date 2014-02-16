@@ -7,10 +7,12 @@ module Remoteserver
       require 'net/http'
       include Rails.application.routes.url_helpers
 
-      def send_update(hooks, deploy, status)
+      def send_update(deploy, status)
+        hooks = deploy.environment.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_hook"}
         if !hooks
           return false
         end
+
         hooks.each do |hook|
           if !hook.additional.has_key?("url")
             next
@@ -25,13 +27,13 @@ module Remoteserver
 
           case status
           when :pending
-            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.app)}|#{deploy.app.name}> has been triggered by #{deploy.user.email.split('@')[0].titleize}"
+            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.environment.app)}|#{deploy.environment.app.name} on #{deploy.environment.name}> has been triggered by #{deploy.user.email.split('@')[0].titleize}"
           when :processing
-            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.app)}|#{deploy.app.name}> has been pick up from the queue and is processing"
+            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.environment.app)}|#{deploy.environment.app.name} on #{deploy.environment.name}> has been pick up from the queue and is processing"
           when :finished
-            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.app)}|#{deploy.app.name}> has finished successfully"
+            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.environment.app)}|#{deploy.environment.app.name} on #{deploy.environment.name}> has finished successfully"
           when :failed
-            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.app)}|#{deploy.app.name}> has failed"
+            message = "Deployment <#{deploy_url(deploy)}|#{deploy.id}> for <#{app_url(deploy.environment.app)}|#{deploy.environment.app.name} on #{deploy.environment.name}> has failed"
           else
             return false
           end

@@ -4,7 +4,7 @@ class DeploysController < ApplicationController
   require "remoteserver/deploy_hooks"
 
   def index
-    @app = App.find(params[:id])
+    @environment = Environment.find(params[:id])
   end
 
   def show
@@ -66,10 +66,10 @@ class DeploysController < ApplicationController
   def create
     dof = DeployOptionForm.new(params[:deploy_option_form])
 
-    app = App.find(params[:id])
+    environment = Environment.find(params[:id])
 
-    app.servers.each do |server|
-      @deploy = Deploy.new(app: app, server: server)
+    environment.servers.each do |server|
+      @deploy = Deploy.new(environment: environment, server: server)
       @deploy.user = current_user
       if !@deploy.save
         raise "Unable to save deploy"
@@ -83,14 +83,10 @@ class DeploysController < ApplicationController
         doe.save
       end
 
-      Resque.enqueue(Tasks::Deployment, app.id, server.id, @deploy.id, true)
+      Resque.enqueue(Tasks::Deployment, environment.id, server.id, @deploy.id, true)
     end
 
-    deploy_hooks_ray = app.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_hook"}
-    if deploy_hooks_ray
-      Remoteserver::DeployHooks.send_update deploy_hooks_ray, @deploy, :pending
-    end
-
+    Remoteserver::DeployHooks.send_update @deploy, :pending
 
     respond_to do |format|
       format.html { redirect_to @deploy, :flash => { :alert => 'Deployment has been queued.' } }
@@ -102,6 +98,7 @@ class DeploysController < ApplicationController
     @deploy = Deploy.find(params[:id])
 
     if @deploy.update_attributes(status: :failed)
+      Remoteserver::DeployHooks.send_update @deploy, :failed
       redirect_to :back, :flash => { :success => 'Deploy was failed.' }
     else
       redirect_to :back, :flash => { :success => 'Failed to fail the deploy.' }
