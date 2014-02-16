@@ -220,17 +220,19 @@ getEnvId = function() {
 overylayWork = function(event){
 	if (!$(this).closest(".panel-body").find('.smallOverlay').length) {
 		$(this).closest(".panel-body").append("<div class='smallOverlay'></div>")
-		$(this).closest(".panel-body").find('.smallOverlay').click(overylayWork)
+		$(this).closest(".panel-body").find('.smallOverlay').on('click', overylayWork)
 	}
 
-	$(this).closest(".panel-body").find('.smallOverlay').toggleClass('overlay')
-	if ($(this).closest(".panel-body").find('.overOverlay').length) {
-		$(this).closest(".panel-body").find('.overOverlay').toggleClass('overOverlay')
-	} else {
+	if (!$(this).closest(".panel-body").find('.overOverlay').length) {
+		$(this).closest(".panel-body").find('.smallOverlay').toggleClass('overlay')
 		$(this).toggleClass('overOverlay')
 	}
 
 	var hs = hideShow(this)
+
+	if (!hs) {
+		return
+	}
 
 	if (this.id.search("app") != 0) {
 		console.log("no app")
@@ -244,6 +246,22 @@ overylayWork = function(event){
 			return;
 		}
 
+		$('.jizz, .overOverlay').on('click', function(e){
+			if ((!$(e.target).hasClass('overOverlay') && !$(e.target).closest('.overOverlay').length) &&
+				( $(e.target).closest('.pointer').length || $(e.target).closest('button').length
+				|| $(e.target).closest('a').length || $(e.target).hasClass('btn'))
+			) {
+				return;
+			}
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.smallOverlay').toggleClass('overlay')
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.overOverlay').toggleClass('overOverlay')
+			$(".panel:not(.hidden) .subs:not(.hidden)").closest('.col-md-4').children('.panel').toggleClass('hidden');
+			$(".panel.hidden .subs.holdingImage.hidden").parent().children('.subs').toggleClass('hidden')
+			$(".jizz").off()
+			$(".clickToExpandThingy").off()
+			appFetching();
+		});
+
 		$(this).find(".subData").empty().html(data).toggleClass('hidden')
 		$(this).find(".holdingImage").toggleClass('hidden')
 		$(this).find(".envClickable").on('click', function(event){
@@ -251,9 +269,11 @@ overylayWork = function(event){
 			var id = getEnvId();
 			var successFunc = function(data, textStatus, jqXHR) {
 				if ($(this).find('.expandedEnv').length == 0) {
-					$(this).children('.panel-body').append("<div class='expandedEnv'></div>");
+					$(this).find('.panel-body .subData').append("<div class='expandedEnv'></div>");
 				}
+
 				$(this).find('.expandedEnv').empty().append(data);
+
 				newDeployStep()
 				newDeploy()
 				deployDisplay()
@@ -262,20 +282,7 @@ overylayWork = function(event){
 		});
 	};
 
-	if (!hs) {
-		return
-	}
-
 	populateNextCol(nextCol.children(".panel:not(.hidden)"), '/apps/'+id, successFunc)
-
-
-	// if ($(".expandMe").width() == "0") {
-	// 	$(".expandMe").animate({ width: '33%' }, 'slow');
-	// 	$(".collapseMe").animate({ width: '0%' }, 'slow', 'swing', postAnimation);
-	// } else {
-	// 	$(".expandMe").animate({ width: '0%' }, 'slow');
-	// 	$(".collapseMe").animate({ width: '33%' }, 'slow', 'swing', postAnimation);
-	// }
 }
 
 hideShow = function(context) {
@@ -315,13 +322,14 @@ populateNextCol = function(context, url, callback) {
 		context:    context
 	});
 }
-$( document ).on('page:load', function(){
-	$(".clickToExpandThingy").click(overylayWork)
-})
 
-$( document ).ready(function(){
-	$(".clickToExpandThingy").click(overylayWork)
-})
+appFetching = function() {
+	$(".clickToExpandThingy").on('click', overylayWork)
+}
+
+$( document ).on('page:load', appFetching);
+
+$( document ).ready(appFetching);
 
 $( document ).on('page:load', function(){
 	$("[data-clickable]").on('click', function(event){

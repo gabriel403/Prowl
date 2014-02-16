@@ -8,70 +8,66 @@
           <div class="alert alert-general pointer clickToExpandThingy" id="app<%= app.id %>">
             <div class="clearfix"><h4><%= app.name %></h4></div>
 <%
-            app.environments.each do |env|
-              limitedRecs = env.deploys.limit(5).order("created_at DESC").to_a
-              finishCount = 0
-              failedCount = 0
-              pendingCount = env.deploys.where(:status => "pending").count
-              limitedRecs.each {|dep| if dep.status == 'finished' then finishCount = finishCount+1 end }
-              limitedRecs.each {|dep| if dep.status == 'finished' then failedCount = failedCount+1 end } 
-              lastFinishedDeploy = env.deploys.where(:status => "finished").last
-              lastDeploy = env.deploys.last
+              app.environments.each do |env|
+                limitedRecs = env.deploys.limit(5).order("created_at DESC").to_a
+                finishCount = 0
+                failedCount = 0
+                pendingCount = env.deploys.where(:status => "pending").count
+                limitedRecs.each {|dep| if dep.status == 'finished' then finishCount = finishCount+1 end }
+                limitedRecs.each {|dep| if dep.status == 'finished' then failedCount = failedCount+1 end } 
+                lastFinishedDeploy = env.deploys.where(:status => "finished").last
+                lastDeploy = env.deploys.last
 
-              if lastDeploy
-                case lastDeploy.status
-                when 'finished'
-                  lastDeployClass = 'success'
-                when 'failed'
-                  lastDeployClass = 'danger'
-                when 'pending'
-                  lastDeployClass = 'info'
-                when 'processing'
-                  lastDeployClass = 'info'
+                if lastDeploy
+                  case lastDeploy.status
+                  when 'finished'
+                    lastDeployClass = 'success'
+                  when 'failed'
+                    lastDeployClass = 'danger'
+                  when 'pending'
+                    lastDeployClass = 'info'
+                  when 'processing'
+                    lastDeployClass = 'info'
+                  end
                 end
-              end
-%>
-              <div class="alert alert-<%= lastDeployClass %>">
-                <div class="clearfix">
-                  <h4 class='pull-left'>
-                    <%= env.name %>
-                  </h4>
-                  <h4 class='pull-right'>
-                    <small><span class="label label-info"><%= pluralize(pendingCount, "pending deploy") %></span></small>
-                  </h4>
-                </div>
-                <div>
-                <% if lastDeploy %>
-                  <div class="row">
-                    <div class="col-md-6 no-padding"><strong>Last deploy status:</strong></div>
-                    <div class="col-md-6 text-right no-padding"><%= lastDeploy.status.titleize %></div>
+  %>
+                <div class="alert alert-<%= lastDeployClass %>">
+                  <div class="clearfix">
+                    <h4 class='pull-left'>
+                      <%= env.name %>
+                    </h4>
+                    <h4 class='pull-right'>
+                      <% if lastDeploy %>
+                        <%= lastDeploy.status.titleize %>
+                      <% end %>
+                      <small><span class="label label-info"><%= pluralize(pendingCount, "pending deploy") %></span></small>
+                    </h4>
                   </div>
-                  <% if 'finished' == lastDeploy.status %>
+                  <div>
+                  <% if lastDeploy %>
                     <div class="row">
                       <div class="col-md-6 no-padding"><strong>At:</strong></div>
                       <div class="col-md-6 text-right no-padding"><%= lastDeploy.updated_at %></div>
                     </div>
                   <% end %>
-                <% end %>
-                <% if lastFinishedDeploy && 'finished' != lastDeploy.status %>
-                  <div class="row">
-                    <div class="col-md-6 no-padding"><strong>Last successful deploy at:</strong></div>
-                    <div class="col-md-6 text-right no-padding"><%= lastFinishedDeploy.updated_at %></div>
                   </div>
-                  <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
-                    <div class="row">
-                      <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-                      <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
-                    </div>
-                  <% end %>
-                <% end %>
-                </div>
-                <div>
+                  <div>
+                  </div>
                 </div>
               </div>
-            </div>
+            <% end %>
           <% end %>
-      <% end %>
+          <div class="alert alert-general">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                Server Management <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Apps', apps_path %></li>
+                <li><%= link_to 'New App', new_app_path %></li>
+              </ul>
+            </div>
+          </div>
         </div>
     </div>
   </div>
@@ -104,6 +100,17 @@
             <%= server.authentication_type.name %>
           </div>
         <% end %>
+        <div class="alert alert-general">
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Server Management <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'Servers', servers_path %></li>
+              <li><%= link_to 'New Server', new_server_path %></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -131,6 +138,17 @@
             </h4>
           </div>
         <% end %>
+        <div class="alert alert-general">
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Server Management <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'Users', users_path %></li>
+              <li><%= link_to 'New User', new_user_path %></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
