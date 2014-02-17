@@ -22,26 +22,43 @@
       </div>
     </div>
   <% end %>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#railsOptions">
+            Rails Options<span class="caret">
+          </a>
+        </h4>
+      </div>
+      <div id="railsOptions" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="field form-group">
+            <div class="checkbox">
+              <%= f.label "Run rake db:migrate" %>
+              <%= f.check_box :db_migrate, :class => "checkbox" %>
+            </div>
+          </div>
 
-  <div class="well well-sm">
-    <span class="pointer" data-clickable="true">PHP Options<span class="caret"></span></span>
-    <div style="display: none;" data-showable="true">
-    </div>
-  </div>
-  <div class="well well-sm">
-    <span class="pointer" data-clickable="true">Rails Options<span class="caret"></span></span>
-    <div style="display: none;" data-showable="true">
-      <div class="field form-group">
-        <div class="checkbox">
-          <%= f.label "Run rake db:migrate" %>
-          <%= f.check_box :db_migrate, :class => "checkbox" %>
+          <div class="field form-group">
+            <div class="checkbox">
+              <%= f.label "Run bundle install in vendor" %>
+              <%= f.check_box :bundle_install, :class => "checkbox" %>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="field form-group">
-        <div class="checkbox">
-          <%= f.label "Run bundle install in vendor" %>
-          <%= f.check_box :bundle_install, :class => "checkbox" %>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#phpOptions">
+            PHP Options<span class="caret">
+          </a>
+        </h4>
+      </div>
+      <div id="phpOptions" class="panel-collapse collapse">
+        <div class="panel-body">
         </div>
       </div>
     </div>
