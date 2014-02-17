@@ -1,18 +1,34 @@
 class UsersController < ApplicationController
   def index
     @users = User.all
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def show
     @user = User.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def new
     @user = User.new
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def edit
     @user = User.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def create
@@ -25,7 +41,11 @@ class UsersController < ApplicationController
       app_setup.value = 'false'
       app_setup.save
 
-      redirect_to @user, :flash => { :success => 'User was successfully created.' }
+      flash[:notice] = "User was successfully created."
+      respond_to do |format|
+        format.html { redirect_to @user }
+        format.json { render @user, :location => @user}
+      end
     else
       render :action => 'new'
     end

@@ -1,4 +1,4 @@
-<%= form_for @deploy_step, :url => @url, :class => "form-control", :remote => true do |f| %>
+<%= form_for @deploy_step, :url => @url, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'} do |f| %>
   <% if @deploy_step.errors.any? %>
     <div class="error_explanation">
       <h2><%= pluralize(@deploy_step.errors.count, "error") %> prohibited this deploy step from being saved:</h2>

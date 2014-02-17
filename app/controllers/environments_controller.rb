@@ -16,11 +16,19 @@ class EnvironmentsController < ApplicationController
   # GET /environments/new
   def new
     @environment = Environment.new
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # GET /environments/1/edit
   def edit
     @app = @environment.app
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # POST /environments
