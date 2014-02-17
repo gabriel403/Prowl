@@ -327,9 +327,42 @@ appFetching = function() {
 	$(".clickToExpandThingy").on('click', overylayWork)
 }
 
+linkModalFetching = function() {
+	if (2 == document.location.href.split(document.location.host).length) {
+		if (2 == document.location.href.split(document.location.host)[1].split(/\?locale=.+/).length) {
+			if ('/' !== document.location.href.split(document.location.host)[1].split(/\?locale=.+/)[0]) {
+				return;
+			}
+		} else {
+			return;
+		}
+	} else {
+		return;
+	}
+
+	document.location.href.split(document.location.host)[1].split('?locale=')
+	$('a').on('click', function(event) {
+		event.preventDefault();
+		var url = $(this).attr('href');	
+		var callback = function(data, textStatus, jqXHR){
+			$('#linkerModal .modal-body').html(data);
+			$('#linkerModal').modal()
+		}
+
+		$.ajax({
+			url:        url,
+			success:    callback,
+			dataType:   'json',
+			converters: {"text json":true}
+		});
+	})
+}
+
 $( document ).on('page:load', appFetching);
+$( document ).on('page:load', linkModalFetching);
 
 $( document ).ready(appFetching);
+$( document ).ready(linkModalFetching);
 
 $( document ).on('page:load', function(){
 	$("[data-clickable]").on('click', function(event){

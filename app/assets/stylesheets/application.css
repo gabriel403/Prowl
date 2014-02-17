@@ -23,6 +23,10 @@
        url('../assets/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
+.jizz .btn-group, .jizz .btn-group button, .jizz .btn-group ul {
+  width: 100%;
+}
+
 ul.nav li.dropdown:hover ul.dropdown-menu, div.btn-group:hover ul.dropdown-menu{
   display: block;
 }
