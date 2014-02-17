@@ -1,0 +1,37 @@
+<%= form_for @user, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'} do |f| %>
+  <% if @user.errors.any? %>
+    <div class="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <%= f.label :email %>
+    <div class="controls">
+      <%= f.email_field :email, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div><%= f.label :password, "New password" %><br />
+  <%= f.password_field :password, :autofocus => true %></div>
+
+  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+  <div class="field form-group">
+    <%= f.label :role %>
+    <div class="controls">
+      <%= f.collection_select :role, User::ROLES, :to_s, :humanize, { }, { :class => "form-control" } %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :Submit, :class => "btn btn-default" %>
+  </div>
+<% end %>

@@ -1,0 +1,67 @@
+<%= form_for @server, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'} do |f| %>
+  <% if @server.errors.any? %>
+    <div class="error_explanation">
+      <h2><%= pluralize(@server.errors.count, "error") %> prohibited this app from being saved:</h2>
+      <ul>
+      <% @server.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <%= f.label :name %>
+    <div class="controls">
+      <%= f.text_field :name, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :host %>
+    <div class="controls">
+      <%= f.text_field :host, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :username %>
+    <div class="controls">
+      <%= f.text_field :username, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :can_sudo %>
+    <div class="checkbox">
+      <%= f.check_box :can_sudo, :class => "checkbox" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :sudo_password %>
+    <div class="controls">
+      <%= f.text_field :sudo_password, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :authentication_type_id %>
+    <div class="controls">
+    <%= f.select :authentication_type_id, options_from_collection_for_select(@authentication_types, "id", "name", @server.authentication_type_id), { :include_blank => true }, { :class => "form-control" } %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label "Authentication" %>
+    <p>note if you selected 'Key Pair [file]' paste the location of the file,<br />
+    if you selected 'Key Pair [stored]' paste the private key and we will store it.</p>
+    <div class="controls">
+      <%= f.text_area :authentication, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :Submit, :class => "btn btn-default" %>
+  </div>
+<% end %>

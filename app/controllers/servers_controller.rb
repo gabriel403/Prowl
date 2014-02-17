@@ -2,20 +2,36 @@ class ServersController < ApplicationController
   def index
     @user = current_user
     @servers = Server.all
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def show
     @server = Server.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def new
     @server = Server.new
     @authentication_types = AuthenticationType.all
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def edit
     @server = Server.find(params[:id])
     @authentication_types = AuthenticationType.all
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def create
@@ -23,7 +39,11 @@ class ServersController < ApplicationController
     @server.user = current_user
 
     if @server.save
-      redirect_to @server, :flash => { :success => 'Server was successfully created.' }
+      flash[:notice] = "Server was successfully created."
+      respond_to do |format|
+        format.html { redirect_to @server }
+        format.json { render @server, :location => @server}
+      end
     else
       render :action => 'new'
     end

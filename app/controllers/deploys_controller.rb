@@ -101,7 +101,7 @@ class DeploysController < ApplicationController
       Remoteserver::DeployHooks.send_update @deploy, :failed
       redirect_to :back, :flash => { :success => 'Deploy was failed.' }
     else
-      redirect_to :back, :flash => { :success => 'Failed to fail the deploy.' }
+      redirect_to :back, :flash => { :error => 'Failed to fail the deploy.' }
     end
   end
 end

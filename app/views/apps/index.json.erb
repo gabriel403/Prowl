@@ -1,0 +1,9 @@
+<h1>App List</h1>
+
+<div class="row panel-heading">
+  <div class="col-md-4">Name</div>
+  <div class="col-md-5">Description</div>
+  <div class="col-md-3">Actions</div>
+</div>
+<%= render partial: 'apps', collection: @apps, as: :app, locals: {show_owner: true} %>
+
