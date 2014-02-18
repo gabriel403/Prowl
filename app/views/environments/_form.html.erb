@@ -1,0 +1,32 @@
+<% url = environments_path(@environment, :appid => @app.id) %>
+<%= form_for(@environment, :url => url, :class => "form-control", :remote => true) do |f| %>
+  <% if @environment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@environment.errors.count, "error") %> prohibited this environment from being saved:</h2>
+
+      <ul>
+      <% @environment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <%= f.label :name %><br>
+    <div class="controls">
+      <%= f.text_field :name, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :link_to_server %>
+    <div class="controls">
+    <%= f.select :servers, options_from_collection_for_select(Server.all, "id", "name"), { :include_blank => true }, { :class => "form-control" } %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :Submit, :class => "btn btn-default" %>
+  </div>
+<% end %>

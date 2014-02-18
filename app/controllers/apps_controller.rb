@@ -2,6 +2,10 @@ class AppsController < ApplicationController
   def index
     # logger.warn "About to combobulate the whizbang"
     @apps = App.all
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def show
@@ -16,10 +20,18 @@ class AppsController < ApplicationController
 
   def new
     @app = App.new
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def edit
     @app = App.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def create
@@ -27,7 +39,11 @@ class AppsController < ApplicationController
     @app.user = current_user
 
     if @app.save
-      redirect_to @app, :flash => { :success => 'App was successfully created.' }
+      flash[:notice] = "App was successfully created."
+      respond_to do |format|
+        format.html { redirect_to @app }
+        format.json { render @app }
+      end
     else
       render :action => 'new'
     end

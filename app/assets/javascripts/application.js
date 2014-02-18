@@ -23,6 +23,8 @@ flash_checker = function(request) {
 	if (type && message) {
 		$('#flash_message').flashMessanger({type:type,message:message})
 
+		$('#linkerModal').modal('hide')
+
 		if ('success' == type || 'info' == type) {
 			return true;
 		}
@@ -141,7 +143,7 @@ newDeploy = function(){
 			});
 			newDeployDisplay()
 		}
-		var id = getAppId();
+		var id = getEnvId();
 		if (!hideShow(this)) {
 			hideShow(this)
 		}
@@ -201,7 +203,16 @@ getAppId = function() {
 	if (!$('.overOverlay').attr('id')) {
 		return id
 	}
-	var res = $('.overOverlay').attr('id').match(/\d/gi);
+	var res = $('.overOverlay').attr('id').match(/\d+/gi);
+	if (res && res.length > 0) {
+		id = res[0];
+	}
+	return id
+}
+
+getEnvId = function() {
+	var id = false
+	var res = $(".envClickable").attr('id').match(/\d+/gi);
 	if (res && res.length > 0) {
 		id = res[0];
 	}
@@ -211,17 +222,19 @@ getAppId = function() {
 overylayWork = function(event){
 	if (!$(this).closest(".panel-body").find('.smallOverlay').length) {
 		$(this).closest(".panel-body").append("<div class='smallOverlay'></div>")
-		$(this).closest(".panel-body").find('.smallOverlay').click(overylayWork)
+		$(this).closest(".panel-body").find('.smallOverlay').on('click', overylayWork)
 	}
 
-	$(this).closest(".panel-body").find('.smallOverlay').toggleClass('overlay')
-	if ($(this).closest(".panel-body").find('.overOverlay').length) {
-		$(this).closest(".panel-body").find('.overOverlay').toggleClass('overOverlay')
-	} else {
+	if (!$(this).closest(".panel-body").find('.overOverlay').length) {
+		$(this).closest(".panel-body").find('.smallOverlay').toggleClass('overlay')
 		$(this).toggleClass('overOverlay')
 	}
 
 	var hs = hideShow(this)
+
+	if (!hs) {
+		return
+	}
 
 	if (this.id.search("app") != 0) {
 		console.log("no app")
@@ -235,27 +248,43 @@ overylayWork = function(event){
 			return;
 		}
 
+		$('.jizz, .overOverlay').on('click', function(e){
+			if ((!$(e.target).hasClass('overOverlay') && !$(e.target).closest('.overOverlay').length) &&
+				( $(e.target).closest('.pointer').length || $(e.target).closest('button').length
+				|| $(e.target).closest('a').length || $(e.target).hasClass('btn'))
+			) {
+				return;
+			}
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.smallOverlay').toggleClass('overlay')
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.overOverlay').toggleClass('overOverlay')
+			$(".panel:not(.hidden) .subs:not(.hidden)").closest('.col-md-4').children('.panel').toggleClass('hidden');
+			$(".panel.hidden .subs.holdingImage.hidden").parent().children('.subs').toggleClass('hidden')
+			$(".jizz").off()
+			$(".clickToExpandThingy").off()
+			appFetching();
+		});
+
 		$(this).find(".subData").empty().html(data).toggleClass('hidden')
 		$(this).find(".holdingImage").toggleClass('hidden')
-		newDeployStep()
-		newDeploy()
-		deployDisplay()
+		$(this).find(".envClickable").on('click', function(event){
+			$(this).parent().find(".envClickable").not(this).remove();
+			var id = getEnvId();
+			var successFunc = function(data, textStatus, jqXHR) {
+				if ($(this).find('.expandedEnv').length == 0) {
+					$(this).find('.panel-body .subData').append("<div class='expandedEnv'></div>");
+				}
+
+				$(this).find('.expandedEnv').empty().append(data);
+
+				newDeployStep()
+				newDeploy()
+				deployDisplay()
+			}
+			populateNextCol(nextCol.children(".panel:not(.hidden)"), '/environments/'+id, successFunc)
+		});
 	};
 
-	if (!hs) {
-		return
-	}
-
 	populateNextCol(nextCol.children(".panel:not(.hidden)"), '/apps/'+id, successFunc)
-
-
-	// if ($(".expandMe").width() == "0") {
-	// 	$(".expandMe").animate({ width: '33%' }, 'slow');
-	// 	$(".collapseMe").animate({ width: '0%' }, 'slow', 'swing', postAnimation);
-	// } else {
-	// 	$(".expandMe").animate({ width: '0%' }, 'slow');
-	// 	$(".collapseMe").animate({ width: '33%' }, 'slow', 'swing', postAnimation);
-	// }
 }
 
 hideShow = function(context) {
@@ -295,13 +324,47 @@ populateNextCol = function(context, url, callback) {
 		context:    context
 	});
 }
-$( document ).on('page:load', function(){
-	$(".clickToExpandThingy").click(overylayWork)
-})
 
-$( document ).ready(function(){
-	$(".clickToExpandThingy").click(overylayWork)
-})
+appFetching = function() {
+	$(".clickToExpandThingy").on('click', overylayWork)
+}
+
+linkModalFetching = function() {
+	if (2 == document.location.href.split(document.location.host).length) {
+		if (2 == document.location.href.split(document.location.host)[1].split(/\?locale=.+/).length) {
+			if ('/' !== document.location.href.split(document.location.host)[1].split(/\?locale=.+/)[0]) {
+				return;
+			}
+		} else {
+			return;
+		}
+	} else {
+		return;
+	}
+
+	document.location.href.split(document.location.host)[1].split('?locale=')
+	$('a').on('click', function(event) {
+		event.preventDefault();
+		var url = $(this).attr('href');	
+		var callback = function(data, textStatus, jqXHR){
+			$('#linkerModal .modal-body').html(data);
+			$('#linkerModal').modal()
+		}
+
+		$.ajax({
+			url:        url,
+			success:    callback,
+			dataType:   'json',
+			converters: {"text json":true}
+		});
+	})
+}
+
+$( document ).on('page:load', appFetching);
+$( document ).on('page:load', linkModalFetching);
+
+$( document ).ready(appFetching);
+$( document ).ready(linkModalFetching);
 
 $( document ).on('page:load', function(){
 	$("[data-clickable]").on('click', function(event){
@@ -315,5 +378,8 @@ $( document ).ready(function(){
 	});
 })
 
+$(document).bind("ajaxComplete", function(event, response){
+	flash_checker(response);
+ });
 
 

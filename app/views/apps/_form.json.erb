@@ -1,0 +1,31 @@
+<%= form_for @app, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'} do |f| %>
+  <% if @app.errors.any? %>
+    <div class="error_explanation">
+      <h2><%= pluralize(@app.errors.count, "error") %> prohibited this app from being saved:</h2>
+
+      <ul>
+      <% @app.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <%= f.label :name %>
+    <div class="controls">
+      <%= f.text_field :name, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :description %>
+    <div class="controls">
+    <%= f.text_area :description, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :Submit, :class => "btn btn-default" %>
+  </div>
+<% end %>

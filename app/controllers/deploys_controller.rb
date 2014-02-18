@@ -4,7 +4,7 @@ class DeploysController < ApplicationController
   require "remoteserver/deploy_hooks"
 
   def index
-    @app = App.find(params[:id])
+    @environment = Environment.find(params[:id])
   end
 
   def show
@@ -17,36 +17,36 @@ class DeploysController < ApplicationController
 
   def new
     @deploy_option_form = DeployOptionForm.new
-    @app = App.find(params[:id])
+    @env = Environment.find(params[:id])
     success = true
 
-    if @app.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "destination"}
+    if @env.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "destination"}
       flash_message :alert, "No destination deploy_step has been set"
       success = false
       # redirect_to request.referer
     end
 
-    if @app.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}
+    if @env.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}
       flash_message :alert, "No vcs (git,svn) deploy_step has been set"
       success = false
     end
 
-    if @app.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_method"}
+    if @env.deploy_steps.none? {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_method"}
       flash_message :alert, "No deploy method (pull,clone,export) deploy_step has been set"
       success = false
     end
 
-    if @app.servers.count == 0
+    if @env.servers.count == 0
       flash_message :alert, "No servers have been added"
       success = false
     end
 
-    vcs_type     = @app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
+    vcs_type     = @env.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
 
     if 'svn' == vcs_type
-      @rev_nums = Remoteserver::Svn.get_rev_nums(@app)
+      @rev_nums = Remoteserver::Svn.get_rev_nums(@env)
     elsif 'git' == vcs_type
-      @rev_nums = Remoteserver::Git.get_rev_nums(@app)
+      @rev_nums = Remoteserver::Git.get_rev_nums(@env)
     end
 
     if success
@@ -57,7 +57,7 @@ class DeploysController < ApplicationController
     else
       respond_to do |format|
         format.html { redirect_to request.referer }
-        format.json { render json: @app }
+        format.json { render json: @env }
       end
     end
 
@@ -66,10 +66,10 @@ class DeploysController < ApplicationController
   def create
     dof = DeployOptionForm.new(params[:deploy_option_form])
 
-    app = App.find(params[:id])
+    environment = Environment.find(params[:id])
 
-    app.servers.each do |server|
-      @deploy = Deploy.new(app: app, server: server)
+    environment.servers.each do |server|
+      @deploy = Deploy.new(environment: environment, server: server)
       @deploy.user = current_user
       if !@deploy.save
         raise "Unable to save deploy"
@@ -83,14 +83,10 @@ class DeploysController < ApplicationController
         doe.save
       end
 
-      Resque.enqueue(Tasks::Deployment, app.id, server.id, @deploy.id, true)
+      Resque.enqueue(Tasks::Deployment, environment.id, server.id, @deploy.id, true)
     end
 
-    deploy_hooks_ray = app.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_hook"}
-    if deploy_hooks_ray
-      Remoteserver::DeployHooks.send_update deploy_hooks_ray, @deploy, :pending
-    end
-
+    Remoteserver::DeployHooks.send_update @deploy, :pending
 
     respond_to do |format|
       format.html { redirect_to @deploy, :flash => { :alert => 'Deployment has been queued.' } }
@@ -102,9 +98,10 @@ class DeploysController < ApplicationController
     @deploy = Deploy.find(params[:id])
 
     if @deploy.update_attributes(status: :failed)
+      Remoteserver::DeployHooks.send_update @deploy, :failed
       redirect_to :back, :flash => { :success => 'Deploy was failed.' }
     else
-      redirect_to :back, :flash => { :success => 'Failed to fail the deploy.' }
+      redirect_to :back, :flash => { :error => 'Failed to fail the deploy.' }
     end
   end
 end
