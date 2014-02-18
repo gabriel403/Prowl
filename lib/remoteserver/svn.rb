@@ -11,7 +11,7 @@ module Remoteserver
       Rye::Cmd.add_command :svn_export, "/usr/bin/svn #{@svn_export}"
     end
 
-    def deploy(app, server, deploy_options, file_operations)
+    def deploy(env, server, deploy_options, file_operations)
       begin
 
         rbox            = file_operations.setup(server)
@@ -33,12 +33,12 @@ module Remoteserver
             # probably the same steps as else except we co
             Rails.logger.debug "going for a local co"
 
-            file_operations.upload_operations(rbox, deploy_options, server, app)
+            file_operations.upload_operations(rbox, deploy_options, server, env)
           else
             # svn export
             Rails.logger.debug "going for a local export"
 
-            export_dir = "/tmp/prowl/#{app.id}_#{app.deploys.last.id}"
+            export_dir = "/tmp/prowl/#{env.id}_#{env.deploys.last.id}"
             add_commands(deploy_options.vcs_username, deploy_options.vcs_password, deploy_options.vcs_location, deploy_options.rev_num, export_dir)
 
             output = Rye.shell :mkdir, :p, export_dir
@@ -49,7 +49,7 @@ module Remoteserver
             Rails.logger.debug output
             outputs << output
 
-            output = file_operations.upload_operations(rbox, deploy_options, server, app)
+            output = file_operations.upload_operations(rbox, deploy_options, server, env)
             outputs << output
 
             result = outputs.join("\r\n")
@@ -77,10 +77,10 @@ module Remoteserver
       return success, result
     end
 
-    def self.get_rev_nums(app)
-      vcs_location = app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_location"}.value
-      vcs_username = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
-      vcs_password = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
+    def self.get_rev_nums(env)
+      vcs_location = env.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_location"}.value
+      vcs_username = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_username"}.value
+      vcs_password = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}.value
       vcs_conn_str = "svn log --username #{vcs_username} --password #{vcs_password} --limit 10 --no-auth-cache #{vcs_location}"
       rev_nums = []
       revnums = `#{vcs_conn_str}`
