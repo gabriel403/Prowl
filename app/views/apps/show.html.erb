@@ -45,6 +45,7 @@
       <div class="modal-body">
         <div id="flash_message"></div>
         <% @environment = Environment.new %>
+        <% @url         = environments_path(@environment, :appid => @app.id) %>
         <%= render 'environments/form' %>
       </div>
     </div><!-- /.modal-content -->

@@ -1,5 +1,4 @@
-<% url = environments_path(@environment, :appid => @app.id) %>
-<%= form_for(@environment, :url => url, :class => "form-control", :remote => true) do |f| %>
+<%= form_for(@environment, :url => @url, :class => "form-control") do |f| %>
   <% if @environment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@environment.errors.count, "error") %> prohibited this environment from being saved:</h2>

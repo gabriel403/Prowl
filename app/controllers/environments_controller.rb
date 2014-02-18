@@ -15,7 +15,9 @@ class EnvironmentsController < ApplicationController
 
   # GET /environments/new
   def new
+    @app         = App.find(params[:appid])
     @environment = Environment.new
+    @url         = environments_path(@environment, :appid => @app.id)
     respond_to do |format|
       format.html
       format.json
@@ -24,7 +26,7 @@ class EnvironmentsController < ApplicationController
 
   # GET /environments/1/edit
   def edit
-    @app = @environment.app
+    @url = environment_path(@environment)
     respond_to do |format|
       format.html
       format.json
@@ -36,7 +38,7 @@ class EnvironmentsController < ApplicationController
   def create
     @app = App.find(params[:appid])
     @environment = Environment.new(environment_params)
-    @environment.apps << @app
+    @environment.app = @app
 
     @server = Server.find(params[:environment][:servers])
     if @server
