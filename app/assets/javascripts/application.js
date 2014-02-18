@@ -23,6 +23,8 @@ flash_checker = function(request) {
 	if (type && message) {
 		$('#flash_message').flashMessanger({type:type,message:message})
 
+		$('#linkerModal').modal('hide')
+
 		if ('success' == type || 'info' == type) {
 			return true;
 		}
