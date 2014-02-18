@@ -11,7 +11,7 @@ module Remoteserver
       Rye::Cmd.add_command :git_reset, '/usr/bin/git reset --hard origin/master'
     end
 
-    def deploy(app, server, deploy_options, file_operations, force = false)
+    def deploy(env, server, deploy_options, file_operations, force = false)
       begin
         rbox            = file_operations.setup(server)
         success         = false
@@ -26,7 +26,7 @@ module Remoteserver
         if deploy_options.local_remote.deploy_step_type_option.name == "local"
           Rails.logger.debug "going for a local deploy and transfer"
           # git clone
-          export_dir = "/tmp/prowl/#{app.id}_#{app.deploys.last.id}"
+          export_dir = "/tmp/prowl/#{env.id}_#{env.deploys.last.id}"
           add_commands(deploy_options.vcs_location, deploy_options.rev_num, export_dir)
 
           output = Rye.shell :mkdir, :p, export_dir
@@ -40,7 +40,7 @@ module Remoteserver
             @outputs << output
           end
 
-          output = file_operations.upload_operations(rbox, deploy_options, server, app)
+          output = file_operations.upload_operations(rbox, deploy_options, server, env)
           Rails.logger.debug output
           @outputs << output
         else
@@ -66,13 +66,13 @@ module Remoteserver
       return success, result
     end
 
-    def self.get_rev_nums(app)
+    def self.get_rev_nums(env)
       rev_nums = []
       begin
-        vcs_location = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "vcs_location"}
+        vcs_location = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "vcs_location"}
         vcs_location = vcs_location ? vcs_location.value : vcs_location
 
-        vcs_password = app.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}
+        vcs_password = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}
         vcs_password = vcs_password ? vcs_password.value : vcs_password
 
         if !vcs_location || !vcs_password
