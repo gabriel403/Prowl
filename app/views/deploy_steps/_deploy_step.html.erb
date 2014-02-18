@@ -21,7 +21,7 @@
     <% deploy_step.additional.each do |key, value| %>
       <div class="col-md-4"></div>
       <div class="col-md-4"><%= key %></div>
-      <div class="col-md-4"><%= value %></div>
+      <div class="col-md-1"><%= truncate(value, :length => 40) %></div>
       <br>
     <% end %>
   <% elsif deploy_step.additional.is_a?(Array) %>

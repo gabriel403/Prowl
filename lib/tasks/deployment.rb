@@ -15,7 +15,7 @@ module Tasks
       deploy.update_attributes(:status => 'processing')
 
       if deploy_options.hooks
-        Remoteserver::DeployHooks.send_update deploy_options.hooks, deploy, :processing
+        Remoteserver::DeployHooks.send_update deploy, :processing
       end
 
       case app.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
@@ -29,11 +29,11 @@ module Tasks
 
       if @success
         if deploy_options.hooks
-          Remoteserver::DeployHooks.send_update deploy_options.hooks, deploy, :finished
+          Remoteserver::DeployHooks.send_update deploy, :finished
         end
       else
         if deploy_options.hooks
-          Remoteserver::DeployHooks.send_update deploy_options.hooks, deploy, :failed
+          Remoteserver::DeployHooks.send_update deploy, :failed
         end
       end
 

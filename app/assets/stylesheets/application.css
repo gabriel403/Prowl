@@ -23,6 +23,10 @@
        url('../assets/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
+.jizz .btn-group, .jizz .btn-group button, .jizz .btn-group ul {
+  width: 100%;
+}
+
 ul.nav li.dropdown:hover ul.dropdown-menu, div.btn-group:hover ul.dropdown-menu{
   display: block;
 }
@@ -75,6 +79,7 @@ h1 .btn-group {
 .overOverlay {
   z-index  : 1000;
   position : relative;
+  background-color: white;
 }
 
 .container-full {
@@ -105,6 +110,10 @@ h1 .btn-group {
 
 .alert {
   padding: 10px!important;
+}
+
+.panel-body .alert {
+  margin-bottom: 0px;
 }
 
 .jizz .col-md-4 {
