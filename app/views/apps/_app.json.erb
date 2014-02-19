@@ -72,7 +72,7 @@
                 <% end %>
                 <td>
                   <span title=<%= lastDeploy.updated_at.localtime.asctime.split.join('-') %>>
-                    <%= distance_of_time_in_words_to_now(lastDeploy.updated_at, include_seconds = true) %> ago
+                    <%= distance_of_time_in_words_to_now(lastDeploy.updated_at) %> ago
                   </span>
                 </td>
               </tr>
@@ -86,7 +86,7 @@
                   <% end %>
                   <td>
                     <span title=<%= lastFinishedDeploy.updated_at.localtime.asctime.split.join('-') %>>
-                      <%= distance_of_time_in_words_to_now(lastFinishedDeploy.updated_at, include_seconds = true) %> ago
+                      <%= distance_of_time_in_words_to_now(lastFinishedDeploy.updated_at) %> ago
                     </span>
                   </td>
                 </tr>
