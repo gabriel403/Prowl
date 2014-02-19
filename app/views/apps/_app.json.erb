@@ -49,33 +49,51 @@
       <div>
       <% if lastDeploy %>
         <div class="row">
-          <div class="col-md-6 no-padding"><strong>Last deploy status:</strong></div>
-          <div class="col-md-6 text-right no-padding"><%= lastDeploy.status.titleize %></div>
+          <div class="col-md-12 no-padding"><strong>Last deploy/finished deploy:</strong></div>
         </div>
-        <% lastDeploy.deploy_options.each do |deploy_option| %>
-          <div class="row">
-            <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-            <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
-          </div>
-        <% end %>
-        <% if 'finished' == lastDeploy.status %>
-          <div class="row">
-            <div class="col-md-6 no-padding"><strong>At:</strong></div>
-            <div class="col-md-6 text-right no-padding"><%= lastDeploy.updated_at %></div>
-          </div>
-        <% end %>
-      <% end %>
-      <% if lastFinishedDeploy && 'finished' != lastDeploy.status %>
         <div class="row">
-          <div class="col-md-6 no-padding"><strong>Last successful deploy at:</strong></div>
-          <div class="col-md-6 text-right no-padding"><%= lastFinishedDeploy.updated_at %></div>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>User</th>
+                <% lastDeploy.deploy_options.each do |deploy_option| %>
+                    <th><%= deploy_option.deploy_option_type.name.titleize %></th>
+                <% end %>
+                <th>At:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class='<%= lastDeployClass %>'>
+                <td><%= lastDeploy.status.titleize %></td>
+                <td><%= lastDeploy.user.email.split("@").first.titleize %></td>
+                <% lastDeploy.deploy_options.each do |deploy_option| %>
+                    <td><%= truncate(deploy_option.value, :length => 10) %></td>
+                <% end %>
+                <td>
+                  <span title=<%= lastDeploy.updated_at.localtime.asctime.split.join('-') %>>
+                    <%= distance_of_time_in_words_to_now(lastDeploy.updated_at, include_seconds = true) %> ago
+                  </span>
+                </td>
+              </tr>
+              <% if lastFinishedDeploy && 'finished' != lastDeploy.status %>
+                <tr><td colspan='4' class="zigzag">&nbsp</td></tr>
+                <tr class='success'>
+                  <td><%= lastFinishedDeploy.status.titleize %></td>
+                  <td><%= lastFinishedDeploy.user.email.split("@").first.titleize %></td>
+                  <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
+                      <td><%= truncate(deploy_option.value, :length => 10) %></td>
+                  <% end %>
+                  <td>
+                    <span title=<%= lastFinishedDeploy.updated_at.localtime.asctime.split.join('-') %>>
+                      <%= distance_of_time_in_words_to_now(lastFinishedDeploy.updated_at, include_seconds = true) %> ago
+                    </span>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
-        <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
-          <div class="row">
-            <div class="col-md-6 no-padding"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-            <div class="col-md-6 text-right no-padding"><%= truncate(deploy_option.value, :length => 10) %></div>
-          </div>
-        <% end %>
       <% end %>
       </div>
       <div class="clearfix">
