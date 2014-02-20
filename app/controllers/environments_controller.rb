@@ -40,13 +40,6 @@ class EnvironmentsController < ApplicationController
     @environment = Environment.new(environment_params)
     @environment.app = @app
 
-    @server = Server.find(params[:environment][:servers])
-    if @server
-      @environment.servers << @server
-    end
-
-    # @app.environments << @environment
-
     respond_to do |format|
       if @environment.save
         # @app.environments << @environment
@@ -96,6 +89,6 @@ class EnvironmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def environment_params
-      params.require(:environment).permit(:name)
+      params.require(:environment).permit(:name,{:server_ids => []})
     end
 end

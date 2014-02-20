@@ -1,4 +1,4 @@
-<%= form_for(@environment, :url => @url, :class => "form-control") do |f| %>
+<%= form_for(@environment, :url => @url, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'}) do |f| %>
   <% if @environment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@environment.errors.count, "error") %> prohibited this environment from being saved:</h2>

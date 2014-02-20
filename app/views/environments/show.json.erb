@@ -1,7 +1,10 @@
+<h2>Envronment Details</h2>
 <br>
+<%= link_to 'Edit Env', edit_environment_path(@environment), :class => "btn btn-info" %>
 <button type="button" id="newDeploy" class="btn btn-info">Deploy</button>
 <p></p>
 <% if @environment.deploys.count > 0 %>
+<h3>Recent Deployments</h3>
   <table class="table table-condensed">
     <thead>
       <tr>
@@ -42,6 +45,19 @@
     </tbody>
   </table>
 <% end %>
+
+<h3>Associated Servers</h3>
+<%
+  @environment.servers.each do |server| 
+%>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel-heading"><%= server.name %></div>
+    </div>
+  </div>
+<%
+  end
+%>
 
 <h3>Deploy Steps</h3>
 
