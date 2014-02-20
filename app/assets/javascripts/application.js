@@ -101,6 +101,7 @@ newDeployStep = function(){
 			generic_hide()
 			// hook into the form submit
 			// reload the app panel when form submitted
+			linkModalFetching();
 		}
 		if (!hideShow(this)) {
 			hideShow(this)
@@ -120,6 +121,7 @@ deployDisplay = function(){
 
 			$(this).find(".subData").empty().html(data).toggleClass('hidden')
 			$(this).find(".holdingImage").toggleClass('hidden')
+			linkModalFetching();
 		}
 		if (!hideShow(this)) {
 			hideShow(this)
@@ -142,6 +144,7 @@ newDeploy = function(){
 				$(this).parent().children('[data-showable]').slideToggle("fast");
 			});
 			newDeployDisplay()
+			linkModalFetching();
 		}
 		var id = getEnvId();
 		if (!hideShow(this)) {
@@ -279,6 +282,7 @@ overylayWork = function(event){
 				newDeployStep()
 				newDeploy()
 				deployDisplay()
+				linkModalFetching();
 			}
 			populateNextCol(nextCol.children(".panel:not(.hidden)"), '/environments/'+id, successFunc)
 		});
@@ -341,8 +345,7 @@ linkModalFetching = function() {
 	} else {
 		return;
 	}
-
-	document.location.href.split(document.location.host)[1].split('?locale=')
+	$('a').off();
 	$('a').on('click', function(event) {
 		event.preventDefault();
 		var url = $(this).attr('href');	
