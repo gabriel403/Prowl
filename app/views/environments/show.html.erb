@@ -13,6 +13,19 @@
   </h1>
 </div>
 
+<h3>Associated Servers</h3>
+<%
+  @environment.servers.each do |server| 
+%>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel-heading"><%= server.name %></div>
+    </div>
+  </div>
+<%
+  end
+%>
+
 <h3>Deploy Steps</h3>
 
 <div id="deployStepsList">
