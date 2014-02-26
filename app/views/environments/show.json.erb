@@ -61,21 +61,44 @@
 
 <h3>Deploy Steps</h3>
 
-<%= link_to 'New Deploy Step', new_deploy_step_path(:appid => @environment.app.id), :class => "btn btn-info", :id => 'newDeployStep' %>
+<div class="row">
+<%= form_for :clone_deploy_steps, :url => clone_deploy_steps_path, :method => :post, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'} do |f| %>
+  <div class="col-md-6">
+    <%= f.grouped_collection_select :from_env_id, App.all, :environments, :name, :id, :name, { :include_blank => true }, { :class => "form-control" } %>
+  </div>
+  <%= f.hidden_field :to_env_id, :value => @environment.id  %>
 
+  <div class="actions col-md-2">
+    <%= f.submit "Clone Steps", :class => "btn btn-info " %>
+  </div>
+<% end %>
+</div>
+
+<p></p>
+<div class='row'>
+  <div class="col-md-6">
+    <%= form_for :clear_deploy_steps, :url => clear_deploy_steps_path, :method => :delete, :class => "form-control", :remote => true, :html => {:'data-type' => 'json'} do |f| %>
+      <%= f.hidden_field :envid, :value => @environment.id  %>
+      <div class="actions">
+        <%= f.submit "Clear Deploy Steps", :class => "btn btn-info", data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-6">
+    <%= link_to 'New Deploy Step', new_deploy_step_path(:env_id => @environment.id), :class => "btn btn-info", :id => 'newDeployStep' %>
+  </div>
+</div>
+<p></p>
 <div id="deployStepsList">
   <% order_num = -1
   @environment.deploy_steps.each do |deploy_step|
     if order_num != deploy_step.order
       strcontent = (0 != deploy_step.order) ? "Step ##{deploy_step.order}" : "Generic Attribute" %>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="panel">
-            <h4><%= strcontent %></h4>
-          </div>
+        <div class="row">
+            <div class="panel" style="background-color: #d9edf7">
+              <div class="panel-heading"><%= strcontent %></div>
+            </div>
         </div>
-        <div class="col-md-6">&nbsp;</div>
-      </div>
       <% order_num = deploy_step.order
     end %>
     <%= render deploy_step %>

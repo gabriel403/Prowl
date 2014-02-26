@@ -1,8 +1,5 @@
 require "resque_web"
 Prowl::Application.routes.draw do
-  get "xhr/deploy_step_type"
-
-  get   "server_app/link"
   get   "deploys/:id",      to: 'deploys#index',  as: 'deploys'
   post  "deploys/:id",      to: 'deploys#create'
   patch "deploys/:id",      to: 'deploys#update', as: 'edit_deploy'
@@ -18,15 +15,13 @@ Prowl::Application.routes.draw do
     post   "/login"  => "devise/sessions#create",  :as => :user_session
     delete "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
   end
+  post   "deploy_steps/clone", to: 'deploy_steps#clone', as: 'clone_deploy_steps'
+  delete "deploy_steps/clear", to: 'deploy_steps#clear', as: 'clear_deploy_steps'
 
   resources :users
   resources :apps
   resources :environments
   resources :servers
-
-  get  "server_app/link/:id/:from_type",      to: 'server_app#link', as: 'app_servers'
-  post "server_app/link/:from_id/:from_type", to: 'server_app#linkcreate'
-
   resources :deploy_steps
 
   get "xhr/dst/:id", to: 'xhr#deploy_step_type', as: 'xhr_dst'
