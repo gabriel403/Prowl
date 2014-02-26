@@ -30,13 +30,6 @@ ActiveRecord::Schema.define(version: 20140215003546) do
 
   add_index "apps", ["user_id"], name: "index_apps_on_user_id"
 
-  create_table "apps_environments", force: true do |t|
-    t.integer "app_id"
-    t.integer "environment_id"
-  end
-
-  add_index "apps_environments", ["app_id", "environment_id"], name: "index_apps_environments_on_app_id_and_environment_id", unique: true
-
   create_table "authentication_types", force: true do |t|
     t.string   "name"
     t.string   "short_name"
