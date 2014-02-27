@@ -41,12 +41,14 @@ class DeploysController < ApplicationController
       success = false
     end
 
-    vcs_type     = @env.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
+    if success
+      vcs_type     = @env.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name
 
-    if 'svn' == vcs_type
-      @rev_nums = Remoteserver::Svn.get_rev_nums(@env)
-    elsif 'git' == vcs_type
-      @rev_nums = Remoteserver::Git.get_rev_nums(@env)
+      if 'svn' == vcs_type
+        @rev_nums = Remoteserver::Svn.get_rev_nums(@env)
+      elsif 'git' == vcs_type
+        @rev_nums = Remoteserver::Git.get_rev_nums(@env)
+      end
     end
 
     if success
