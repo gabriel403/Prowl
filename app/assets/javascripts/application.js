@@ -18,6 +18,9 @@
 
 flash_checker = function(request) {
 	// first show message
+	if (! ("getResponseHeader" in request)) {
+		return false;
+	}
 	type = request.getResponseHeader("X-Message-Type")
 	message = request.getResponseHeader("X-Message")
 	if (type && message) {
@@ -43,10 +46,6 @@ generic_hide = function(){
 	}
 
 	callback = function(response){
-		if (!flash_checker(response)) {
-			return;
-		}
-
 		if( typeof response != 'object' || !('subtype' in response)) {
 			return
 		}
@@ -70,7 +69,7 @@ generic_hide = function(){
 				break;
 		}
 
-		$("#deploy_step_deploy_step_type_option_id").change(function(event){
+		$("#deploy_step_deploy_step_type_option_id").on('change', function(event){
 			generic_hide();
 		})
 	}
@@ -255,6 +254,7 @@ overylayWork = function(event){
 			if ((!$(e.target).hasClass('overOverlay') && !$(e.target).closest('.overOverlay').length) &&
 				( $(e.target).closest('.pointer').length || $(e.target).closest('button').length
 				|| $(e.target).closest('a').length || $(e.target).hasClass('btn'))
+				|| $(e.target).is('input') || $(e.target).is('textarea')
 			) {
 				return;
 			}
