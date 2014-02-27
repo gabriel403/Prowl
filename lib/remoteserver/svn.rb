@@ -16,11 +16,11 @@ module Remoteserver
 
         rbox            = file_operations.setup(server)
         success         = false
-        outputs         = []
+        @outputs         = []
 
         output = rbox.mkdir :p, "#{deploy_options.destination}/#{deploy_options.rev_num}"
         Rails.logger.debug output
-        outputs << output
+        @outputs << output
 
         rbox[deploy_options.destination]
 
@@ -43,16 +43,16 @@ module Remoteserver
 
             output = Rye.shell :mkdir, :p, export_dir
             Rails.logger.debug output
-            outputs << output
+            @outputs << output
 
             output = Rye.shell :svn, @svn_export
             Rails.logger.debug output
-            outputs << output
+            @outputs << output
 
             output = file_operations.upload_operations(rbox, deploy_options, server, env)
-            outputs << output
+            @outputs << output
 
-            result = outputs.join("\r\n")
+            result = @outputs.join("\r\n")
           end
         else
           Rails.logger.debug "going for a remote deploy"
