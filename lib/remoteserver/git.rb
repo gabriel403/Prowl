@@ -43,6 +43,8 @@ module Remoteserver
           output = file_operations.upload_operations(rbox, deploy_options, server, env)
           Rails.logger.debug output
           @outputs << output
+
+          result = @outputs.join("\r\n")
         else
           Rails.logger.debug "going for a remote deploy"
           add_commands(deploy_options.vcs_location, deploy_options.rev_num, '/tmp/prowl')
