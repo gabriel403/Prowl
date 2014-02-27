@@ -54,6 +54,7 @@ module Remoteserver
           end
 
           result = rbox.git('pull')
+          Rails.logger.debug result
           success = true
         end
 
