@@ -87,26 +87,7 @@ postAnimation = function(){
 
 
 newDeployStep = function(){
-	$('a.deploy_step_details, a#newDeployStep').click(function(event){
-		event.preventDefault();
-		var url = $(this).attr('href')
-		var successFunc = function(data, textStatus, jqXHR){
-			if (!flash_checker(jqXHR)) {
-				return;
-			}
 
-			$(this).find(".subData").empty().html(data).toggleClass('hidden')
-			$(this).find(".holdingImage").toggleClass('hidden')
-			generic_hide()
-			// hook into the form submit
-			// reload the app panel when form submitted
-			linkModalFetching();
-		}
-		if (!hideShow(this)) {
-			hideShow(this)
-		}
-		populateNextCol(nextCol.children(".panel:not(.hidden)"), url, successFunc)
-	})
 }
 
 deployDisplay = function(){
@@ -333,18 +314,28 @@ appFetching = function() {
 	$(".clickToExpandThingy").on('click', overylayWork)
 }
 
-linkModalFetching = function() {
-	if (2 == document.location.href.split(document.location.host).length) {
-		if (2 == document.location.href.split(document.location.host)[1].split(/\?locale=.+/).length) {
-			if ('/' !== document.location.href.split(document.location.host)[1].split(/\?locale=.+/)[0]) {
-				return;
+urlChecker = function(url) {
+	var relURL = document.location.href.split(document.location.host);
+	if (2 == relURL.length) {
+		if (2 == relURL[1].split(/\?locale=.+/).length) {
+			if (url !== relURL[1].split(/\?locale=.+/)[0]) {
+				return false;
 			}
 		} else {
-			return;
+			return false;
 		}
 	} else {
+		return false;
+	}
+
+	return true;
+}
+
+linkModalFetching = function() {
+	if (!urlChecker('/')) {
 		return;
 	}
+
 	$('a').off();
 	$('a').on('click', function(event) {
 		event.preventDefault();
@@ -352,6 +343,12 @@ linkModalFetching = function() {
 		var callback = function(data, textStatus, jqXHR){
 			$('#linkerModal .modal-body').html(data);
 			$('#linkerModal').modal()
+			if (this.url.match('^/deploy_steps')) {
+				generic_hide()
+				// hook into the form submit
+				// reload the app panel when form submitted
+				linkModalFetching();
+			}
 		}
 
 		$.ajax({
