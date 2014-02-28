@@ -4,7 +4,7 @@
   <% else %>
   <div class="col-md-5"><%= link_to deploy_step.deploy_step_type_option.name.titleize, [:edit, deploy_step], :class => 'deploy_step_details' %></div>
   <% end %>
-  <div class="col-md-7"><%= deploy_step.value.length == 0 ? deploy_step.deploy_step_type_option.name : deploy_step.value %></div>
+  <div class="col-md-7"><%= deploy_step.value.length == 0 ? deploy_step.deploy_step_type_option.name : 'auth_value' == deploy_step.deploy_step_type_option.name ? "***********" : deploy_step.value %></div>
   <br>
   <% if deploy_step.additional.is_a?(Hash) %>
     <% deploy_step.additional.each do |key, value| %>
