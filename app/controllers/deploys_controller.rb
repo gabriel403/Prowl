@@ -77,13 +77,24 @@ class DeploysController < ApplicationController
         raise "Unable to save deploy"
       end
 
-      if dof.revision_number
+      dof.instance_variables.each do |var_sym|
+        dof_var = dof.instance_variable_get(var_sym)
+        var_sym = var_sym.to_s.slice(1..-1).to_sym
         doe = DeployOption.new
-        doe.value = dof.revision_number
-        doe.deploy_option_type = DeployOptionType.find_by name: :revision_number
+        doe.value = dof_var
+        doe.deploy_option_type = DeployOptionType.find_by name: var_sym
         doe.deploy = @deploy
         doe.save
       end
+
+
+      # if dof.revision_number
+      #   doe = DeployOption.new
+      #   doe.value = dof.revision_number
+      #   doe.deploy_option_type = DeployOptionType.find_by name: :revision_number
+      #   doe.deploy = @deploy
+      #   doe.save
+      # end
 
       Resque.enqueue(Tasks::Deployment, environment.id, server.id, @deploy.id, true)
     end
