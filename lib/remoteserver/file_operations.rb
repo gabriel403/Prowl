@@ -19,7 +19,7 @@ module Remoteserver
 
     def db_migrate(rbox, deploy_options)
       output = ''
-      # rake db:migrate RAILS_ENV=development
+      # rake db:migrate# RAILS_ENV=development
       return output
     end
 
