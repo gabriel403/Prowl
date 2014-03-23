@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+  acts_as_token_authentication_handler_for User
   protect_from_forgery with: :exception
   before_action :set_locale
   before_filter :adjust_format_for_iphone

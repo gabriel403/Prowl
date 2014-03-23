@@ -11,6 +11,8 @@ gem 'resque-web', require: 'resque_web'
 # gem 'rb-libsvm'
 # gem 'svn_wc'
 
+gem 'simple_token_authentication'
+
 # gem 'git'
 # gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development', submodules: true
 gem 'git-ssh-wrapper'
