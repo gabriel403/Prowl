@@ -1,2 +1,2 @@
-Authy.api_key = ENV['AUTHY_API_KEY'] || '823aa80ad830b993dd9058f5458ed660'
-Authy.api_uri = 'https://api.authy.com'
+Authy.api_key = ENV['PROWL_AUTHY_API_KEY']
+Authy.api_uri = ENV['PROWL_AUTHY_URL']
