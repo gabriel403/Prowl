@@ -4,11 +4,19 @@
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
 
-  <div><%= f.label :password, "New password" %><br />
-  <%= f.password_field :password, :autofocus => true %></div>
+  <div class="field form-group">
+    <%= f.label :password, "New password" %>
+    <div class="controls">
+      <%= f.password_field :password, :autofocus => true, :class => "form-control" %>
+    </div>
+  </div>
 
-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <div class="field form-group">
+    <%= f.label :password_confirmation, "Confirm new password" %>
+    <div class="controls">
+      <%= f.password_field :password_confirmation, :class => "form-control" %>
+    </div>
+  </div>
 
-  <div><%= f.submit "Change my password" %></div>
+  <div class="actions"><%= f.submit "Change my password", :class => "btn btn-default" %></div>
 <% end %>
