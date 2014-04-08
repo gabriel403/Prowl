@@ -336,10 +336,10 @@ linkModalFetching = function() {
 		return;
 	}
 
-	$('a').off();
-	$('a').on('click', function(event) {
+	$('div.container-full a').off();
+	$('div.container-full a').on('click', function(event) {
 		event.preventDefault();
-		var url = $(this).attr('href');	
+		var url = $(this).attr('href');
 		var callback = function(data, textStatus, jqXHR){
 			$('#linkerModal .modal-body').html(data);
 			$('#linkerModal').modal()
@@ -381,5 +381,3 @@ $( document ).ready(function(){
 $(document).bind("ajaxComplete", function(event, response){
 	flash_checker(response);
  });
-
-
