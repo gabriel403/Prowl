@@ -8,7 +8,11 @@ Prowl::Application.routes.draw do
 
   get "home/index"
 
-  devise_for :users, :skip => [:registrations, :sessions]
+  devise_for :users, :path_names => {
+      :verify_authy => "/verify-token",
+      :enable_authy => "/enable-two-factor",
+      :verify_authy_installation => "/verify-installation"
+  }, :skip => [:registrations, :sessions]
 
   as :user do
     get    "/login"  => "devise/sessions#new",     :as => :new_user_session
