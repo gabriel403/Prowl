@@ -33,9 +33,16 @@ module Remoteserver
           Rails.logger.debug output
           @outputs << output
 
+          @git_co_branch = "cd #{export_dir}/#{deploy_options.rev_num} && /usr/bin/git checkout #{deploy_options.branch_name}"
           GitSSHWrapper.with_wrapper(:private_key => deploy_options.vcs_password) do |wrapper|
             wrapper.set_env
+            Rails.logger.debug @git_clone
             output = Rye.shell :git, @git_clone
+            Rails.logger.debug output
+            @outputs << output
+
+            Rails.logger.debug @git_co_branch
+            output = `#{@git_co_branch}`
             Rails.logger.debug output
             @outputs << output
           end
@@ -67,6 +74,40 @@ module Remoteserver
 
 
       return success, result
+    end
+
+    def self.get_branch_names(env)
+      branch_names = []
+      begin
+        vcs_location = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "vcs_location"}
+        vcs_location = vcs_location ? vcs_location.value : vcs_location
+
+        vcs_password = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}
+        vcs_password = vcs_password ? vcs_password.value : vcs_password
+
+        if !vcs_location || !vcs_password
+          branch_names << 'master'
+          return branch_names
+        end
+
+        @revnums     = ''
+        vcs_conn_str = "git ls-remote --heads #{vcs_location} | sed -E 's?(.+)[[:space:]]+refs/heads/(.+)?\\1 \\2?'"
+        GitSSHWrapper.with_wrapper(:private_key => vcs_password) do |wrapper|
+          wrapper.set_env
+          @revnums = `#{vcs_conn_str}`
+          Rails.logger.debug vcs_conn_str
+          Rails.logger.debug @revnums
+        end
+
+        branch_names = @revnums.split( /\r?\n/ )
+        Rails.logger.debug branch_names
+      rescue Exception => e
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace.inspect
+        result = e.to_s
+      end
+
+      return branch_names
     end
 
     def self.get_rev_nums(env)

@@ -1,6 +1,6 @@
 module Remoteserver
   class DeployOptions
-    attr_accessor :destination, :local_remote, :checkout_export_update, :deployed_symlink, :vcs_username, :vcs_password, :vcs_location, :fs_chs, :rev_num, :hooks
+    attr_accessor :destination, :local_remote, :checkout_export_update, :deployed_symlink, :vcs_username, :vcs_password, :vcs_location, :fs_chs, :rev_num, :branch_name, :hooks
 
     def initialize(env)
 
@@ -25,6 +25,9 @@ module Remoteserver
 
       @rev_num                 = env.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "revision_number"}
       @rev_num                 = @rev_num ? @rev_num.value : @rev_num
+
+      @branch_name             = env.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "branch_name"}
+      @branch_name             = @branch_name ? @branch_name.value : @branch_name
 
     end
   end
