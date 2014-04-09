@@ -20,7 +20,7 @@
     failedCount = 0
     pendingCount = env.deploys.where(:status => "pending").count
     limitedRecs.each {|dep| if dep.status == 'finished' then finishCount = finishCount+1 end }
-    limitedRecs.each {|dep| if dep.status == 'finished' then failedCount = failedCount+1 end } 
+    limitedRecs.each {|dep| if dep.status == 'finished' then failedCount = failedCount+1 end }
     lastFinishedDeploy = env.deploys.where(:status => "finished").last
     lastDeploy = env.deploys.last
 
@@ -58,7 +58,9 @@
                 <th>Status</th>
                 <th>User</th>
                 <% lastDeploy.deploy_options.each do |deploy_option| %>
+                  <% if "revision_number" == deploy_option.deploy_option_type.name || "branch_name" == deploy_option.deploy_option_type.name %>
                     <th><%= deploy_option.deploy_option_type.name.titleize %></th>
+                  <% end %>
                 <% end %>
                 <th>At:</th>
               </tr>
@@ -68,7 +70,9 @@
                 <td><%= lastDeploy.status.titleize %></td>
                 <td><%= lastDeploy.user.email.split("@").first.titleize %></td>
                 <% lastDeploy.deploy_options.each do |deploy_option| %>
+                  <% if "revision_number" == deploy_option.deploy_option_type.name || "branch_name" == deploy_option.deploy_option_type.name %>
                     <td><%= truncate(deploy_option.value, :length => 10) %></td>
+                  <% end %>
                 <% end %>
                 <td>
                   <span title=<%= lastDeploy.updated_at.localtime.asctime.split.join('-') %>>
@@ -82,7 +86,9 @@
                   <td><%= lastFinishedDeploy.status.titleize %></td>
                   <td><%= lastFinishedDeploy.user.email.split("@").first.titleize %></td>
                   <% lastFinishedDeploy.deploy_options.each do |deploy_option| %>
+                    <% if "revision_number" == deploy_option.deploy_option_type.name || "branch_name" == deploy_option.deploy_option_type.name %>
                       <td><%= truncate(deploy_option.value, :length => 10) %></td>
+                    <% end %>
                   <% end %>
                   <td>
                     <span title=<%= lastFinishedDeploy.updated_at.localtime.asctime.split.join('-') %>>
