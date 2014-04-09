@@ -80,11 +80,11 @@ generic_hide = function(){
 		dataType: 'json',
 	});
 }
+
 postAnimation = function(){
 	$(".collapseMe").toggleClass('collapsed').toggleClass('expanded')
 	$(".expandMe").toggleClass('collapsed').toggleClass('expanded')
 };
-
 
 newDeployStep = function(){
 
@@ -232,18 +232,25 @@ overylayWork = function(event){
 		}
 
 		$('.jizz, .overOverlay').on('click', function(e){
-			if ((!$(e.target).hasClass('overOverlay') && !$(e.target).closest('.overOverlay').length) &&
-				( $(e.target).closest('.pointer').length || $(e.target).closest('button').length
-				|| $(e.target).closest('a').length || $(e.target).hasClass('btn'))
-				|| $(e.target).is('input') || $(e.target).is('textarea')
-			) {
+			// if ((!$(e.target).hasClass('overOverlay') && !$(e.target).closest('.overOverlay').length) &&
+			// 	( $(e.target).closest('.pointer').length || $(e.target).closest('button').length
+			// 	|| $(e.target).closest('a').length || $(e.target).hasClass('btn'))
+			// 	|| $(e.target).is('input') || $(e.target).is('textarea')
+			// ) {
+			// 	return;
+			// }
+
+			if ($(e.target).hasClass('panel') || $(e.target).closest('.panel').length) {
 				return;
 			}
-			$(".panel:not(.hidden)").closest('.col-md-4').find('.smallOverlay').toggleClass('overlay')
-			$(".panel:not(.hidden)").closest('.col-md-4').find('.overOverlay').toggleClass('overOverlay')
+
+			console.log('cal')
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.smallOverlay').removeClass('overlay')
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.overOverlay').removeClass('overOverlay')
 			$(".panel:not(.hidden) .subs:not(.hidden)").closest('.col-md-4').children('.panel').toggleClass('hidden');
 			$(".panel.hidden .subs.holdingImage.hidden").parent().children('.subs').toggleClass('hidden')
 			$(".jizz").off()
+			$('.overOverlay').off()
 			$(".clickToExpandThingy").off()
 			appFetching();
 		});
@@ -295,6 +302,9 @@ hideShow = function(context) {
 			nextCol2.children(".panel.hidden").find(".holdingImage").removeClass('hidden')
 		}
 
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.smallOverlay').toggleClass('overlay')
+			$(".panel:not(.hidden)").closest('.col-md-4').find('.overOverlay').toggleClass('overOverlay')
+
 		return false
 	}
 	return true
@@ -339,7 +349,7 @@ linkModalFetching = function() {
 	$('a').off();
 	$('a').on('click', function(event) {
 		event.preventDefault();
-		var url = $(this).attr('href');	
+		var url = $(this).attr('href');
 		var callback = function(data, textStatus, jqXHR){
 			$('#linkerModal .modal-body').html(data);
 			$('#linkerModal').modal()
