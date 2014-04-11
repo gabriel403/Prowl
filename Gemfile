@@ -19,7 +19,7 @@ gem 'simple_token_authentication'
 gem 'git-ssh-wrapper'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '4.1.0'
 # gem 'ruby', '>= 2.0.0'
 
 # Use SCSS for stylesheets

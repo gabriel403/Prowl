@@ -52,6 +52,7 @@ DeployStepTypeOption.create! :name => "chmod_dir",        :deploy_step_type => D
 DeployStepTypeOption.create! :name => "url_payload_name",              :deploy_step_type => DeployStepType.find_by(:name => :deploy_hook)
 
 DeployOptionType.create! :name => "revision_number"
+DeployOptionType.create! :name => "branch_name"
 DeployOptionType.create! :name => "db_migrate"
 DeployOptionType.create! :name => "bundle_install"
 DeployOptionType.create! :name => "restart_web_server"

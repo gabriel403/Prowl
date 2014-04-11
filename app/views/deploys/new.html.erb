@@ -18,34 +18,54 @@
 
   <p>
   </p>
-  <% if @env.deploy_steps.find {|ds| ds.deploy_step_type_option.deploy_step_type.name == "vcs_type"}.deploy_step_type_option.name == 'svn' %>
+
+  <% if @rev_nums %>
     <div class="field form-group">
-      <%= f.label :revision_number %>
+      <%= f.label :revision_number, "Branch Name" %>
       <div class="controls">
       <%= f.select :revision_number, @rev_nums, { }, { :class => "form-control" } %>
       </div>
     </div>
   <% end %>
 
-  <div class="well well-sm">
-    <span class="pointer" data-clickable="true">PHP Options<span class="caret"></span></span>
-    <div style="display: none;" data-showable="true">
-    </div>
-  </div>
-  <div class="well well-sm">
-    <span class="pointer" data-clickable="true">Rails Options<span class="caret"></span></span>
-    <div style="display: none;" data-showable="true">
-      <div class="field form-group">
-        <div class="checkbox">
-          <%= f.label "Run rake db:migrate" %>
-          <%= f.check_box :db_migrate, :class => "checkbox" %>
+
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#phpOptions">
+            PHP Options<span class="caret">
+          </a>
+        </h4>
+      </div>
+      <div id="phpOptions" class="panel-collapse collapse">
+        <div class="panel-body">
         </div>
       </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#railsOptions">
+          Rails Options<span class="caret">
+        </a>
+      </h4>
+    </div>
+    <div id="railsOptions" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="field form-group">
+          <div class="checkbox">
+            <%= f.label "Run rake db:migrate" %>
+            <%= f.check_box :db_migrate, :class => "checkbox" %>
+          </div>
+        </div>
 
-      <div class="field form-group">
-        <div class="checkbox">
-          <%= f.label "Run bundle install in vendor" %>
-          <%= f.check_box :bundle_install, :class => "checkbox" %>
+        <div class="field form-group">
+          <div class="checkbox">
+            <%= f.label "Run bundle install in vendor" %>
+            <%= f.check_box :bundle_install, :class => "checkbox" %>
+          </div>
         </div>
       </div>
     </div>
@@ -62,5 +82,3 @@
     <%= f.submit :Build, :class => "btn btn-default", data: { confirm: 'Are you sure?' } %>
   </div>
 <% end %>
-<p class='page-header'></p>
-<%= render  @env %>
