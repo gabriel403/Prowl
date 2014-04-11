@@ -5,6 +5,7 @@
   <%= label_tag :token %>
   <%= text_field_tag :token, "", :autocomplete => :off, :id => 'authy-token' %>
   <%= authy_request_sms_link %>
-  <%= submit_tag I18n.t('enable_my_account', {:scope => 'devise'}), :class => 'btn' %>
+  <div class="actions">
+    <%= submit_tag I18n.t('enable_my_account', {:scope => 'devise'}), :class => "btn btn-info" %>
+  </div>
 <% end %>
-
