@@ -62,7 +62,7 @@ class AppsController < ApplicationController
   def destroy
     @app = App.find(params[:id])
     @app.destroy
-    redirect_to users_path, :flash => { :success => 'App was successfully deleted.' }
+    redirect_to apps_path, :flash => { :success => 'App was successfully deleted.' }
   end
 
   private

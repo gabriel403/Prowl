@@ -1,4 +1,4 @@
-<% title "Deploy Show" %>
+<% title "Show Deploy" %>
 <div class="page-header">
   <h1>Deployment For <small><%= @deploy.environment.name.titleize %> env on <%= @deploy.environment.app.name.titleize %></small>
     <div class="btn-group">
@@ -25,7 +25,7 @@
 <% @deploy.deploy_options.each do |deploy_option| %>
   <div class="row">
     <div class="col-md-4"><strong><%= deploy_option.deploy_option_type.name.titleize %>:</strong></div>
-    <div class="col-md-8"><%= truncate(deploy_option.value, :length => 10) %></div>
+    <div class="col-md-8"><%= "revision_number" == deploy_option.deploy_option_type.name ? truncate(deploy_option.value, :length => 10) : deploy_option.value %></div>
   </div>
 <% end %>
 
