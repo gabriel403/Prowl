@@ -62,7 +62,7 @@ class ServersController < ApplicationController
   def destroy
     @server = Server.find(params[:id])
     @server.destroy
-    redirect_to users_path, :flash => { :success => 'Server was successfully deleted.' }
+    redirect_to servers_path, :flash => { :success => 'Server was successfully deleted.' }
   end
 
   private
