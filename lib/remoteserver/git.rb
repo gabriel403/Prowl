@@ -77,37 +77,68 @@ module Remoteserver
     end
 
     def self.get_branch_names(env)
-      branch_names = []
+      deploy_options = Remoteserver::DeployOptions.new(env)
+      branch_names   = []
+
       begin
-        vcs_location = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "vcs_location"}
-        vcs_location = vcs_location ? vcs_location.value : vcs_location
-
-        vcs_password = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "auth_value"}
-        vcs_password = vcs_password ? vcs_password.value : vcs_password
-
-        if !vcs_location || !vcs_password
+        if !deploy_options.vcs_location || !deploy_options.vcs_password
           branch_names << 'master'
           return branch_names
         end
+        @branch_revnums = []
+        export_dir      = Dir.mktmpdir
 
-        @revnums     = ''
-        vcs_conn_str = "git ls-remote --heads #{vcs_location} | sed -E 's?(.+)[[:space:]]+refs/heads/(.+)?\\1 \\2?'"
-        GitSSHWrapper.with_wrapper(:private_key => vcs_password) do |wrapper|
+        GitSSHWrapper.with_wrapper(:private_key => deploy_options.vcs_password) do |wrapper|
           wrapper.set_env
-          @revnums = `#{vcs_conn_str}`
+
+          git_clone = "git clone --recursive #{deploy_options.vcs_location} #{export_dir}"
+          Rails.logger.debug git_clone
+          output = `#{git_clone}`
+          puts output
+          Rails.logger.debug output
+
+          vcs_conn_str = "cd #{export_dir} && git branch -r"
+          branch_names = `#{vcs_conn_str}`
           Rails.logger.debug vcs_conn_str
-          Rails.logger.debug @revnums
+          branch_names = branch_names.split( /\r?\n/ )
+          Rails.logger.debug branch_names
+
+          if 2 == branch_names.length
+            com_str = "cd #{export_dir} && git log -n2 --oneline "
+          else
+            com_str = "cd #{export_dir} && git log -n2 --oneline  HEAD.."
+          end
+
+          branch_names.each do |branch_name|
+            branch_name = branch_name.strip
+            next if branch_name.index(/\s/)
+
+            com_str = "#{com_str}#{branch_name}"
+            Rails.logger.debug com_str
+            commits = `#{com_str}`
+            Rails.logger.debug commits
+
+            commits = commits.split( /\r?\n/ )
+            Rails.logger.debug commits
+
+            next if commits.empty?
+
+            @branch_revnums << [branch_name.gsub("origin/", ""), commits.map { |commit| [commit, commit.split[0]]}]
+          end
+          Rails.logger.debug @branch_revnums
         end
 
-        branch_names = @revnums.split( /\r?\n/ )
-        Rails.logger.debug branch_names
       rescue Exception => e
         Rails.logger.error e.message
         Rails.logger.error e.backtrace.inspect
         result = e.to_s
+      ensure
+        if File.directory?(export_dir)
+          FileUtils.remove_entry export_dir
+        end
       end
 
-      return branch_names
+      return @branch_revnums
     end
 
     def self.get_rev_nums(env)

@@ -18,7 +18,7 @@
     <div class="field form-group">
       <%= f.label :revision_number %>
       <div class="controls">
-      <%= f.select :revision_number, @rev_nums, { }, { :class => "form-control" } %>
+        <%= f.select :revision_number, grouped_options_for_select(@rev_nums), { }, { :class => "form-control" } %>
       </div>
     </div>
   <% end %>
