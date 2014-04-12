@@ -33,7 +33,7 @@ module Remoteserver
           Rails.logger.debug output
           @outputs << output
 
-          @git_co_branch = "cd #{export_dir}/#{deploy_options.rev_num} && /usr/bin/git checkout #{deploy_options.branch_name}"
+          @git_co_branch = "cd #{export_dir}/#{deploy_options.rev_num} && /usr/bin/git checkout #{deploy_options.rev_num}"
           GitSSHWrapper.with_wrapper(:private_key => deploy_options.vcs_password) do |wrapper|
             wrapper.set_env
             Rails.logger.debug @git_clone
@@ -104,18 +104,18 @@ module Remoteserver
           Rails.logger.debug branch_names
 
           if 2 == branch_names.length
-            com_str = "cd #{export_dir} && git log -n2 --oneline "
+            com_str = "cd #{export_dir} && git log -n2 --pretty=oneline "
           else
-            com_str = "cd #{export_dir} && git log -n2 --oneline  HEAD.."
+            com_str = "cd #{export_dir} && git log -n2 --pretty=oneline  HEAD.."
           end
 
           branch_names.each do |branch_name|
             branch_name = branch_name.strip
             next if branch_name.index(/\s/)
 
-            com_str = "#{com_str}#{branch_name}"
-            Rails.logger.debug com_str
-            commits = `#{com_str}`
+            commit_str = "#{com_str}#{branch_name}"
+            Rails.logger.debug commit_str
+            commits = `#{commit_str}`
             Rails.logger.debug commits
 
             commits = commits.split( /\r?\n/ )
@@ -123,8 +123,9 @@ module Remoteserver
 
             next if commits.empty?
 
-            @branch_revnums << [branch_name.gsub("origin/", ""), commits.map { |commit| [commit, commit.split[0]]}]
+            @branch_revnums << [branch_name.gsub("origin/", ""), commits.map { |commit| ["#{commit.slice(0..6)} #{commit.split(" ", 2)[1]}", "#{commit.split[0]} #{branch_name.gsub('origin/', '')}"]}]
           end
+
           Rails.logger.debug @branch_revnums
         end
 
