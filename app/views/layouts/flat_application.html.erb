@@ -49,6 +49,12 @@
             <%= link_to "Welcome to Prowl", root_path, :class => "navbar-brand" -%>
           </div>
 
+          <% if !current_user.authy_enabled %>
+            <p class="nav navbar-text navbar-left">
+              <%= link_to "Perhaps you should enable 2FA in your user settings?", user_enable_authy_path, :class => "navbar-link" %>
+            </p>
+          <% end%>
+
           <ul class="nav navbar-nav navbar-right">
           <% if user_signed_in? -%>
             <li><%= link_to "Signed in as: #{current_user.email}", edit_user_path(current_user) %></li>

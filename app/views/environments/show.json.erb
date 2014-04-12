@@ -11,8 +11,10 @@
         <th>Status</th>
         <th>User</th>
         <% @environment.deploys.last.deploy_options.each do |deploy_option| %>
-          <% if "revision_number" == deploy_option.deploy_option_type.name || "branch_name" == deploy_option.deploy_option_type.name %>
-            <th><%= deploy_option.deploy_option_type.name.titleize %></th>
+          <% if "revision_number" == deploy_option.deploy_option_type.name %>
+            <th>Rev Number</th>
+          <% elsif "branch_name" == deploy_option.deploy_option_type.name %>
+            <th>Branch</th>
           <% end %>
         <% end %>
         <th>At:</th>
@@ -35,8 +37,10 @@
           <td><%= link_to deploy.status.titleize, deploy %></td>
           <td><%= link_to deploy.user.email.split("@").first.titleize, deploy.user %></td>
           <% deploy.deploy_options.each do |deploy_option| %>
-            <% if "revision_number" == deploy_option.deploy_option_type.name || "branch_name" == deploy_option.deploy_option_type.name %>
+            <% if "revision_number" == deploy_option.deploy_option_type.name %>
               <td><%= truncate(deploy_option.value, :length => 10) %></td>
+            <% elsif "branch_name" == deploy_option.deploy_option_type.name %>
+              <td><%= truncate(deploy_option.value, :length => 20) %></td>
             <% end %>
           <% end %>
           <td>

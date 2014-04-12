@@ -10,6 +10,7 @@ gem 'resque-web', require: 'resque_web'
 # gem 'newrelic_rpm'
 # gem 'rb-libsvm'
 # gem 'svn_wc'
+gem 'devise-authy'
 
 gem 'simple_token_authentication'
 

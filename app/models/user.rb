@@ -10,8 +10,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :lockable
-
+         :confirmable, :lockable, :authy_authenticatable, :database_authenticatable
 
   def password_required?
     super if confirmed?

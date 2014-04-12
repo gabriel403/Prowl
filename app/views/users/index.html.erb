@@ -15,6 +15,7 @@
   <thead>
     <tr>
       <th>Email</th>
+      <th>2FA?</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -22,6 +23,13 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= link_to user.email, user %></td>
+        <td>
+          <% if user.authy_enabled %>
+            <span class="glyphicon glyphicon-ok"></span>
+          <% else %>
+            <span class="glyphicon glyphicon-warning-sign"></span>
+          <% end %>
+        </td>
         <td>
           <div class="btn-group">
             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">

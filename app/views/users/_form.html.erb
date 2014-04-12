@@ -19,10 +19,10 @@
   </div>
 
   <div><%= f.label :password, "New password" %><br />
-  <%= f.password_field :password, :autofocus => true %></div>
+  <%= f.password_field :password, :autofocus => true, :class => "form-control" %></div>
 
   <div><%= f.label :password_confirmation, "Confirm new password" %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <%= f.password_field :password_confirmation, :class => "form-control" %></div>
 
   <div class="field form-group">
     <%= f.label :role %>
