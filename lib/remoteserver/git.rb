@@ -121,7 +121,15 @@ module Remoteserver
             commits = commits.split( /\r?\n/ )
             Rails.logger.debug commits
 
-            next if commits.empty?
+            if commits.empty?
+              commit_str = "cd #{export_dir} && git log -n2 --pretty=oneline #{branch_name}"
+              Rails.logger.debug commit_str
+              commits = `#{commit_str}`
+              Rails.logger.debug commits
+
+              commits = commits.split( /\r?\n/ )
+            end
+            Rails.logger.debug commits
 
             @branch_revnums << [branch_name.gsub("origin/", ""), commits.map { |commit| ["#{commit.slice(0..6)} #{commit.split(" ", 2)[1]}", "#{commit.split[0]} #{branch_name.gsub('origin/', '')}"]}]
           end

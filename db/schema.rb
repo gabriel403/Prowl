@@ -13,12 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140409154306) do
 
-  create_table "_environments_old_20140214", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "app_setups", force: true do |t|
     t.string   "name"
     t.string   "value"
@@ -35,6 +29,13 @@ ActiveRecord::Schema.define(version: 20140409154306) do
   end
 
   add_index "apps", ["user_id"], name: "index_apps_on_user_id"
+
+  create_table "apps_environments", force: true do |t|
+    t.integer "app_id"
+    t.integer "environment_id"
+  end
+
+  add_index "apps_environments", ["app_id", "environment_id"], name: "index_apps_environments_on_app_id_and_environment_id", unique: true
 
   create_table "authentication_types", force: true do |t|
     t.string   "name"
@@ -98,9 +99,9 @@ ActiveRecord::Schema.define(version: 20140409154306) do
 
   create_table "environments", force: true do |t|
     t.string   "name"
+    t.integer  "app_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "app_id"
   end
 
   create_table "environments_servers", force: true do |t|
