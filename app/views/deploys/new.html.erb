@@ -21,9 +21,16 @@
 
   <% if @rev_nums %>
     <div class="field form-group">
-      <%= f.label :revision_number, "Branch Name" %>
+      <%= f.label :revision_number %>
       <div class="controls">
-        <%= f.select :revision_number, grouped_options_for_select(@rev_nums), { }, { :class => "form-control" } %>
+        <%= f.select :revision_number, grouped_options_for_select(@rev_nums, disabled: @disabled_branches), { }, { :class => "form-control" } %>
+      </div>
+    </div>
+
+    <div class="field form-group">
+      <div class="checkbox">
+        <%= f.label :use_non_default_branch %>
+        <%= f.check_box :use_non_default_branch, :class => "checkbox" %>
       </div>
     </div>
   <% end %>

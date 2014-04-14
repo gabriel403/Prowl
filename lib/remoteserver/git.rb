@@ -85,23 +85,24 @@ module Remoteserver
           branch_names << 'master'
           return branch_names
         end
-        @branch_revnums = []
-        export_dir      = Dir.mktmpdir
+        @branch_revnums    = []
+        @disabled_branches = []
+        export_dir         = Dir.mktmpdir
 
         GitSSHWrapper.with_wrapper(:private_key => deploy_options.vcs_password) do |wrapper|
           wrapper.set_env
 
           git_clone = "git clone --recursive #{deploy_options.vcs_location} #{export_dir}"
-          Rails.logger.debug git_clone
+          # Rails.logger.debug git_clone
           output = `#{git_clone}`
           puts output
-          Rails.logger.debug output
+          # Rails.logger.debug output
 
           vcs_conn_str = "cd #{export_dir} && git branch -r"
           branch_names = `#{vcs_conn_str}`
-          Rails.logger.debug vcs_conn_str
+          # Rails.logger.debug vcs_conn_str
           branch_names = branch_names.split( /\r?\n/ )
-          Rails.logger.debug branch_names
+          # Rails.logger.debug branch_names
 
           if 2 == branch_names.length
             com_str = "cd #{export_dir} && git log -n2 --pretty=oneline "
@@ -114,27 +115,34 @@ module Remoteserver
             next if branch_name.index(/\s/)
 
             commit_str = "#{com_str}#{branch_name}"
-            Rails.logger.debug commit_str
+            # Rails.logger.debug commit_str
             commits = `#{commit_str}`
-            Rails.logger.debug commits
+            # Rails.logger.debug commits
 
             commits = commits.split( /\r?\n/ )
-            Rails.logger.debug commits
+            # Rails.logger.debug commits
 
             if commits.empty?
               commit_str = "cd #{export_dir} && git log -n2 --pretty=oneline #{branch_name}"
-              Rails.logger.debug commit_str
+              # Rails.logger.debug commit_str
               commits = `#{commit_str}`
-              Rails.logger.debug commits
+              # Rails.logger.debug commits
 
               commits = commits.split( /\r?\n/ )
             end
-            Rails.logger.debug commits
+            # Rails.logger.debug commits
 
             @branch_revnums << [branch_name.gsub("origin/", ""), commits.map { |commit| ["#{commit.slice(0..6)} #{commit.split(" ", 2)[1]}", "#{commit.split[0]} #{branch_name.gsub('origin/', '')}"]}]
-          end
 
+            commits.each do |commit|
+              if deploy_options.vcs_default_branch != branch_name.gsub("origin/", "")
+                @disabled_branches << "#{commit.split[0]} #{branch_name.gsub('origin/', '')}"
+              end
+            end
+          end
+          Rails.logger.debug deploy_options.vcs_default_branch
           Rails.logger.debug @branch_revnums
+          Rails.logger.debug @disabled_branches
         end
 
       rescue Exception => e
@@ -147,7 +155,7 @@ module Remoteserver
         end
       end
 
-      return @branch_revnums
+      return @branch_revnums, @disabled_branches
     end
   end
 end

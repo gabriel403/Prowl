@@ -47,7 +47,7 @@ class DeploysController < ApplicationController
       if 'svn' == vcs_type
         @rev_nums = Remoteserver::Svn.get_rev_nums(@env)
       elsif 'git' == vcs_type
-        @rev_nums = Remoteserver::Git.get_branch_names(@env)
+        @rev_nums,@disabled_branches = Remoteserver::Git.get_branch_names(@env)
       end
     end
 
@@ -80,6 +80,7 @@ class DeploysController < ApplicationController
       dof.instance_variables.each do |var_sym|
         dof_var = dof.instance_variable_get(var_sym)
         var_sym = var_sym.to_s.slice(1..-1).to_sym
+        next if !DeployOptionType.find_by name: var_sym
 
         if :revision_number == var_sym
           if dof_var.split.length > 1

@@ -123,6 +123,15 @@ newDeploy = function(){
 			$("[data-clickable]").on('click', function(event){
 				$(this).parent().children('[data-showable]').slideToggle("fast");
 			});
+
+			$("#deploy_option_form_use_non_default_branch").change(function(){
+				if (typeof disabledRevNums === 'undefined') {
+					disabledRevNums = $("#deploy_option_form_revision_number option:disabled");
+				}
+				var rDisabled = !($("#deploy_option_form_revision_number option:disabled").length > 0)
+				disabledRevNums.prop('disabled', rDisabled)
+			})
+
 			newDeployDisplay()
 			linkModalFetching();
 		}

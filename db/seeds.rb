@@ -22,6 +22,7 @@ DeployStepType.create! :name => "deploy_location",  :subtype => "generic"
 DeployStepType.create! :name => "vcs_type",         :subtype => "generic"
 DeployStepType.create! :name => "vcs_auth",         :subtype => "unordered"
 DeployStepType.create! :name => "vcs_location",     :subtype => "unordered"
+DeployStepType.create! :name => "vcs_default_branch", :subtype => "unordered"
 DeployStepType.create! :name => "deployed_symlink", :subtype => "unordered"
 DeployStepType.create! :name => "ch_dir",           :subtype => "unordered"
 DeployStepType.create! :name => "deploy_hook",      :subtype => "unordered"
@@ -44,15 +45,17 @@ DeployStepTypeOption.create! :name => "auth_value",       :deploy_step_type => D
 
 DeployStepTypeOption.create! :name => "vcs_location",     :deploy_step_type => DeployStepType.find_by(:name => :vcs_location)
 
+DeployStepTypeOption.create! :name => "default_branch",      :deploy_step_type => DeployStepType.find_by(:name => :vcs_default_branch)
+
 DeployStepTypeOption.create! :name => "deployed_symlink", :deploy_step_type => DeployStepType.find_by(:name => :deployed_symlink)
 
 DeployStepTypeOption.create! :name => "chown_dir",        :deploy_step_type => DeployStepType.find_by(:name => :ch_dir)
 DeployStepTypeOption.create! :name => "chmod_dir",        :deploy_step_type => DeployStepType.find_by(:name => :ch_dir)
 
-DeployStepTypeOption.create! :name => "url_payload_name",              :deploy_step_type => DeployStepType.find_by(:name => :deploy_hook)
+DeployStepTypeOption.create! :name => "url_payload_name", :deploy_step_type => DeployStepType.find_by(:name => :deploy_hook)
 
 DeployOptionType.create! :name => "revision_number"
-DeployOptionType.create! :name => "branch_name"
+DeployOptionType.create! :name => "vcs_branch_name"
 DeployOptionType.create! :name => "db_migrate"
 DeployOptionType.create! :name => "bundle_install"
 DeployOptionType.create! :name => "restart_web_server"

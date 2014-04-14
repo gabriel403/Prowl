@@ -1,6 +1,6 @@
 module Remoteserver
   class DeployOptions
-    attr_accessor :destination, :local_remote, :checkout_export_update, :deployed_symlink, :vcs_username, :vcs_password, :vcs_location, :fs_chs, :rev_num, :branch_name, :hooks
+    attr_accessor :destination, :local_remote, :checkout_export_update, :deployed_symlink, :vcs_username, :vcs_password, :vcs_location, :fs_chs, :rev_num, :branch_name, :hooks, :vcs_default_branch
 
     def initialize(env)
 
@@ -18,6 +18,8 @@ module Remoteserver
 
       @vcs_location            = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "vcs_location"}
       @vcs_location            = @vcs_location ? @vcs_location.value : @vcs_location
+      @vcs_default_branch      = env.deploy_steps.find {|ds| ds.deploy_step_type_option.name == "vcs_default_branch"}
+      @vcs_default_branch      = @vcs_default_branch ? @vcs_default_branch.value : @vcs_default_branch
 
       @fs_chs                  = env.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "ch_dir"}
 
