@@ -77,10 +77,11 @@ module Remoteserver
     end
 
     def self.get_branch_names(env)
-      deploy_options = Remoteserver::DeployOptions.new(env)
-      branch_names   = []
 
       begin
+        deploy_options = Remoteserver::DeployOptions.new(env)
+        branch_names   = []
+
         if !deploy_options.vcs_location || !deploy_options.vcs_password
           branch_names << 'master'
           return branch_names
@@ -150,7 +151,7 @@ module Remoteserver
         Rails.logger.error e.backtrace.inspect
         result = e.to_s
       ensure
-        if File.directory?(export_dir)
+        if export_dir && File.directory?(export_dir)
           FileUtils.remove_entry export_dir
         end
       end

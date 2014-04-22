@@ -25,11 +25,15 @@ module Remoteserver
 
       @hooks                   = env.deploy_steps.find_all {|ds| ds.deploy_step_type_option.deploy_step_type.name == "deploy_hook"}
 
-      @rev_num                 = env.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "revision_number"}
-      @rev_num                 = @rev_num ? @rev_num.value : @rev_num
+      @rev_num                 = false
+      @branch_name             = false
 
-      @branch_name             = env.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "branch_name"}
-      @branch_name             = @branch_name ? @branch_name.value : @branch_name
+      if env.deploys.last
+        @rev_num                 = env.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "revision_number"}
+        @rev_num                 = @rev_num ? @rev_num.value : @rev_num
+        @branch_name             = env.deploys.last.deploy_options.find {|doe| doe.deploy_option_type.name == "branch_name"}
+        @branch_name             = @branch_name ? @branch_name.value : @branch_name
+      end
 
     end
   end
