@@ -7,7 +7,7 @@ module Remoteserver
       else
         raise "Invalid Authentication Type"
       end
-      rbox = Rye::Box.new(server.host, :user => server.username, :key_data => keys, :keys_only => true)
+      rbox = Rye::Box.new(server.host, :user => server.username, :port => server.port, :key_data => keys, :keys_only => true)
       return rbox
     end
 

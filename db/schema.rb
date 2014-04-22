@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140414135916) do
+ActiveRecord::Schema.define(version: 20140422105241) do
 
   create_table "app_setups", force: true do |t|
     t.string   "name"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 20140414135916) do
     t.datetime "updated_at"
     t.boolean  "can_sudo",               default: false
     t.string   "sudo_password"
+    t.integer  "port",                   default: 22
   end
 
   add_index "servers", ["user_id"], name: "index_servers_on_user_id"

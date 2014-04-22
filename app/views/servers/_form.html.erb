@@ -25,6 +25,13 @@
   </div>
 
   <div class="field form-group">
+    <%= f.label :port %>
+    <div class="controls">
+      <%= f.text_field :port, :required => true, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="field form-group">
     <%= f.label :username %>
     <div class="controls">
       <%= f.text_field :username, :required => true, :class => "form-control" %>
