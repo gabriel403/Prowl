@@ -1,0 +1,13 @@
+<script id="loginform" type="text/html">
+  <div class="modal-body">
+    <form id="sign-in-form" class="form-signin" role="form" action="{{apiLocation}}/users/sign_in?locale=en" method="post" data-remote="true" data-type="json" data-with-credentials="true">
+      <h2 class="form-signin-heading">Please sign in</h2>
+      <input type="email" class="form-control" placeholder="Email address" name="user[email]" required autofocus>
+      <input type="password" class="form-control" placeholder="Password" name="user[password]" required>
+      <label class="checkbox">
+        <input type="checkbox" value="remember-me" name="user[remember_me]"> Remember me
+      </label>
+      <button id="sign-in-form-button" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+  </div>
+</script>

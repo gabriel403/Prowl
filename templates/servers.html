@@ -1,0 +1,13 @@
+<script id="serverstemplate" type="text/html">
+  <div class="alert alert-info">
+    <div class="clearfix">
+      <h4 class='pull-left'>
+        {{name}} <small>{{host}}</small>
+      </h4>
+      <h4 class='pull-right'>
+        <small><span class="label label-info">pluralize(server.environments.count, "app")</span></small>
+      </h4>
+    </div>
+    User {{username}} accesses by {{authentication_type}}
+  </div>
+</script>

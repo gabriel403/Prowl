@@ -1,0 +1,27 @@
+<script id="appstemplate" type="text/html">
+  <div class="alert alert-general" id="app{{id}}">
+    <div class="clearfix"><h4>{{name}}</h4></div>
+      {{#envs}}
+      <div class="alert alert-{{lastDeployStatusClass}}">
+        <div class="clearfix">
+          <h4 class='pull-left'>
+            {{name}}
+          </h4>
+          <h4 class='pull-right'>
+            {{lastDeployStatus}}
+            <small><span class="label label-info">{{pendingDeploys}} deploys</span></small>
+          </h4>
+        </div>
+        <div>
+          <div class="row">
+            <div class="col-md-6 no-padding"><strong>At:</strong></div>
+            <div class="col-md-6 text-right no-padding">{{lastDeployDate}}</div>
+          </div>
+        </div>
+        <div>
+        </div>
+      </div>
+      {{/envs}}
+    </div>
+  </div>
+</script>

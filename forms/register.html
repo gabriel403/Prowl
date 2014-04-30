@@ -1,0 +1,12 @@
+<script id="registerform" type="text/html">
+  <div class="modal-body">
+    <form id="sign-up-form" class="form-signup" role="form" action="{{apiLocation}}/users?locale=en" method="post" data-remote="true" data-type="json" data-with-credentials="true">
+      <h2 class="form-signup-heading">Please sign up</h2>
+      <input type="email" class="form-control" placeholder="Email address" name="user[email]" required autofocus>
+      <input type="password" class="form-control" autocomplete="off" placeholder="Password" name="user[password]" required>
+      <input type="password" class="form-control" autocomplete="off" placeholder="Password Confirmation" name="user[password_confirmation]" required>
+      <br>
+      <button id="sign-up-form-button" class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+    </form>
+  </div>
+</script>
