@@ -12,13 +12,24 @@ $.setUserDetails = function(userObject) {
   $('#user-name').html(userObject.email);
 }
 
+$.userFetch = function(callback) {
+    $.simpleGET(loaderType, {}, function(data, status, xhr) {
+      $.setUserDetails(xhr.responseJSON);
+    });
+}
+
 $( document ).ready(function(){
   $( document ).on("prowl:load:all prowl:load:orgusers", function(){
     $.loadColumn('users');
   });
 
-  $.loadTemplateIntoModel('login');
-  $.loadTemplateIntoModel('register');
+  $( document ).on("prowl:user:authenticated", function(event, userObject){
+    // $.userSection(true);
+    $.setUserDetails(userObject);
+  });
+
+  $.loadTemplateIntoModal('login');
+  $.loadTemplateIntoModal('register');
 
   $( "#pleaseWaitDialog" ).on("show.bs.modal", function(){
     console.log($._data($( document )[0], "events")["prowl:load:all"].length);
