@@ -1,8 +1,8 @@
 $( document ).ready(function(){
   $( document ).on("prowl:load:all prowl:load:orgapps", function(){
-    var apps = [];
     $.simpleGET('/apps', {}, function(data, status, xhr) {
-      $.each(xhr.responseJSON, function(index, app) {
+      var apps = xhr.responseJSON;
+      $.each(apps, function(index, app) {
         app.envs = [];
         apps.push(app);
         $.simpleGET('/envs', {app_id: app.id}, function(data, status, xhr){
