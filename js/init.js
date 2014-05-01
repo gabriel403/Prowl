@@ -1,4 +1,4 @@
-$.loadTemplateIntoModel = function(templatePrefix) {
+$.loadTemplateIntoModal = function(templatePrefix) {
   $("#"+templatePrefix+"Link").on("click", function(e){
     e.preventDefault();
 
@@ -51,25 +51,8 @@ $.simpleGET = function(location, data, handler) {
 }
 
 $( document ).ready(function(){
-  options = {
-    url: globalConfig.apiLocation + '/users/show',
-    type: 'GET',
-    dataType: 'json',
-    beforeSend: function(xhr, settings) {
-        xhr.setRequestHeader('accept', 'application/json, text/javascript');
-    },
-    success: function(data, status, xhr) {
-      // console.log(xhr.responseJSON)
-      $.setUserDetails(xhr.responseJSON);
-      // $.retrieveUsers();
-      $( document ).trigger("prowl:load:all");
-      // $( document ).trigger("prowl:load:orgusers");
-    },
-    crossDomain: null,
-    xhrFields: {
-      withCredentials: true
-    }
-  };
-
-  $.ajax(options)
+  $.simpleGET('/users/show', {}, function(data, status, xhr) {
+    $( document ).trigger("prowl:user:authenticated", xhr.responseJSON);
+    $( document ).trigger("prowl:load:all");
+  });
 });
