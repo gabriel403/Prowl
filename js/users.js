@@ -24,6 +24,7 @@ $( document ).ready(function(){
   });
 
   $( document ).on("prowl:user:authenticated", function(event, userObject){
+    $.userLoggedIn = true;
     // $.userSection(true);
     $.setUserDetails(userObject);
   });

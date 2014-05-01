@@ -4,7 +4,6 @@ $( document ).ready(function(){
       var apps = xhr.responseJSON;
       $.each(apps, function(index, app) {
         app.envs = [];
-        apps.push(app);
         $.simpleGET('/envs', {app_id: app.id}, function(data, status, xhr){
           $.each(xhr.responseJSON, function(index, env) {
             env.deploys = []

@@ -20,7 +20,10 @@ $( document ).ajaxError(function(e, xhr, settings, error) {
 
 $( document ).ajaxSuccess(function(e, xhr, options){
   if (!$.userLoggedIn) {
-    $.userLoggedIn = true;
-    $.usersSection(true);
+    $.simpleGET('/users/show', {}, function(data, status, xhr) {
+      $.userLoggedIn = true;
+      $( document ).trigger("prowl:user:authenticated", xhr.responseJSON);
+      $( document ).trigger("prowl:load:all");
+    });
   }
 });
