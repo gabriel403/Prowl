@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+fusions_dev:
+  id: 1
+  name: dev
+  app_id: 1
+
+prowl_dev:
+  id: 2
+  name: dev
+  app_id: 2

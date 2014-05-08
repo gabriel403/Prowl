@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  value: 1
+  deploy_option_type_id: 1
+  deploy_id: 1
+
+two:
+  value: dev
+  deploy_option_type_id: 2
+  deploy_id: 1

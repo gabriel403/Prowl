@@ -1,0 +1,7 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+revision_number:
+  name: revision_number
+
+vcs_branch_name:
+  name: vcs_branch_name

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+fusions_deploy:
+  status: pending
+  output: 'some text'
+  server_id: 1
+  env_id: 1
+  user_id: 1
+
+prowl_deploy:
+  status: processing
+  output: 'some output'
+  server_id: 2
+  env_id: 2
+  user_id: 2

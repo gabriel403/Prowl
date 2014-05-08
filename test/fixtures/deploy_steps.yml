@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  env_id: 1
+  order: 1
+  deploy_step_type_option_id: 1
+  value: MyString
+  additional: '{}'
+
+two:
+  env_id: 1
+  order: 1
+  deploy_step_type_option_id: 2
+  value: MyString
+  additional: '{}'

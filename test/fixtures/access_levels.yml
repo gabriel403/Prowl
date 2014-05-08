@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+org_admin:
+  name: Admin
+  value: admin
+  access_type: org_access
+
+org_user:
+  name: User
+  value: user
+  access_type: org_access
+
+env_admin:
+  name: Admin
+  value: admin
+  access_type: env_access
+
+env_user:
+  name: User
+  value: user
+  access_type: env_access

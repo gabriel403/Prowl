@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+fusions:
+  id: 1
+  name: fusions
+  organisation_id: 1
+
+prowl:
+  id: 2
+  name: prowl
+  organisation_id: 2

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+update:
+  id: 1
+  name: update_pull
+  deploy_step_type_id: 2
+
+clone:
+  id: 2
+  name: checkout_clone
+  deploy_step_type_id: 2

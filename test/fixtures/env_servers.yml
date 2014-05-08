@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+fusions_localhost_dev:
+  env_id: 1
+  server_id: 1
+
+prowl_localhost_dev:
+  env_id: 2
+  server_id: 2

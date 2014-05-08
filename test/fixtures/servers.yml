@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+fusions_localhost:
+  organisation_id: 1
+  name: localhost
+  host: localhost
+  username: serveruser
+  authentication_type_id: 3
+  authentication: rsahash
+  enabled: true
+  can_sudo: false
+  sudo_password:
+
+prowl_localhost:
+  organisation_id: 2
+  name: localhost
+  host: localhost
+  username: serveruser
+  authentication_type_id: 3
+  authentication: rsahash
+  enabled: true
+  can_sudo: false
+  sudo_password:

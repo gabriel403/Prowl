@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+destination:
+  id: 1
+  name: destination
+  subtype: unordered
+
+two:
+  id: 2
+  name: deploy_method
+  subtype: generic

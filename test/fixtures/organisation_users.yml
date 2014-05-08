@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+org_1_admin:
+  user_id: 1
+  organisation_id: 1
+  access_level_id: 1
+
+org_1_user:
+  user_id: 2
+  organisation_id: 1
+  access_level_id: 2
+
+org_2_admin:
+  user_id: 3
+  organisation_id: 2
+  access_level_id: 1
