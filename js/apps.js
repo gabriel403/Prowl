@@ -33,6 +33,13 @@ $( document ).ready(function(){
                 }
               }
 
+              env.pendingDeploys = 0;
+              $.each(env.deploys, function(index, deploy){
+                if ('pending' == deploy.status) {
+                  env.pendingDeploys++;
+                }
+              });
+
               $('#apps-col').empty();
               $.loadColumn('apps', apps);
               // console.log(apps);
