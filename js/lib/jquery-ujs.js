@@ -134,6 +134,12 @@
             }
             if (rails.fire(element, 'ajax:beforeSend', [xhr, settings])) {
               xhr.setRequestHeader('accept', 'application/json, text/javascript');
+
+              if ($.cookie('prowl_auth')) {
+                xhr.setRequestHeader('X-Prowl-Token', $.cookie('prowl_token'));
+                xhr.setRequestHeader('X-Prowl-Auth', $.cookie('prowl_auth'));
+              }
+
               element.trigger('ajax:send', xhr);
             } else {
               return false;
