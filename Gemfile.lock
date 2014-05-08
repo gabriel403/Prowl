@@ -102,4 +102,5 @@ DEPENDENCIES
   rack-cors
   rails (= 4.1.0)
   rails-api
+  rake
   sqlite3
