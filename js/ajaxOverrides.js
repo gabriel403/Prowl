@@ -1,17 +1,19 @@
 $( document ).ajaxError(function(e, xhr, settings, error) {
-  if ('Unauthorized' == error) {
-    $.userLoggedIn = false;
-    $.usersSection(false);
+  if ('Unauthorized' == error || '' == error) {
+    $.updateUser(false, {});
+    $( document ).trigger("prowl:user:deauthed");
   }
 });
 
+$( document ).ajaxComplete(function(e, xhr, settings) {
+  // if ('error' == xhr.statusText) {
+  //   $.updateUser(false, {});
+  //   $( document ).trigger("prowl:user:deauthed");
+  // }
+});
 
 $( document ).ajaxSuccess(function(e, xhr, options){
   if (!$.userLoggedIn) {
-    $.simpleGET('/users/show', {}, function(data, status, xhr) {
-      $.userLoggedIn = true;
-      $( document ).trigger("prowl:user:authenticated", xhr.responseJSON);
-      $( document ).trigger("prowl:load:all");
-    });
+    $( document ).trigger("prowl:user:authenticated", xhr.responseJSON);
   }
 });
