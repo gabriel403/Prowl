@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Gabriel Baker">
-    <meta name="csrf-param" content="">
-    <meta name="csrf-token" content="">
 
     <title>Prowl App</title>
 
@@ -27,9 +25,11 @@
     <script src="/js/lib/jquery-ujs.js"></script>
     <script src="/js/lib/jquery.mustache.js"></script>
     <script src="/js/lib/mustache.js"></script>
+    <script src="/js/lib/jquery.cookie-1.4.1.min.js"></script>
 
     <script src="/js/config.js"></script>
     <script src="/js/ajaxOverrides.js"></script>
+    <script src="/js/common.js"></script>
     <script src="/js/init.js"></script>
     <script src="/js/display.js"></script>
     <script src="/js/users.js"></script>
@@ -69,7 +69,7 @@
           <ul class="nav navbar-nav navbar-right">
 
             <li class='isLoggedIn hidden'><a href="http://api.prowl.dev:3000/users/show?locale=en" data-remote="true" data-type="json" data-with-credentials="true">Signed in as: <span id='user-name'></span></a></li>
-            <li class='isLoggedIn hidden'><a href="http://api.prowl.dev:3000/users/sign_out" data-remote="true" rel="nofollow">Logout</a></li>
+            <li class='isLoggedIn hidden'><a id="logout" href="http://api.prowl.dev:3000/users/sign_out" data-remote="true" rel="nofollow">Logout</a></li>
             <li class='isNotLoggedIn hidden'><a href="/forms/register.html" id="registerLink" rel="nofollow">Sign Up</a></li>
             <li class='isNotLoggedIn hidden'><a href="/forms/login.html" id="loginLink" rel="nofollow">Login</a></li>
 <!--             <li class='isNotLoggedIn hidden'><a href="#" data-toggle="modal" data-target="#pleaseWaitDialog" rel="nofollow">Login</a></li> -->
