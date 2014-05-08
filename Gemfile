@@ -1,18 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.1.0'
-
 gem 'rails-api'
-
 gem 'rake', :group => :test
 # gem 'spring', :group => :development
-
 gem 'sqlite3'
-
 gem 'devise'
-
 gem 'rack-cors', :require => 'rack/cors'
-
 gem 'cancancan', '~> 1.8'
 
 # To use ActiveModel has_secure_password
