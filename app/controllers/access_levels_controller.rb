@@ -1,4 +1,6 @@
 class AccessLevelsController < ApplicationController
+  load_and_authorize_resource
+
   # GET /access_levels
   # GET /access_levels.json
   def index

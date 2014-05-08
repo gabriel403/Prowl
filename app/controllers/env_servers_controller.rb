@@ -1,4 +1,6 @@
 class EnvServersController < ApplicationController
+  load_and_authorize_resource
+
   # GET /env_servers
   # GET /env_servers.json
   def index

@@ -1,4 +1,6 @@
 class DeployOptionsController < ApplicationController
+  load_and_authorize_resource
+
   # GET /deploy_options
   # GET /deploy_options.json
   def index

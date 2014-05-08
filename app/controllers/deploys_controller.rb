@@ -1,4 +1,6 @@
 class DeploysController < ApplicationController
+  load_and_authorize_resource
+
   # GET /deploys
   # GET /deploys.json
   def index

@@ -1,4 +1,6 @@
 class ServersController < ApplicationController
+  load_and_authorize_resource
+
   # GET /servers
   # GET /servers.json
   def index

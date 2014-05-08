@@ -1,4 +1,6 @@
 class AuthenticationTypesController < ApplicationController
+  load_and_authorize_resource
+
   # GET /authentication_types
   # GET /authentication_types.json
   def index

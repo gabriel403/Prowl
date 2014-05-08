@@ -1,8 +1,10 @@
 class AppsController < ApplicationController
+  load_and_authorize_resource
+
   # GET /apps
   # GET /apps.json
   def index
-    @apps = App.all
+    @apps = current_user.apps
 
     render json: @apps
   end

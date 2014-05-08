@@ -1,4 +1,6 @@
 class EnvUsersController < ApplicationController
+  load_and_authorize_resource
+
   # GET /env_users
   # GET /env_users.json
   def index

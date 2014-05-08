@@ -1,4 +1,6 @@
 class DeployStepTypeOptionsController < ApplicationController
+  load_and_authorize_resource
+
   # GET /deploy_step_type_options
   # GET /deploy_step_type_options.json
   def index

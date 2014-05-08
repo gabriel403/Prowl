@@ -1,4 +1,6 @@
 class OrganisationsController < ApplicationController
+  load_and_authorize_resource
+
   # GET /organisations
   # GET /organisations.json
   def index
