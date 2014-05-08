@@ -2,6 +2,7 @@ language: ruby
 rvm:
   - 2.1.0
 env:
+  - DEVISE_SECRET_TOKEN="$(bundle exec rake secret)"
   - SECRET_TOKEN="$(bundle exec rake secret)"
   - DB=sqlite
 script:
