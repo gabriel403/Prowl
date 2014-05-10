@@ -6,7 +6,7 @@ Rails.application.configure do
 
   if ENV['PROWL_POSTMARK_TOKEN']
     config.action_mailer.delivery_method   = :postmark
-    config.action_mailer.postmark_settings = { :api_key => ENV['PROWL_POSTMARK_TOKEN'] }
+    config.action_mailer.postmark_settings = { api_key: ENV['PROWL_POSTMARK_TOKEN'] }
   else
     config.action_mailer.delivery_method   = :smtp
     config.action_mailer.smtp_settings     = { address: 'localhost', port: 1025 }

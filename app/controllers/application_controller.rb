@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
   include CanCan::ControllerAdditions
 
   before_action :check_auth
-  check_authorization :unless => :devise_controller?
+  check_authorization unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
     raise ActionController::RoutingError.new(exception.message)

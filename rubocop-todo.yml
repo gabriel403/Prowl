@@ -32,7 +32,7 @@ EmptyLinesAroundBody:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 HashSyntax:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 5
 # Configuration parameters: MaxLineLength.

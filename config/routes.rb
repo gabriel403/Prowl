@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :organisations, except: [:new, :edit]
   resources :authentication_types, except: [:new, :edit]
 
-  devise_for :users, :controllers => { sessions: 'sessions' }
+  devise_for :users, controllers: { sessions: 'sessions' }
   # resources :users, except: [:new, :edit]
   get '/users/show', to: 'users#show', as: 'user'
   get '/users', to: 'users#index', as: 'users'
