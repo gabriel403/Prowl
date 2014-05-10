@@ -2,7 +2,7 @@
 require File.expand_path('../application', __FILE__)
 
 # set logger Rails.env.development
-if ENV['PROWL_LOGENTRIES_TOKEN']?
+if ENV['PROWL_LOGENTRIES_TOKEN']
   Rails.logger = Le.new(ENV['PROWL_LOGENTRIES_TOKEN'])
 else
   Rails.logger = Logger.new(STDOUT)

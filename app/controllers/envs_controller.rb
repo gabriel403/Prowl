@@ -25,7 +25,6 @@ class EnvsController < ApplicationController
     if @env.save
       render json: @env, status: :created, location: @env
     else
-      puts @env.errors.inspect
       render json: @env.errors, status: :unprocessable_entity
     end
   end

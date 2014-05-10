@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
   include ActionController::StrongParameters
   include CanCan::ControllerAdditions
 
-  before_filter :check_auth
+  before_action :check_auth
   check_authorization :unless => :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|

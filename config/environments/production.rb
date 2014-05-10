@@ -4,7 +4,7 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = 'prowl.io'
   config.action_mailer.default_url_options = { host: 'prowl.io'}
 
-  if ENV['PROWL_POSTMARK_TOKEN']?
+  if ENV['PROWL_POSTMARK_TOKEN']
     config.action_mailer.delivery_method   = :postmark
     config.action_mailer.postmark_settings = { :api_key => ENV['PROWL_POSTMARK_TOKEN'] }
   else
