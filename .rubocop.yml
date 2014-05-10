@@ -6,3 +6,4 @@ AllCops:
     - app/models/ability.rb
     - db/seeds.rb
     - lib/devise/custom_failure.rb
+    - db/schema.rb
