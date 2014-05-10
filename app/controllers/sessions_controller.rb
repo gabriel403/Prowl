@@ -23,5 +23,4 @@ class SessionsController < Devise::SessionsController
     user.authentication_token = nil
     user.save
   end
-
 end
