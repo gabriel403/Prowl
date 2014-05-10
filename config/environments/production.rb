@@ -2,7 +2,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   Rails.application.routes.default_url_options[:host] = 'prowl.io'
-  config.action_mailer.default_url_options = { host: 'prowl.io'}
+  config.action_mailer.default_url_options = { host: 'prowl.io' }
 
   if ENV['PROWL_POSTMARK_TOKEN']
     config.action_mailer.delivery_method   = :postmark
