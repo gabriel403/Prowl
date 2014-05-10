@@ -10,6 +10,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'cancancan', '~> 1.8'
 gem 'le'
 gem 'postmark-rails', '~> 0.7.0'
+gem 'rubocop', '~> 0.21.0', :group => :test
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
