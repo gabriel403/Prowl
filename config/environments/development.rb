@@ -35,9 +35,8 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  Rails.application.routes.default_url_options[:host] = 'prowl.dev'
-  # Settings specified here will take precedence over those in config/application.rb.
-  config.action_mailer.default_url_options = { host: 'prowl.dev', port: 3000}
+  Rails.application.routes.default_url_options[:host] = 'app.prowl.dev'
+  config.action_mailer.default_url_options = { host: 'app.prowl.dev', port: 8000}
   config.action_mailer.delivery_method     = :smtp
   config.action_mailer.smtp_settings       = {address: 'localhost', port: 1025}
 end

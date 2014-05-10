@@ -16,4 +16,4 @@
 # Using secret_token for rails3 compatibility. Change to secret_key_base
 # to avoid deprecation warning.
 # Can be safely removed in a rails3 api-only application.
-Api::Application.config.secret_token = ENV['SECRET_TOKEN'] || '88706d74d8b69671ba2b19328203f0a035a021a34cdf7a311e489dcf9422c0ba24ca925cd401e53a4256541faaac02dafc9ba0754363a6f6308830f4c5064d14'
+Api::Application.config.secret_token = ENV['PROWL_SECRET_TOKEN'] || '88706d74d8b69671ba2b19328203f0a035a021a34cdf7a311e489dcf9422c0ba24ca925cd401e53a4256541faaac02dafc9ba0754363a6f6308830f4c5064d14'

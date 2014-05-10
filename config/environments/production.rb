@@ -1,6 +1,17 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  Rails.application.routes.default_url_options[:host] = 'prowl.io'
+  config.action_mailer.default_url_options = { host: 'prowl.io'}
+
+  if ENV['PROWL_POSTMARK_TOKEN']?
+    config.action_mailer.delivery_method   = :postmark
+    config.action_mailer.postmark_settings = { :api_key => ENV['PROWL_POSTMARK_TOKEN'] }
+  else
+    config.action_mailer.delivery_method   = :smtp
+    config.action_mailer.smtp_settings     = { address: 'localhost', port: 1025 }
+  end
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

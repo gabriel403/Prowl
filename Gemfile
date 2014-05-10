@@ -8,7 +8,8 @@ gem 'sqlite3'
 gem 'devise'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'cancancan', '~> 1.8'
-
+gem 'le'
+gem 'postmark-rails', '~> 0.7.0'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
