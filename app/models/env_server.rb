@@ -1,11 +1,11 @@
 class EnvServer < ActiveRecord::Base
   belongs_to :env
   belongs_to :server
-  validates  :env,    presence: true
-  validates  :server, presence: true
-  validates  :server, uniqueness: { scope: :env }
+  validates :env,    presence: true
+  validates :server, presence: true
+  validates :server, uniqueness: { scope: :env }
 
-  validate   :env_must_belong_to_the_same_organisation_as_server
+  validate :env_must_belong_to_the_same_organisation_as_server
 
   def env_must_belong_to_the_same_organisation_as_server
     if !env || !server

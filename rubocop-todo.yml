@@ -47,7 +47,7 @@ IndentationConsistency:
 # Offense count: 1
 # Cop supports --auto-correct.
 LeadingCommentSpace:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 185
 LineLength:
@@ -72,12 +72,12 @@ RaiseArgs:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 SignalException:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 137
 # Cop supports --auto-correct.
 SingleSpaceBeforeFirstArg:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 8
 # Cop supports --auto-correct.

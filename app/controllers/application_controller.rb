@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
   check_authorization unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    raise ActionController::RoutingError.new(exception.message)
+    fail ActionController::RoutingError.new(exception.message)
   end
 
   private
