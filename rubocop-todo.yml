@@ -21,12 +21,12 @@ EmptyLines:
 
 # Offense count: 15
 EmptyLinesAroundAccessModifier:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 24
 # Cop supports --auto-correct.
 EmptyLinesAroundBody:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 294
 # Cop supports --auto-correct.

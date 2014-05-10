@@ -18,7 +18,6 @@ class Deploy < ActiveRecord::Base
     end
   end
 
-
   def server_must_belong_to_the_same_organisation_as_user
     if !server || !user
       return

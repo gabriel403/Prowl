@@ -51,6 +51,7 @@ class ServersController < ApplicationController
   end
 
   private
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def server_params
       params.require(:server).permit(:organisation_id, :name, :host, :port, :username, :authentication_type_id, :authentication, :enabled, :can_sudo, :sudo_password)

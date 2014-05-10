@@ -51,6 +51,7 @@ class AccessLevelsController < ApplicationController
   end
 
   private
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def access_level_params
       params.require(:access_level).permit(:name, :value, :access_type)

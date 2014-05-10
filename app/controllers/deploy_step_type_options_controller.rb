@@ -51,6 +51,7 @@ class DeployStepTypeOptionsController < ApplicationController
   end
 
   private
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def deploy_step_type_option_params
       params.require(:deploy_step_type_option).permit(:name, :deploy_step_type_id)

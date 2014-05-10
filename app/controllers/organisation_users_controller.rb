@@ -51,6 +51,7 @@ class OrganisationUsersController < ApplicationController
   end
 
   private
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def organisation_user_params
       params.require(:organisation_user).permit(:user_id, :organisation_id, :access_level_id)

@@ -51,6 +51,7 @@ class DeployOptionsController < ApplicationController
   end
 
   private
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def deploy_option_params
       params.require(:deploy_option).permit(:value, :deploy_option_type_id, :deploy_id)

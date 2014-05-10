@@ -51,6 +51,7 @@ class EnvServersController < ApplicationController
   end
 
   private
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def env_server_params
       params.require(:env_server).permit(:env_id, :server_id)
