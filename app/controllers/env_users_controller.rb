@@ -53,7 +53,7 @@ class EnvUsersController < ApplicationController
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def env_user_params
-      params.require(:env_user).permit(:user_id, :env_id, :access_level_id)
-    end
+  def env_user_params
+    params.require(:env_user).permit(:user_id, :env_id, :access_level_id)
+  end
 end

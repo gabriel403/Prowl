@@ -42,7 +42,7 @@ IfUnlessModifier:
 # Offense count: 15
 # Cop supports --auto-correct.
 IndentationConsistency:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 1
 # Cop supports --auto-correct.

@@ -53,7 +53,7 @@ class AppsController < ApplicationController
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def app_params
-      params.require(:app).permit(:name, :organisation_id)
-    end
+  def app_params
+    params.require(:app).permit(:name, :organisation_id)
+  end
 end

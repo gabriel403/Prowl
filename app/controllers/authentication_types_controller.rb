@@ -53,7 +53,7 @@ class AuthenticationTypesController < ApplicationController
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def authentication_type_params
-      params.require(:authentication_type).permit(:name, :short_name)
-    end
+  def authentication_type_params
+    params.require(:authentication_type).permit(:name, :short_name)
+  end
 end
