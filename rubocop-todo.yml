@@ -82,7 +82,7 @@ SingleSpaceBeforeFirstArg:
 # Offense count: 8
 # Cop supports --auto-correct.
 SpaceInsideBrackets:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 5
 # Cop supports --auto-correct.
