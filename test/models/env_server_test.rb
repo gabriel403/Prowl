@@ -3,6 +3,7 @@ require 'test_helper'
 class EnvServerTest < ActiveSupport::TestCase
 
   test "should save EnvServer" do
+    EnvServer.delete_all
     envserver = EnvServer.new
     envserver.env_id = envs(:fusions_dev).id
     envserver.server_id = servers(:fusions_localhost).id

@@ -20,7 +20,7 @@ class ServersController < ApplicationController
   # POST /servers
   # POST /servers.json
   def create
-    @server = Server.new(params[:server])
+    @server = Server.new(server_params)
 
     if @server.save
       render json: @server, status: :created, location: @server
@@ -34,7 +34,7 @@ class ServersController < ApplicationController
   def update
     @server = Server.find(params[:id])
 
-    if @server.update(params[:server])
+    if @server.update(server_params)
       head :no_content
     else
       render json: @server.errors, status: :unprocessable_entity
@@ -49,4 +49,10 @@ class ServersController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def server_params
+      params.require(:server).permit(:organisation_id, :name, :host, :port, :username, :authentication_type_id, :authentication, :enabled, :can_sudo, :sudo_password)
+    end
 end

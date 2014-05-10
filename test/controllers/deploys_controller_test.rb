@@ -2,7 +2,8 @@ require 'test_helper'
 
 class DeploysControllerTest < ActionController::TestCase
   setup do
-    @deploy = deploys(:one)
+    @deploy = deploys(:fusions_deploy)
+    sign_in users(:user1)
   end
 
   test "should get index" do

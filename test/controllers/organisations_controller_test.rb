@@ -2,7 +2,8 @@ require 'test_helper'
 
 class OrganisationsControllerTest < ActionController::TestCase
   setup do
-    @organisation = organisations(:one)
+    @organisation = organisations(:fusions)
+    sign_in users(:user1)
   end
 
   test "should get index" do
@@ -12,8 +13,10 @@ class OrganisationsControllerTest < ActionController::TestCase
   end
 
   test "should create organisation" do
+    sign_in users(:user5)
+
     assert_difference('Organisation.count') do
-      post :create, organisation: { access_code: @organisation.access_code, name: @organisation.name }
+      post :create, organisation: { access_code: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name: @organisation.name }
     end
 
     assert_response 201

@@ -2,7 +2,8 @@ require 'test_helper'
 
 class AppsControllerTest < ActionController::TestCase
   setup do
-    @app = apps(:one)
+    @app = apps(:fusions)
+    sign_in users(:user1)
   end
 
   test "should get index" do

@@ -20,7 +20,7 @@ class AppsController < ApplicationController
   # POST /apps
   # POST /apps.json
   def create
-    @app = App.new(params[:app])
+    @app = App.new(app_params)
 
     if @app.save
       render json: @app, status: :created, location: @app
@@ -34,7 +34,7 @@ class AppsController < ApplicationController
   def update
     @app = App.find(params[:id])
 
-    if @app.update(params[:app])
+    if @app.update(app_params)
       head :no_content
     else
       render json: @app.errors, status: :unprocessable_entity
@@ -49,4 +49,10 @@ class AppsController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def app_params
+      params.require(:app).permit(:name, :organisation_id)
+    end
 end

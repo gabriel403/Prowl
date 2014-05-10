@@ -20,7 +20,7 @@ class DeployStepsController < ApplicationController
   # POST /deploy_steps
   # POST /deploy_steps.json
   def create
-    @deploy_step = DeployStep.new(params[:deploy_step])
+    @deploy_step = DeployStep.new(deploy_step_params)
 
     if @deploy_step.save
       render json: @deploy_step, status: :created, location: @deploy_step
@@ -34,7 +34,7 @@ class DeployStepsController < ApplicationController
   def update
     @deploy_step = DeployStep.find(params[:id])
 
-    if @deploy_step.update(params[:deploy_step])
+    if @deploy_step.update(deploy_step_params)
       head :no_content
     else
       render json: @deploy_step.errors, status: :unprocessable_entity
@@ -49,4 +49,10 @@ class DeployStepsController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def deploy_step_params
+      params.require(:deploy_step).permit(:env_id, :order, :deploy_step_type_option_id, :value, :additional)
+    end
 end

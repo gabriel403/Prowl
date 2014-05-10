@@ -9,3 +9,8 @@ prowl:
   id: 2
   name: prowl
   organisation_id: 2
+
+do-manager:
+  id: 3
+  name: do manager
+  organisation_id: 1

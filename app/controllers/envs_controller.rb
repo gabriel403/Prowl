@@ -20,11 +20,12 @@ class EnvsController < ApplicationController
   # POST /envs
   # POST /envs.json
   def create
-    @env = Env.new(params[:env])
+    @env = Env.new(env_params)
 
     if @env.save
       render json: @env, status: :created, location: @env
     else
+      puts @env.errors.inspect
       render json: @env.errors, status: :unprocessable_entity
     end
   end
@@ -34,7 +35,7 @@ class EnvsController < ApplicationController
   def update
     @env = Env.find(params[:id])
 
-    if @env.update(params[:env])
+    if @env.update(env_params)
       head :no_content
     else
       render json: @env.errors, status: :unprocessable_entity
@@ -49,4 +50,10 @@ class EnvsController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def env_params
+      params.require(:env).permit(:name, :app_id)
+    end
 end

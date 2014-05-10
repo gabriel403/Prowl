@@ -2,7 +2,8 @@ require 'test_helper'
 
 class ServersControllerTest < ActionController::TestCase
   setup do
-    @server = servers(:one)
+    @server = servers(:fusions_localhost)
+    sign_in users(:user1)
   end
 
   test "should get index" do

@@ -2,7 +2,8 @@ require 'test_helper'
 
 class EnvsControllerTest < ActionController::TestCase
   setup do
-    @env = envs(:one)
+    @env = envs(:fusions_dev)
+    sign_in users(:user1)
   end
 
   test "should get index" do

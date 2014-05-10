@@ -20,11 +20,12 @@ class EnvServersController < ApplicationController
   # POST /env_servers
   # POST /env_servers.json
   def create
-    @env_server = EnvServer.new(params[:env_server])
+    @env_server = EnvServer.new(env_server_params)
 
     if @env_server.save
       render json: @env_server, status: :created, location: @env_server
     else
+      puts @env_server.errors.inspect
       render json: @env_server.errors, status: :unprocessable_entity
     end
   end
@@ -34,7 +35,7 @@ class EnvServersController < ApplicationController
   def update
     @env_server = EnvServer.find(params[:id])
 
-    if @env_server.update(params[:env_server])
+    if @env_server.update(env_server_params)
       head :no_content
     else
       render json: @env_server.errors, status: :unprocessable_entity
@@ -49,4 +50,10 @@ class EnvServersController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def env_server_params
+      params.require(:env_server).permit(:env_id, :server_id)
+    end
 end

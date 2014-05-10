@@ -4,4 +4,4 @@ rvm:
 env:
   - DEVISE_SECRET_TOKEN="$(bundle exec rake secret)" SECRET_TOKEN="$(bundle exec rake secret)" DB=sqlite
 script:
-  - RAILS_ENV=test bundle exec rake test test/models/*
+  - RAILS_ENV=test bundle exec rake test

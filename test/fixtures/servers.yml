@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 fusions_localhost:
+  id: 1
   organisation_id: 1
   name: localhost
   host: localhost
+  port: 22
   username: serveruser
   authentication_type_id: 3
   authentication: rsahash
@@ -12,9 +14,11 @@ fusions_localhost:
   sudo_password:
 
 prowl_localhost:
+  id: 2
   organisation_id: 2
   name: localhost
   host: localhost
+  port: 22
   username: serveruser
   authentication_type_id: 3
   authentication: rsahash

@@ -20,7 +20,7 @@ class DeploysController < ApplicationController
   # POST /deploys
   # POST /deploys.json
   def create
-    @deploy = Deploy.new(params[:deploy])
+    @deploy = Deploy.new(deploy_params)
 
     if @deploy.save
       render json: @deploy, status: :created, location: @deploy
@@ -34,7 +34,7 @@ class DeploysController < ApplicationController
   def update
     @deploy = Deploy.find(params[:id])
 
-    if @deploy.update(params[:deploy])
+    if @deploy.update(deploy_params)
       head :no_content
     else
       render json: @deploy.errors, status: :unprocessable_entity
@@ -49,4 +49,10 @@ class DeploysController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def deploy_params
+      params.require(:deploy).permit(:status, :output, :server_id, :env_id, :user_id)
+    end
 end

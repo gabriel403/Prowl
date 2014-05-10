@@ -20,7 +20,7 @@ class AccessLevelsController < ApplicationController
   # POST /access_levels
   # POST /access_levels.json
   def create
-    @access_level = AccessLevel.new(params[:access_level])
+    @access_level = AccessLevel.new(access_level_params)
 
     if @access_level.save
       render json: @access_level, status: :created, location: @access_level
@@ -34,7 +34,7 @@ class AccessLevelsController < ApplicationController
   def update
     @access_level = AccessLevel.find(params[:id])
 
-    if @access_level.update(params[:access_level])
+    if @access_level.update(access_level_params)
       head :no_content
     else
       render json: @access_level.errors, status: :unprocessable_entity
@@ -49,4 +49,10 @@ class AccessLevelsController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def access_level_params
+      params.require(:access_level).permit(:name, :value, :access_type)
+    end
 end

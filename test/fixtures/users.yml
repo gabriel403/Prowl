@@ -3,21 +3,32 @@ user1:
   email: user1@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "user123") %>
   confirmed_at: <%= Time.now %>
+  authentication_token: abcdef123654
 
 user2:
   id: 2
   email: user2@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "user123") %>
   confirmed_at: <%= Time.now %>
+  authentication_token: abcdef123456
 
 user3:
   id: 3
   email: user3@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "user123") %>
   confirmed_at: <%= Time.now %>
+  authentication_token: xyzhij456321
 
 user4:
   id: 4
   email: user4@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "user123") %>
   confirmed_at: <%= Time.now %>
+  authentication_token: xyzhij456123
+
+user5:
+  id: 5
+  email: user5@mysite.com
+  encrypted_password: <%= User.new.send(:password_digest, "user123") %>
+  confirmed_at: <%= Time.now %>
+  authentication_token: xyzhij456987

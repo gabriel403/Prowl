@@ -1,13 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 password:
+  id: 1
   name: Password
   short_name: password
 
 keyfile:
+  id: 2
   name: "Key Pair [file]"
   short_name: keyfile
 
 keystored:
+  id: 3
   name: "Key Pair [stored]"
   short_name: keystored

@@ -20,7 +20,7 @@ class OrganisationsController < ApplicationController
   # POST /organisations
   # POST /organisations.json
   def create
-    @organisation = Organisation.new(params[:organisation])
+    @organisation = Organisation.new(organisation_params)
 
     if @organisation.save
       render json: @organisation, status: :created, location: @organisation
@@ -34,7 +34,7 @@ class OrganisationsController < ApplicationController
   def update
     @organisation = Organisation.find(params[:id])
 
-    if @organisation.update(params[:organisation])
+    if @organisation.update(organisation_params)
       head :no_content
     else
       render json: @organisation.errors, status: :unprocessable_entity
@@ -49,4 +49,10 @@ class OrganisationsController < ApplicationController
 
     head :no_content
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def organisation_params
+      params.require(:organisation).permit(:name, :access_code)
+    end
 end

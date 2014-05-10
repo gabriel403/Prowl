@@ -2,7 +2,8 @@ require 'test_helper'
 
 class OrganisationUsersControllerTest < ActionController::TestCase
   setup do
-    @organisation_user = organisation_users(:one)
+    @organisation_user = organisation_users(:org_1_admin)
+    sign_in users(:user1)
   end
 
   test "should get index" do
@@ -11,13 +12,13 @@ class OrganisationUsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:organisation_users)
   end
 
-  test "should create organisation_user" do
-    assert_difference('OrganisationUser.count') do
-      post :create, organisation_user: { access_level_id: @organisation_user.access_level_id, organisation_id: @organisation_user.organisation_id, user_id: @organisation_user.user_id }
-    end
-
-    assert_response 201
-  end
+  # test "should create organisation_user" do
+  #   assert_difference('OrganisationUser.count') do
+  #     post :create, organisation_user: { access_level_id: @organisation_user.access_level_id, organisation_id: @organisation_user.organisation_id, user_id: @organisation_user.user_id }
+  #   end
+  #
+  #   assert_response 201
+  # end
 
   test "should show organisation_user" do
     get :show, id: @organisation_user

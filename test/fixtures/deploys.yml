@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 fusions_deploy:
+  id: 1
   status: pending
   output: 'some text'
   server_id: 1
@@ -8,6 +9,7 @@ fusions_deploy:
   user_id: 1
 
 prowl_deploy:
+  id: 2
   status: processing
   output: 'some output'
   server_id: 2
