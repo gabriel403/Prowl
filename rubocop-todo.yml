@@ -94,4 +94,4 @@ SpaceInsideHashLiteralBraces:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 StringLiterals:
-  Enabled: false
+  Enabled: true
