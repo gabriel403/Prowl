@@ -3,32 +3,32 @@ user_for_org_1_admin_access:
   email: user_for_org_1_admin_access@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "org_1_admin23") %>
   confirmed_at: <%= Time.now %>
-  authentication_token: abcdef123654
+  authentication_token: abcdef12q3654
 
 user_for_org_1_user_access:
   id: 2
   email: user_for_org_1_user_access@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "org_1_admin23") %>
   confirmed_at: <%= Time.now %>
-  authentication_token: abcdef123456
+  authentication_token: abcdef123a456
 
 user_for_org_2_admin_access:
   id: 3
   email: user_for_org_2_admin_access@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "org_1_admin23") %>
   confirmed_at: <%= Time.now %>
-  authentication_token: xyzhij456321
+  authentication_token: xyzhij456s321
 
 user_for_org_2_user_access:
   id: 4
   email: user_for_org_2_user_access@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "org_1_admin23") %>
   confirmed_at: <%= Time.now %>
-  authentication_token: xyzhij456321
+  authentication_token: xyzhij456d321
 
 user_for_org_nil_nil_access:
   id: 5
   email: user_for_org_nil_nil_access@mysite.com
   encrypted_password: <%= User.new.send(:password_digest, "org_1_admin23") %>
   confirmed_at: <%= Time.now %>
-  authentication_token: xyzhij456123
+  authentication_token: xyzhij456f123
