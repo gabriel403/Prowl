@@ -3,7 +3,7 @@ require 'test_helper'
 class DeployStepTypesControllerTest < ActionController::TestCase
   setup do
     @deploy_step_type = deploy_step_types(:destination)
-    sign_in users(:user1)
+    sign_in users(:user_for_org_1_admin_access)
   end
 
   test "should get index" do

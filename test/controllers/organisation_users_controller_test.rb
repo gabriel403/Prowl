@@ -3,7 +3,7 @@ require 'test_helper'
 class OrganisationUsersControllerTest < ActionController::TestCase
   setup do
     @organisation_user = organisation_users(:org_1_admin)
-    sign_in users(:user1)
+    sign_in users(:user_for_org_1_admin_access)
   end
 
   test "should get index" do

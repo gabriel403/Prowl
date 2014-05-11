@@ -3,8 +3,8 @@ include Devise::TestHelpers
 
 class UsersControllerTest < ActionController::TestCase
   setup do
-    @user = users(:user1)
-    sign_in users(:user1)
+    @user = users(:user_for_org_1_admin_access)
+    sign_in users(:user_for_org_1_admin_access)
   end
 
   test "should get index" do

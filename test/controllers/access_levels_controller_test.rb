@@ -3,7 +3,7 @@ require 'test_helper'
 class AccessLevelsControllerTest < ActionController::TestCase
   setup do
     @access_level = access_levels(:org_admin)
-    sign_in users(:user1)
+    sign_in users(:user_for_org_1_admin_access)
   end
 
   test "should get index" do

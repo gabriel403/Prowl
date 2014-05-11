@@ -3,7 +3,7 @@ require 'test_helper'
 class EnvServersControllerTest < ActionController::TestCase
   setup do
     @env_server = env_servers(:fusions_localhost_dev)
-    sign_in users(:user1)
+    sign_in users(:user_for_org_1_admin_access)
   end
 
   test "should get index" do

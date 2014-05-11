@@ -3,7 +3,7 @@ require 'test_helper'
 class DeployOptionsControllerTest < ActionController::TestCase
   setup do
     @deploy_option = deploy_options(:one)
-    sign_in users(:user1)
+    sign_in users(:user_for_org_1_admin_access)
   end
 
   test "should get index" do
