@@ -22,6 +22,13 @@ $.userFetch = function() {
     $.simpleGET('/users/show', {}, function(data, status, xhr) {
       $.updateUser(true, xhr.responseJSON);
     });
+
+    $.simpleGET('/organisations', {}, function(data, status, xhr) {
+      if (0 == xhr.responseJSON.length) {
+        console.log("no org, make em make one");
+        $( document ).trigger("prowl:regorg");
+      }
+    });
 }
 
 $( document ).ready(function(){
@@ -41,6 +48,7 @@ $( document ).ready(function(){
 
   $.loadTemplateIntoModal('login');
   $.loadTemplateIntoModal('register');
+  $.loadTemplateIntoModal('regorg');
 
   $( "#pleaseWaitDialog" ).on("show.bs.modal", function(){
     console.log($._data($( document )[0], "events")["prowl:load:all"].length);

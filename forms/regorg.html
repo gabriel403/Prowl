@@ -1,0 +1,28 @@
+<script id="regorgform" type="text/html">
+  <div class="modal-body">
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#new-org" data-toggle="tab">New Org</a></li>
+      <li><a href="#join-org" data-toggle="tab">Join Org</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="new-org">
+        <form id="new-org-form" class="form-new-org" role="form" action="{{apiLocation}}/organisations" method="post" data-remote="true" data-type="json" data-with-credentials="true">
+          <h2 class="form-signin-heading">Please create an organisation</h2>
+          <input type="text" class="form-control" placeholder="Organisation Name" name="organisation[name]" required autofocus>
+          <input type="text" class="form-control" placeholder="Access Code" name="organisation[access_code]" required>
+          <button id="new-org-form-button" class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+        </form>
+      </div>
+      <div class="tab-pane" id="join-org">
+        <form id="join-org-form" class="form-join-org" role="form" action="{{apiLocation}}/organisations" method="post" data-remote="true" data-type="json" data-with-credentials="true">
+          <h2 class="form-signin-heading">Please join an organisation</h2>
+          <input type="text" class="form-control" placeholder="Access Code" name="organisation[access_code]" required>
+          <button id="new-org-form-button" class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</script>
