@@ -5,8 +5,8 @@ class Ability
     user ||= User.new
     cannot :manage,   :all
     can    :read,     User
-    can    :manage,   Organisation, :organisation_users => { :user => { :id => user.id }, :access_level => { :value => 'admin', :access_type => 'org_access' } }
-    can    :read,     Organisation, :organisation_users => { :user => { :id => user.id }, :access_level => { :value => 'user',  :access_type => 'org_access' } }
+    can    :manage,   Organisation, :organisation_users => { :user => user, :access_level => { :value => 'admin', :access_type => 'org_access' } }
+    can    :read,     Organisation, :organisation_users => { :user => user, :access_level => { :value => 'user',  :access_type => 'org_access' } }
 
     if user.organisations.first
       can    :read,   Server,               :organisation => user.organisations.first, :organisation => { :organisation_users => { :user => user, :access_level => { :value => 'user', :access_type => 'org_access' } } }
