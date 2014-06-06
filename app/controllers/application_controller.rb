@@ -7,9 +7,7 @@ class ApplicationController < ActionController::API
   before_action :check_auth
   check_authorization unless: :devise_controller?
 
-  rescue_from CanCan::AccessDenied do |exception|
-    fail ActionController::RoutingError.new(exception.message)
-  end
+  rescue_from CanCan::AccessDenied, with: :json_error
 
   private
 
@@ -31,5 +29,9 @@ class ApplicationController < ActionController::API
       authenticate_user_from_token!
       authenticate_user!
     end
+  end
+
+  def json_error(error)
+    render :json => {:message => error.message}, :status => :not_found
   end
 end
