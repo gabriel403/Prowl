@@ -4,8 +4,8 @@ class OrganisationsController < ApplicationController
   # GET /organisations
   # GET /organisations.json
   def index
-    @organisations = Organisation.accessible_by(current_ability)
-    # @organisations = current_user.organisations
+    # @organisations = Organisation.accessible_by(current_ability)
+    @organisations = current_user.organisations
 
     render json: @organisations
   end
