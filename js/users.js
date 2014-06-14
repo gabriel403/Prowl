@@ -1,31 +1,29 @@
-$.updateUser = function(isLoggedIn, userObject) {
-  if (($.userLoggedIn && isLoggedIn) || (false === $.userLoggedIn && !isLoggedIn)) {
-    return;
+$.prowl.users = { }
+$.prowl.users.updateUser = function() {
+  if ($.prowl.userAuth.authed && $.prowl.userAuth.user) {
+    $('#user-name').html($.prowl.userAuth.user.email);
+    $.cookie('prowl_token', $.prowl.userAuth.user.authentication_token, { expires: 7, path: '/' });
+    $.cookie('prowl_auth', $.prowl.userAuth.user.email, { expires: 7, path: '/' });
+  } else {
+    $('#user-name').empty();
   }
 
-  if ($.userLoggedIn || 'undefined' == typeof $.userLoggedIn) {
-    $.userLoggedIn = false;
-    $('#user-name').empty();
-    $(".isLoggedIn").addClass('hidden');
-    $(".isNotLoggedIn").removeClass('hidden');
-  } else {
-    $.userLoggedIn = true;
-    $('#user-name').html(userObject.email);
-    $.cookie('prowl_token', userObject.authentication_token, { expires: 7, path: '/' });
-    $.cookie('prowl_auth', userObject.email, { expires: 7, path: '/' });
+  $.prowl.users.twitchUserUI();
+}
+
+$.prowl.users.twitchUserUI = function() {
+  if ($.prowl.userAuth.authed && $.prowl.userAuth.user) {
     $(".isLoggedIn").removeClass('hidden');
     $(".isNotLoggedIn").addClass('hidden');
+  } else {
+    $(".isLoggedIn").addClass('hidden');
+    $(".isNotLoggedIn").removeClass('hidden');
   }
 }
 
-$.userFetch = function() {
-    $.simpleGET('/users/show', {}, function(data, status, xhr) {
-      $.updateUser(true, xhr.responseJSON);
-    });
-
-    $.simpleGET('/organisations', {}, function(data, status, xhr) {
+$.prowl.users.userFetch = function() {
+    $.prowl.common.simpleGET('/organisations', {}, function(data, status, xhr) {
       if (0 == xhr.responseJSON.length) {
-        console.log("no org, make em make one");
         $( document ).trigger("prowl:regorg");
       }
     });
@@ -33,32 +31,35 @@ $.userFetch = function() {
 
 $( document ).ready(function(){
   $( document ).on("prowl:load:all prowl:load:orgusers", function(){
-    $.loadColumn('users');
+    $.prowl.common.loadColumn('users');
   });
 
   $( "a#logout" ).on('ajax:success', function(e){
-    $.updateUser(false, {});
+    $.prowl.users.updateUser(false);
     $( document ).trigger("prowl:user:deauthed");
   })
 
-  $( document ).on("prowl:user:authenticated", function(event){
-    // $.userSection(true);
-    $.userFetch();
+  $( document ).one("prowl:user:authenticated", function(event){
+    $.prowl.users.userFetch();
   });
 
-  $.loadTemplateIntoModal('login');
-  $.loadTemplateIntoModal('register');
-  $.loadTemplateIntoModal('regorg');
+  $( document ).on("prowl:regorg:load", function(){
+    $( "#new-org-form" ).on("ajax:success", function(e, xhr, options){
+      $.prowl.orgs.orgCreated(xhr);
+    });
 
-  $( "#pleaseWaitDialog" ).on("show.bs.modal", function(){
-    console.log($._data($( document )[0], "events")["prowl:load:all"].length);
-  })
+    $( "#join-org-form" ).on("ajax:success", function(e, xhr, options){
+      console.log(e);
+    });
+  });
+
+  $.prowl.common.loadTemplateIntoModal('login');
+  $.prowl.common.loadTemplateIntoModal('register');
+  $.prowl.common.loadTemplateIntoModal('regorg', {backdrop: 'static', keyboard: false});
 
   $('#infoModal').on('show.bs.modal', function (e) {
     $("#sign-in-form").on("ajax:success", function(e, xhr, options){
-      $.updateUser(true, xhr);
-      $('#infoModal').modal('hide');
-      $( document ).trigger("prowl:load:all");
+      $( document ).trigger("prowl:user:authenticated", xhr);
     });
   });
 });

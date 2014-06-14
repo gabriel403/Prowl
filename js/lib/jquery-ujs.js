@@ -146,6 +146,7 @@
             }
           },
           success: function(data, status, xhr) {
+            console.log(element);
             element.trigger('ajax:success', [data, status, xhr]);
           },
           complete: function(xhr, status) {

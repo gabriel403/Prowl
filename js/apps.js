@@ -1,14 +1,14 @@
 $( document ).ready(function(){
   $( document ).on("prowl:load:all prowl:load:orgapps", function(){
-    $.simpleGET('/apps', {}, function(data, status, xhr) {
+    $.prowl.common.simpleGET('/apps', {}, function(data, status, xhr) {
       var apps = xhr.responseJSON;
       $.each(apps, function(index, app) {
         app.envs = [];
-        $.simpleGET('/envs', {app_id: app.id}, function(data, status, xhr){
+        $.prowl.common.simpleGET('/envs', {app_id: app.id}, function(data, status, xhr){
           $.each(xhr.responseJSON, function(index, env) {
             env.deploys = []
             app.envs.push(env);
-            $.simpleGET('/deploys', {env_id: env.id}, function(data, status, xhr){
+            $.prowl.common.simpleGET('/deploys', {env_id: env.id}, function(data, status, xhr){
               var deploys = xhr.responseJSON
               env.deploys = deploys;
 
@@ -41,7 +41,7 @@ $( document ).ready(function(){
               });
 
               $('#apps-col').empty();
-              $.loadColumn('apps', apps);
+              $.prowl.common.loadColumn('apps', apps);
               // console.log(apps);
             });
           });
