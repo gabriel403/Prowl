@@ -22,7 +22,9 @@ class OrganisationUsersController < ApplicationController
   def create
     @organisation_user = OrganisationUser.new(organisation_user_params)
 
-    if @organisation_user.save
+    @organisation_user.access_level_id = (@organisation_user.organisation.users.count > 0) ? 2 : 1
+
+    if !current_user.organisations.first && @organisation_user.organisation.access_code == params['access_code'] && @organisation_user.save
       render json: @organisation_user, status: :created, location: @organisation_user
     else
       render json: @organisation_user.errors, status: :unprocessable_entity
