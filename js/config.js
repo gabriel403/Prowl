@@ -1,1 +1,3 @@
+
+$.prowl = { }
 $.prowl.config = { apiLocation: 'http://api.prowl.dev:3000' }
