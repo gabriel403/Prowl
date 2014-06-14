@@ -4,7 +4,8 @@ class AppsController < ApplicationController
   # GET /apps
   # GET /apps.json
   def index
-    @apps = App.accessible_by(current_ability)
+    # @apps = App.accessible_by(current_ability)
+    @apps = current_user.apps
 
     render json: @apps
   end

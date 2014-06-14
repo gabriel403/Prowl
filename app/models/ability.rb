@@ -2,9 +2,10 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    user
+    user ||= User.new # guest user (not logged in)
     cannot :manage, :all
     can    :read,   User
+
     can    :read,   Organisation,         :organisation_users => { :user => user, :access_level => { :value => 'user',  :access_type => 'org_access' } }
 
     if user.organisations.first
@@ -40,6 +41,7 @@ class Ability
       can    :read,   AuthenticationType
     else
       can    :create, Organisation
+      can    :create, OrganisationUser
     end
 
     # access_levels
