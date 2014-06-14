@@ -5,7 +5,12 @@ class OrganisationsController < ApplicationController
   # GET /organisations.json
   def index
     # @organisations = Organisation.accessible_by(current_ability)
-    @organisations = current_user.organisations
+    if params.has_key?('access_code')
+      access_code = params['access_code']
+      @organisations = Organisation.find_by access_code: access_code
+    else
+      @organisations = current_user.organisations
+    end
 
     render json: @organisations
   end

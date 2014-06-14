@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :apps, through: :organisations
   has_many :env_users
   has_many :envs, through: :env_users
+  has_many :servers, through: :envs
 
   def ensure_authentication_token
     if authentication_token.blank?

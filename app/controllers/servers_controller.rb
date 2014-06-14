@@ -4,7 +4,7 @@ class ServersController < ApplicationController
   # GET /servers
   # GET /servers.json
   def index
-    @servers = Server.accessible_by(current_ability)
+    @servers = current_user.servers
 
     render json: @servers
   end
