@@ -43,16 +43,6 @@ $( document ).ready(function(){
     $.prowl.users.userFetch();
   });
 
-  $( document ).on("prowl:regorg:load", function(){
-    $( "#new-org-form" ).on("ajax:success", function(e, xhr, options){
-      $.prowl.orgs.orgCreated(xhr);
-    });
-
-    $( "#join-org-form" ).on("ajax:success", function(e, xhr, options){
-      console.log(e);
-    });
-  });
-
   $.prowl.common.loadTemplateIntoModal('login');
   $.prowl.common.loadTemplateIntoModal('register');
   $.prowl.common.loadTemplateIntoModal('regorg', {backdrop: 'static', keyboard: false});
