@@ -7,7 +7,7 @@ class OrganisationsController < ApplicationController
     # @organisations = Organisation.accessible_by(current_ability)
     if params.key?('access_code')
       access_code = params['access_code']
-      @organisations = Organisation.find_by access_code: access_code
+      @organisations = Organisation.where access_code: access_code
     else
       @organisations = current_user.organisations
     end

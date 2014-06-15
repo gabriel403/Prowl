@@ -4,7 +4,13 @@ class EnvsController < ApplicationController
   # GET /envs
   # GET /envs.json
   def index
-    @envs = Env.all
+    if params.key?('app_id')
+      app_id = params['app_id']
+      @envs = Env.where app_id: app_id
+    else
+      @envs = current_user.envs
+    end
+puts @envs.inspect
 
     render json: @envs
   end
