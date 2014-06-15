@@ -43,9 +43,15 @@ $.prowl.common.loadColumn = function(loaderType, data) {
 }
 
 $.prowl.common.columnMoustache = function(loaderType, data) {
-  $.Mustache.load("./templates/" + loaderType + ".html")
+  var fetchfrom = loaderType;
+  if (data.length == 0) {
+    fetchfrom = 'empty' + loaderType;
+    data.push({});
+  }
+
+  $.Mustache.load("./templates/" + fetchfrom + ".html")
   .done(function () {
-    $('#' + loaderType + '-col').mustache(loaderType + "template", data);
+    $('#' + loaderType + '-col').mustache(fetchfrom + "template", data);
   });
 }
 

@@ -2,6 +2,10 @@ $( document ).ready(function(){
   $( document ).on("prowl:load:all prowl:load:orgapps", function(){
     $.prowl.common.simpleGET('/apps', {}, function(data, status, xhr) {
       var apps = xhr.responseJSON;
+      if (0 == apps.length ) {
+        $.prowl.common.loadColumn('apps', apps);
+      }
+
       $.each(apps, function(index, app) {
         app.envs = [];
         $.prowl.common.simpleGET('/envs', {app_id: app.id}, function(data, status, xhr){
