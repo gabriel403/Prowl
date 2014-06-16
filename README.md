@@ -10,6 +10,7 @@ Dev Environment
 ===
 Prowl comes with a vagrant setup available for it. Git clone the 2.0 and gh-pages branches as seperate clones in the same folder, named api and app,  
 cd into the api directory and run `vagrant up`.  
+
 This will download a basebox for Prowl and bring the dev environment up.  
 You can then `vagrant ssh` and start running the servers for the api and app.  
 `cd /code/prowl/api` and `rails s`  

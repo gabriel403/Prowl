@@ -10,7 +10,6 @@ class EnvsController < ApplicationController
     else
       @envs = current_user.envs
     end
-puts @envs.inspect
 
     render json: @envs
   end
