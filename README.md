@@ -1,14 +1,16 @@
 [![Build Status](https://travis-ci.org/Prowl/api.svg?branch=master)](https://travis-ci.org/Prowl/api)
 
-Prowl - api
+Prowl
 ===
 Prowl is a rails/resque based deployment system written as a RESTful api.  
-This api is for managing organisations/apps/environments and deployments within prowl.  
+This api is for managing organisations/apps/environments and deployments within Prowl.  
+The 2.0 branch holds the API code and the gh-pages branch holds a js/html based web-ui to interact with the API
 
 Dev Environment
 ===
-Prowl comes with a vagrant setup available for it. Git clone the api and app into the same folder, cd into the api directory and run `vagrant up`.  
-This will download a basebox for prowl and bring the dev environment up.  
+Prowl comes with a vagrant setup available for it. Git clone the 2.0 and gh-pages branches as seperate clones in the same folder, named api and app,  
+cd into the api directory and run `vagrant up`.  
+This will download a basebox for Prowl and bring the dev environment up.  
 You can then `vagrant ssh` and start running the servers for the api and app.  
 `cd /code/prowl/api` and `rails s`  
 the app is simple html and js , so run it however you want, I use the python server  
