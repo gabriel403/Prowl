@@ -13,6 +13,11 @@ cd into the api directory and run `vagrant up`.
 
 This will download a basebox for Prowl and bring the dev environment up.  
 You can then `vagrant ssh` and start running the servers for the api and app.  
+
+If you haven't run bundler yet, do so now  
+`cd /code/prowl/api` and `bundle install --path vendor/bundle`  
+
+To run the rails api  
 `cd /code/prowl/api` and `rails s`  
 the app is simple html and js , so run it however you want, I use the python server  
 `cd /code/prowl/app` and `python -m SimpleHTTPServer`  
