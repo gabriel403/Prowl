@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Prowl/api.svg?branch=master)](https://travis-ci.org/Prowl/api)
+[![Build Status](https://travis-ci.org/gabriel403/Prowl.svg?branch=2.0)](https://travis-ci.org/gabriel403/Prowl)
 
 Prowl
 ===
