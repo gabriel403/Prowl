@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/gabriel403/Prowl.svg?branch=2.0)](https://travis-ci.org/gabriel403/Prowl)
 
+Ninjas made me do it
+
 Prowl
 ===
 Prowl is a rails/resque based deployment system written as a RESTful api.  
