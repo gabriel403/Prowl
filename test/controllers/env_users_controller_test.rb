@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EnvUsersControllerTest < ActionController::TestCase
   setup do
-    @env_user = env_users(:one)
+    @env_user = env_users(:fusions_dev_admin)
     sign_in users(:user_for_org_1_admin_access)
   end
 
