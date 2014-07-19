@@ -5,7 +5,32 @@ fusions_dev:
   name: dev
   app_id: 1
 
+fusions_staging:
+  id: 3
+  name: staging
+  app_id: 1
+
+fusions_production:
+  id: 4
+  name: production
+  app_id: 1
+
 prowl_dev:
   id: 2
   name: dev
   app_id: 2
+
+prowl_production:
+  id: 5
+  name: production
+  app_id: 2
+
+dom_dev:
+  id: 6
+  name: dev
+  app_id: 3
+
+dom_production:
+  id: 7
+  name: production
+  app_id: 3

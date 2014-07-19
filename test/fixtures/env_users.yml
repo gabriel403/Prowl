@@ -1,11 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+fusions_dev_admin:
   user_id: 1
   env_id: 1
   access_level_id: 3
 
-two:
+fusions_staging_user:
+  user_id: 1
+  env_id: 3
+  access_level_id: 4
+
+prowl_dev:
   user_id: 2
   env_id: 2
+  access_level_id: 3
+
+dom_dev:
+  user_id: 1
+  env_id: 6
   access_level_id: 3
