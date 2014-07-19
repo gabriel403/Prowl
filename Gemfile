@@ -19,6 +19,7 @@ gem 'rubocop', '~> 0.21.0', :group => :test
 
 # Use unicorn as the app server
 # gem 'unicorn'
+gem 'puma'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development
